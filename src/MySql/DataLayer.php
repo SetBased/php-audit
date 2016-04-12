@@ -35,14 +35,21 @@ class DataLayer extends StaticDataLayer
    * @param string $theAuditSchemaName The name of audit schema.
    * @param string $theTableName       The name of the table.
    * @param array  $theColumns         The metadata of the new columns.
-   * @param string $theAfterColumn     After which column add new columns.
    */
-  public static function addNewColumns($theAuditSchemaName, $theTableName, $theColumns, $theAfterColumn)
+  public static function addNewColumns($theAuditSchemaName, $theTableName, $theColumns)
   {
     $sql = sprintf('alter table `%s`.`%s`', $theAuditSchemaName, $theTableName);
     foreach ($theColumns as $column)
     {
-      $sql .= 'add `'.$column['column_name'].'` '.$column['column_type'].' after `'.$theAfterColumn.'`';
+      $sql .= ' add `'.$column['column_name'].'` '.$column['column_type'];
+      if (isset($column['after']))
+      {
+        $sql .= ' after `'.$column['after'].'`';
+      }
+      else
+      {
+        $sql .= ' first';
+      }
       if (end($theColumns)!==$column)
       {
         $sql .= ',';

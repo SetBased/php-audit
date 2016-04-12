@@ -24,13 +24,16 @@ class Columns
    */
   public function __construct($theColumns)
   {
-    foreach ($theColumns as $column)
+    reset($theColumns);
+    $first_key = key($theColumns);
+    foreach ($theColumns as $key => $column)
     {
       $this->myColumns[$column['column_name']] = [
         'column_name'      => $column['column_name'],
         'column_type'      => $column['column_type'],
         'audit_expression' => isset($column['expression']) ? $column['expression'] : null,
-        'audit_value_type' => isset($column['value_type']) ? $column['value_type'] : null
+        'audit_value_type' => isset($column['value_type']) ? $column['value_type'] : null,
+        'after'            => ($key===$first_key) ? null : $theColumns[$key - 1]['column_name']
       ];
     }
   }
@@ -81,11 +84,11 @@ class Columns
   public static function differentColumnTypes($theColumns1, $theColumns2)
   {
     $diff = [];
-    foreach ($theColumns2->getColumns() as $column2)
+    foreach ($theColumns2->myColumns as $column2)
     {
-      if (isset($theColumns1->getColumns()[$column2['column_name']]))
+      if (isset($theColumns1->myColumns[$column2['column_name']]))
       {
-        $column1 = $theColumns1->getColumns()[$column2['column_name']];
+        $column1 = $theColumns1->myColumns[$column2['column_name']];
         if ($column2['column_type']!=$column1['column_type'])
         {
           $diff[] = $column1;
@@ -116,7 +119,8 @@ class Columns
         if (!isset($theColumns2->myColumns[$column1['column_name']]))
         {
           $diff[] = ['column_name' => $column1['column_name'],
-                     'column_type' => $column1['column_type']];
+                     'column_type' => $column1['column_type'],
+                     'after'       => $column1['after']];
         }
       }
     }
