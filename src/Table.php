@@ -133,27 +133,6 @@ class Table
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Creates audit triggers on this table.
-   */
-  public function createTriggers()
-  {
-    // Lock the table to prevent insert, updates, or deletes between dropping and creating triggers.
-    $this->lockTable($this->myTableName);
-
-    // Drop all triggers, if any.
-    $this->dropTriggers();
-
-    // Create or recreate the audit triggers.
-    $this->createTableTrigger($this->myTableName, 'INSERT');
-    $this->createTableTrigger($this->myTableName, 'UPDATE');
-    $this->createTableTrigger($this->myTableName, 'DELETE');
-
-    // Insert, updates, and deletes are no audited again. So, release lock on the table.
-    $this->unlockTables();
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Returns the name of this table.
    *
    * @return string
@@ -193,14 +172,34 @@ class Table
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Creates audit triggers on this table.
+   */
+  private function createTriggers()
+  {
+    // Lock the table to prevent insert, updates, or deletes between dropping and creating triggers.
+    $this->lockTable($this->myTableName);
+
+    // Drop all triggers, if any.
+    $this->dropTriggers();
+
+    // Create or recreate the audit triggers.
+    $this->createTableTrigger($this->myTableName, 'INSERT');
+    $this->createTableTrigger($this->myTableName, 'UPDATE');
+    $this->createTableTrigger($this->myTableName, 'DELETE');
+
+    // Insert, updates, and deletes are no audited again. So, release lock on the table.
+    $this->unlockTables();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Adds new columns to audit table.
    *
    * @param array[] $theColumns     Columns array
-   * @param string  $theAfterColumn After which column add new columns
    */
-  private function addNewColumns($theColumns, $theAfterColumn)
+  private function addNewColumns($theColumns)
   {
-    DataLayer::addNewColumns($this->myAuditSchema, $this->myTableName, $theColumns, $theAfterColumn);
+    DataLayer::addNewColumns($this->myAuditSchema, $this->myTableName, $theColumns);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -266,7 +265,8 @@ class Table
     {
       $this->logInfo(sprintf('New column %s.%s', $this->myTableName, $new_column['column_name']));
     }
-    $this->addNewColumns($new_columns, 'audit_usr_id');
+
+    $this->addNewColumns($new_columns);
 
     return ['full_columns'     => $this->myDataTableColumnsDatabase,
             'new_columns'      => $new_columns,
