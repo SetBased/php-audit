@@ -125,13 +125,13 @@ class CreateAuditTrigger
    * @param  string[] $sqlStatement The create trigger sql statement.
    * @param  string   $skipVariable The skip variable (including @).
    *
-   * @return string
+   * @return string[]
    */
   private static function skipStatement($sqlStatement, $skipVariable)
   {
     if (isset($skipVariable))
     {
-      $sqlStatement[] = sprintf("if (%s is null) then", $skipVariable);
+      $sqlStatement[] = sprintf('if (%s is null) then', $skipVariable);
     }
 
     return $sqlStatement;
@@ -187,7 +187,7 @@ class CreateAuditTrigger
       $sql[] = $this->createInsertStatement($rowState[1]);
     }
 
-    $sql[] = isset($this->skipVariable) ? "end if;" : '';
+    $sql[] = isset($this->skipVariable) ? 'end if;' : '';
     $sql[] = 'end';
 
     return $this->writeIndent($sql);
@@ -289,8 +289,8 @@ class CreateAuditTrigger
       $values .= sprintf('%s.`%s`', $rowState, $column['column_name']);
     }
 
-    $insertStatement = sprintf("insert into `%s`.`%s`(%s)
-values(%s);",
+    $insertStatement = sprintf('insert into `%s`.`%s`(%s)
+values(%s);',
                                $this->auditSchemaName,
                                $this->tableName,
                                $columnNames,
