@@ -23,14 +23,14 @@ class AuditCommand extends MySqlCommand
    *
    * @var array
    */
-  private $auditSchemaTables;
+  protected $auditSchemaTables;
 
   /**
    * Array of tables from data schema.
    *
    * @var array
    */
-  private $dataSchemaTables;
+  protected $dataSchemaTables;
 
   /**
    * If true remove all column information from config file.
