@@ -3,8 +3,8 @@
 namespace SetBased\Audit\MySql\Sql;
 
 use SetBased\Audit\MySql\DataLayer;
-use SetBased\Audit\MySql\Table\Columns;
-use SetBased\Audit\MySql\Table\ColumnType;
+use SetBased\Audit\MySql\Metadata\ColumnMetadata;
+use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ class CreateAuditTable
   /**
    * The name of the table.
    *
-   * @var Columns
+   * @var TableColumnsMetadata
    */
   private $columns;
 
@@ -46,11 +46,11 @@ class CreateAuditTable
   /**
    * Object constructor.
    *
-   * @param string  $dataSchemaName  The name of the data schema.
-   * @param string  $auditSchemaName The name of the audit schema.
-   * @param string  $tableName       The name of the table.
-   * @param Columns $columns         The metadata of the columns of the audit table (i.e. the audit columns and columns
-   *                                 of the data table).
+   * @param string               $dataSchemaName  The name of the data schema.
+   * @param string               $auditSchemaName The name of the audit schema.
+   * @param string               $tableName       The name of the table.
+   * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
+   *                                              columns and columns of the data table).
    */
   public function __construct($dataSchemaName,
                               $auditSchemaName,
@@ -78,7 +78,7 @@ class CreateAuditTable
     // Base format on column with longest name.
     $columns = $this->columns->getColumns();
     $width   = 0;
-    /** @var ColumnType $column */
+    /** @var ColumnMetadata $column */
     foreach ($columns as $column)
     {
       $width = max($width, mb_strlen($column->getProperty('column_name')));

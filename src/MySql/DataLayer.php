@@ -2,10 +2,10 @@
 //----------------------------------------------------------------------------------------------------------------------
 namespace SetBased\Audit\MySql;
 
+use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Sql\AlterAuditTableAddColumns;
 use SetBased\Audit\MySql\Sql\CreateAuditTable;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
-use SetBased\Audit\MySql\Table\Columns;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use SetBased\Stratum\Style\StratumStyle;
@@ -35,9 +35,9 @@ class DataLayer
   /**
    * Adds new columns to an audit table.
    *
-   * @param string  $auditSchemaName The name of audit schema.
-   * @param string  $tableName       The name of the table.
-   * @param Columns $columns         The metadata of the new columns.
+   * @param string               $auditSchemaName The name of audit schema.
+   * @param string               $tableName       The name of the table.
+   * @param TableColumnsMetadata $columns         The metadata of the new columns.
    */
   public static function addNewColumns($auditSchemaName, $tableName, $columns)
   {
@@ -74,11 +74,11 @@ class DataLayer
   /**
    * Creates an audit table.
    *
-   * @param string  $dataSchemaName  The name of the data schema.
-   * @param string  $auditSchemaName The name of the audit schema.
-   * @param string  $tableName       The name of the table.
-   * @param Columns $columns         The metadata of the columns of the audit table (i.e. the audit columns and columns
-   *                                 of the data table).
+   * @param string               $dataSchemaName  The name of the data schema.
+   * @param string               $auditSchemaName The name of the audit schema.
+   * @param string               $tableName       The name of the table.
+   * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
+   *                                              columns and columns of the data table).
    */
   public static function createAuditTable($dataSchemaName, $auditSchemaName, $tableName, $columns)
   {
@@ -92,15 +92,15 @@ class DataLayer
   /**
    * Creates a trigger on a table.
    *
-   * @param string   $dataSchemaName  The name of the data schema.
-   * @param string   $auditSchemaName The name of the audit schema.
-   * @param string   $tableName       The name of the table.
-   * @param string   $triggerAction   The trigger action (i.e. INSERT, UPDATE, or DELETE).
-   * @param string   $triggerName     The name of the trigger.
-   * @param Columns  $auditColumns    The audit table columns.
-   * @param Columns  $tableColumns    The data table columns.
-   * @param string   $skipVariable    The skip variable.
-   * @param string[] $additionSql     Additional SQL statements.
+   * @param string               $dataSchemaName  The name of the data schema.
+   * @param string               $auditSchemaName The name of the audit schema.
+   * @param string               $tableName       The name of the table.
+   * @param string               $triggerAction   The trigger action (i.e. INSERT, UPDATE, or DELETE).
+   * @param string               $triggerName     The name of the trigger.
+   * @param TableColumnsMetadata $auditColumns    The audit table columns.
+   * @param TableColumnsMetadata $tableColumns    The data table columns.
+   * @param string               $skipVariable    The skip variable.
+   * @param string[]             $additionSql     Additional SQL statements.
    */
   public static function createAuditTrigger($dataSchemaName,
                                             $auditSchemaName,

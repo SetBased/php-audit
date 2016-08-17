@@ -21,12 +21,31 @@ class TableColumnsMetadata
    * Object constructor.
    *
    * @param array[] $columns The metadata of the columns as returned by DataLayer::getTableColumns().
+   * @param string  $type    The class for columns metadata.
    */
-  public function __construct($columns)
+  public function __construct($columns, $type = '\SetBased\Audit\MySql\Metadata\ColumnMetadata')
   {
-    foreach ($columns as $column)
+    $previousColumns = null;
+    foreach ($columns as $columnName => $column)
     {
-      $this->columns[$column['column_name']] = new ColumnMetadata($column);
+      if (is_int($columnName))
+      {
+        if (!is_array($column))
+        {
+          /** @var ColumnMetadata $column */
+          $this->columns[$column->getProperty('column_name')] = new $type($column, $previousColumns);
+        }
+        else
+        {
+          $this->columns[$column['column_name']] = new $type($column, $previousColumns);
+        }
+      }
+      else
+      {
+        $this->columns[$columnName] = new $type($column, $previousColumns);
+      }
+
+      $previousColumns = $column;
     }
   }
 
@@ -43,17 +62,18 @@ class TableColumnsMetadata
   {
     $columns = [];
 
+    /** @var ColumnMetadata $column */
     foreach ($columns1->columns as $column)
     {
-      $columns[] = $column;
+      $columns[$column->getProperty('column_name')] = $column;
     }
-
+    /** @var ColumnMetadata $column */
     foreach ($columns2->columns as $column)
     {
-      $columns[] = $column;
+      $columns[$column->getProperty('column_name')] = $column;
     }
 
-    return new TableColumnsMetadata($columns);
+    return new TableColumnsMetadata($columns, '\SetBased\Audit\MySql\Metadata\AuditColumnMetadata');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -73,7 +93,7 @@ class TableColumnsMetadata
     {
       if (isset($columns2->columns[$column_name]))
       {
-        if ($columns2[$column_name]['column_type']!=$column1['column_type'])
+        if ($columns2->columns[$column_name]->getProperty('column_type')!=$column1->getProperty('column_type'))
         {
           $diff[] = $column1;
         }

@@ -14,33 +14,41 @@ class ColumnMetadata
    *
    * var string[]
    */
-  private static $fields = ['column_name',
-                            'column_type',
-                            'is_nullable',
-                            'character_set_name',
-                            'collation_name'];
+  protected static $fields = ['column_name',
+                              'column_type',
+                              'is_nullable',
+                              'character_set_name',
+                              'collation_name'];
 
   /**
    * The the properties of this table column.
    *
    * @var array<string,string>
    */
-  private $properties = [];
+  protected $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Object constructor.
    *
-   * @param array[] $properties The metadata of the column.
+   * @param array[]|ColumnMetadata $properties The metadata of the column.
    */
   public function __construct($properties)
   {
+    if (!is_array($properties))
+    {
+      $properties = $properties->getProperties();
+    }
     foreach (self::$fields as $field)
     {
-      $this->properties[$field] = $properties[$field];
+      if (isset($properties[$field]))
+      {
+        $this->properties[$field] = $properties[$field];
+      }
     }
 
     // XXX Must be in some other place, i guess.
+    // See to move in logic for create table.
     if ($this->properties['column_type']==='timestamp')
     {
       $this->properties['column_type'] = $this->properties['column_type'].' NULL';
@@ -64,11 +72,16 @@ class ColumnMetadata
    *
    * @param string $name The name of the property.
    *
-   * @return string
+   * @return string|null
    */
   public function getProperty($name)
   {
-    return $this->properties[$name];
+    if (isset($this->properties[$name]))
+    {
+      return $this->properties[$name];
+    }
+
+    return null;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

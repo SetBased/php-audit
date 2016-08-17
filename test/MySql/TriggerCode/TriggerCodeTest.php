@@ -3,8 +3,8 @@
 namespace SetBased\Audit\Test\MySql\TriggerCode;
 
 use PHPUnit_Framework_TestCase;
+use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
-use SetBased\Audit\MySql\Table\Columns;
 
 //----------------------------------------------------------------------------------------------------------------------
 /**
@@ -45,9 +45,9 @@ class TriggerCodeTest extends PHPUnit_Framework_TestCase
   //--------------------------------------------------------------------------------------------------------------------
   private function additionalSqlTest($triggerAction, $additionalSql)
   {
-    $audit_columns = new Columns([]);
+    $audit_columns = new TableColumnsMetadata([]);
 
-    $table_columns = new Columns([['column_name'        => 'x',
+    $table_columns = new TableColumnsMetadata([['column_name'        => 'x',
                                    'column_type'        => 'int(11)',
                                    'is_nullable'        => 'YES',
                                    'character_set_name' => null,
@@ -77,9 +77,9 @@ class TriggerCodeTest extends PHPUnit_Framework_TestCase
   //--------------------------------------------------------------------------------------------------------------------
   private function triggerEndingTest($triggerAction)
   {
-    $audit_columns = new Columns([]);
+    $audit_columns = new TableColumnsMetadata([]);
 
-    $table_columns = new Columns([['column_name'        => 'x',
+    $table_columns = new TableColumnsMetadata([['column_name'        => 'x',
                                    'column_type'        => 'int(11)',
                                    'is_nullable'        => 'YES',
                                    'character_set_name' => null,

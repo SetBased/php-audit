@@ -12,7 +12,7 @@ class TableMetadata
   /**
    * The metadata of the columns of this table.
    *
-   * @var ColumnMetadata.
+   * @var TableColumnsMetadata.
    */
   private $columns;
 
@@ -45,6 +45,28 @@ class TableMetadata
     $this->tableName  = $tableName;
     $this->columns    = new TableColumnsMetadata($columns);
     $this->schemaName = $schemaName;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns table columns.
+   *
+   * @return TableColumnsMetadata
+   */
+  public function getColumns()
+  {
+    return $this->columns;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the name of schema.
+   *
+   * @return string
+   */
+  public function getSchemaName()
+  {
+    return $this->schemaName;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
