@@ -1,0 +1,23 @@
+{
+    "database": {
+        "host": "localhost",
+        "user": "test",
+        "password": "test",
+        "data_schema": "test_data",
+        "audit_schema": "test_audit"
+    },
+    "metadata": "audit_metadata.json",
+    "tables": {
+        "TABLE1": {
+            "audit": true,
+            "skip": null,
+            "alias": "t1"
+        }
+    },
+    "audit_columns": [
+
+    ],
+    "additional_sql": [
+
+    ]
+}

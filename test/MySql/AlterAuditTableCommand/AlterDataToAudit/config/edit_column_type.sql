@@ -1,0 +1,1 @@
+alter table `TABLE1` modify `c4` int(12);

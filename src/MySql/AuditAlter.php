@@ -88,7 +88,7 @@ class AuditAlter
   {
     $editCharSet = false;
     $charSet     = '';
-    $this->codeStore->append(sprintf('ALTER TABLE %s CHANGE', $tableName));
+    $this->codeStore->append(sprintf('ALTER TABLE %s.`%s` CHANGE', $this->config['database']['audit_schema'], $tableName));
     $countMax = $columns->getNumberOfColumns();
     $count    = 1;
     /** @var MultiSourceColumnMetadata $rowMetadata */
@@ -110,7 +110,7 @@ class AuditAlter
           $editCharSet = true;
           $charSet     = $configMetadata['character_set_name'];
         }
-        $line = sprintf('%s %s %s', $columnName, $columnName, $configMetadata['column_type']);
+        $line = sprintf('`%s` `%s` %s', $columnName, $columnName, $configMetadata['column_type']);
         if ($count!=$countMax) $line .= ',';
         $this->codeStore->append($line);
       }
@@ -121,7 +121,7 @@ class AuditAlter
           $editCharSet = true;
           $charSet     = $dataMetadata['character_set_name'];
         }
-        $line = sprintf('%s %s %s', $columnName, $columnName, $dataMetadata['column_type']);
+        $line = sprintf('`%s` `%s` %s', $columnName, $columnName, $dataMetadata['column_type']);
         if ($count!=$countMax) $line .= ',';
         $this->codeStore->append($line);
       }
@@ -130,11 +130,9 @@ class AuditAlter
     $this->codeStore->append(';');
     if ($editCharSet)
     {
-      $this->codeStore->append(sprintf('ALTER TABLE %s DEFAULT CHARACTER SET %s;', $tableName, $charSet));
+      $this->codeStore->append(sprintf('ALTER TABLE %s.`%s` DEFAULT CHARACTER SET %s;', $this->config['database']['audit_schema'], $tableName, $charSet));
     }
   }
-
-
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
