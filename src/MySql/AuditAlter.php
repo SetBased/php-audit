@@ -86,8 +86,6 @@ class AuditAlter
    */
   public function createSqlStatement($tableName, $columns)
   {
-    $editCharSet = false;
-    $charSet     = '';
     $this->codeStore->append(sprintf('ALTER TABLE %s CHANGE', $tableName));
     $countMax = $columns->getNumberOfColumns();
     $count    = 1;
@@ -105,22 +103,12 @@ class AuditAlter
 
       if (!isset($dataMetadata))
       {
-        if (isset($configMetadata['character_set_name']))
-        {
-          $editCharSet = true;
-          $charSet     = $configMetadata['character_set_name'];
-        }
         $line = sprintf('%s %s %s', $columnName, $columnName, $configMetadata['column_type']);
         if ($count!=$countMax) $line .= ',';
         $this->codeStore->append($line);
       }
       else
       {
-        if (isset($dataMetadata['character_set_name']))
-        {
-          $editCharSet = true;
-          $charSet     = $dataMetadata['character_set_name'];
-        }
         $line = sprintf('%s %s %s', $columnName, $columnName, $dataMetadata['column_type']);
         if ($count!=$countMax) $line .= ',';
         $this->codeStore->append($line);
@@ -128,10 +116,8 @@ class AuditAlter
       $count++;
     }
     $this->codeStore->append(';');
-    if ($editCharSet)
-    {
-      $this->codeStore->append(sprintf('ALTER TABLE %s DEFAULT CHARACTER SET %s;', $tableName, $charSet));
-    }
+    $tableOptions = AuditDataLayer::getTableOptions($this->config['database']['data_schema'], $tableName);
+    $this->codeStore->append(sprintf('ALTER TABLE %s DEFAULT CHARACTER SET %s;', $tableName, $tableOptions['character_set_name']));
   }
 
 
