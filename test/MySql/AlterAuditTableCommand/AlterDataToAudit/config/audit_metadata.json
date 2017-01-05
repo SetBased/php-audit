@@ -1,0 +1,19 @@
+{
+    "TABLE1": [
+        {
+            "column_name": "c1",
+            "column_type": "tinyint(4)",
+            "is_nullable": "YES"
+        },
+        {
+            "column_name": "c2",
+            "column_type": "smallint(6)",
+            "is_nullable": "YES"
+        },
+        {
+            "column_name": "c4",
+            "column_type": "int(11)",
+            "is_nullable": "YES"
+        }
+    ]
+}
