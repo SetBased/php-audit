@@ -60,11 +60,12 @@ class AlterDataToAuditTest extends AlterAuditTableCommandTestCase
 
     $this->runAlter();
 
+    $tableOptions = AuditDataLayer::getTableOptions(self::$dataSchema, 'TABLE1');
     $this->assertSame(file_get_contents(__DIR__.'/config/alter-table-sql-result.sql'),
-                      'ALTER TABLE test_audit.`TABLE1` CHANGE
+                      sprintf('ALTER TABLE `test_audit`.`TABLE1` CHANGE
   `c4` `c4` int(12)
 ;
-');
+ALTER TABLE `test_audit`.`TABLE1` DEFAULT CHARACTER SET %s', $tableOptions['character_set_name']));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
