@@ -141,8 +141,7 @@ class Audit
       {
         if (!isset($this->config['tables'][$table['table_name']]['audit']))
         {
-          $this->io->writeln(sprintf('<info>Found new table %s</info>', $table['table_name']));
-          $this->io->writeln(sprintf('<info>audit is not set for table %s</info>', $table['table_name']));
+          $this->io->writeln(sprintf('<info>Audit not set for table %s</info>', $table['table_name']));
         }
         else
         {
@@ -158,7 +157,7 @@ class Audit
       else
       {
         $this->io->writeln(sprintf('<info>Found new table %s</info>', $table['table_name']));
-        $this->config['tables'][$table['table_name']] = ['audit' => false,
+        $this->config['tables'][$table['table_name']] = ['audit' => null,
                                                          'alias' => null,
                                                          'skip'  => null];
       }
