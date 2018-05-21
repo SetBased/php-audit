@@ -1,0 +1,14 @@
+{
+    "TABLE1": [
+        {
+            "column_name": "id",
+            "column_type": "int(11)",
+            "is_nullable": "NO"
+        },
+        {
+            "column_name": "c",
+            "column_type": "int(11)",
+            "is_nullable": "YES"
+        }
+    ]
+}

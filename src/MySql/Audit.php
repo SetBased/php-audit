@@ -62,6 +62,7 @@ class Audit
   private $pruneOption;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -106,9 +107,27 @@ class Audit
 
     $this->unknownTables();
 
+    $this->obsoleteTables();
+
     $status = $this->knownTables();
 
     return $status;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Removes tables listed in the config file that are not longer in the data schema from the config file.
+   */
+  public function obsoleteTables()
+  {
+    foreach ($this->config['tables'] as $tableName => $dummy)
+    {
+      if (AuditDataLayer::searchInRowSet('table_name', $tableName, $this->dataSchemaTables)===null)
+      {
+        $this->io->writeln(sprintf('<info>Removing obsolete table %s from config file</info>', $tableName));
+        unset($this->config['tables'][$tableName]);
+      }
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -232,7 +251,7 @@ class Audit
                                        $this->config['tables'][$table['table_name']]['alias'],
                                        $this->config['tables'][$table['table_name']]['skip']);
 
-        // Ensure an audit table exists.
+        // Ensure the audit table exists.
         if (AuditDataLayer::searchInRowSet('table_name', $table['table_name'], $this->auditSchemaTables)===null)
         {
           $currentTable->createAuditTable();
