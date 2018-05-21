@@ -1,15 +1,14 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
-namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnDataTableTest;
+
+namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnDataTable;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Tests new column in data table.
  */
-class NewColumnDataTableCommandTest extends DiffCommandTestCase
+class NewColumnDataTableTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**

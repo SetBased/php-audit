@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnAuditTable;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;

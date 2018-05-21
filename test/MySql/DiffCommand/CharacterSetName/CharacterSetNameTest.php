@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\DiffCommand\CharacterSetName;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;

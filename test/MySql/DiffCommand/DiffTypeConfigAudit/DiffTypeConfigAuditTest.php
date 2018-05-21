@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\DiffCommand\DiffTypeConfigAudit;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
