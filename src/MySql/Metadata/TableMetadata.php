@@ -2,7 +2,6 @@
 
 namespace SetBased\Audit\MySql\Metadata;
 
-//--------------------------------------------------------------------------------------------------------------------
 /**
  * Class for the metadata of a database table.
  */

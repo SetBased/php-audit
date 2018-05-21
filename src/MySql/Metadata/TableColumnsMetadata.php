@@ -2,7 +2,6 @@
 
 namespace SetBased\Audit\MySql\Metadata;
 
-//----------------------------------------------------------------------------------------------------------------------
 use SetBased\Exception\FallenException;
 
 /**

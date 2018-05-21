@@ -2,7 +2,6 @@
 
 namespace SetBased\Audit\MySql\Helper;
 
-//----------------------------------------------------------------------------------------------------------------------
 use SetBased\Helper\CodeStore\CodeStore;
 
 /**
