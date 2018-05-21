@@ -12,7 +12,7 @@ class DiffTypeConfigAuditTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

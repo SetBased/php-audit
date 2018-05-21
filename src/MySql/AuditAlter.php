@@ -133,8 +133,6 @@ class AuditAlter
     }
   }
 
-
-
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * The main method: executes the create alter table statement actions for tables.

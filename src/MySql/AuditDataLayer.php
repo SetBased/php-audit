@@ -150,7 +150,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeBulk($bulkHandler, $query)
   {
@@ -161,7 +161,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeNone($query)
   {
@@ -172,7 +172,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeRow0($query)
   {
@@ -183,7 +183,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeRow1($query)
   {
@@ -194,7 +194,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeRows($query)
   {
@@ -205,7 +205,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeSingleton0($query)
   {
@@ -216,7 +216,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeSingleton1($query)
   {
@@ -227,7 +227,7 @@ class AuditDataLayer extends StaticDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function executeTable($query)
   {
@@ -368,7 +368,7 @@ order by EVENT_OBJECT_TABLE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function multiQuery($queries)
   {
@@ -379,7 +379,7 @@ order by EVENT_OBJECT_TABLE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function query($query)
   {
@@ -428,7 +428,7 @@ order by EVENT_OBJECT_TABLE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected static function realQuery($query)
   {

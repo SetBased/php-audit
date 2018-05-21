@@ -13,7 +13,7 @@ class NewTableTest extends AuditCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

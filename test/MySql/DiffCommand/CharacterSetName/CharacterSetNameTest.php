@@ -12,7 +12,7 @@ class CharacterSetNameTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

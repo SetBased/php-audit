@@ -16,7 +16,7 @@ class AuditCommand extends MySqlBaseCommand
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function configure()
   {
@@ -31,7 +31,7 @@ class AuditCommand extends MySqlBaseCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {

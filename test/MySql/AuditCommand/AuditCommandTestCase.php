@@ -23,7 +23,7 @@ class AuditCommandTestCase extends AuditTestCase
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

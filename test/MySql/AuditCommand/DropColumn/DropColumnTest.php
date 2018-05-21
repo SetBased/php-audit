@@ -13,7 +13,7 @@ class DropColumnTest extends AuditCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

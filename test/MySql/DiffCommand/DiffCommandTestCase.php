@@ -24,7 +24,7 @@ class DiffCommandTestCase extends AuditTestCase
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

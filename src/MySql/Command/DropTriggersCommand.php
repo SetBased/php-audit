@@ -15,7 +15,7 @@ class DropTriggersCommand extends MySqlBaseCommand
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function configure()
   {
@@ -28,7 +28,7 @@ class DropTriggersCommand extends MySqlBaseCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {

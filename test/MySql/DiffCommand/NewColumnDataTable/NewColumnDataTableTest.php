@@ -12,7 +12,7 @@ class NewColumnDataTableTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   public static function setUpBeforeClass()
   {

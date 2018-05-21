@@ -14,7 +14,7 @@ class AboutCommand extends BaseCommand
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function configure()
   {
@@ -25,7 +25,7 @@ class AboutCommand extends BaseCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {

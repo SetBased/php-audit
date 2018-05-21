@@ -11,7 +11,7 @@ class LockTableMyisamTest extends LockTableTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    *
    */
   public static function setUpBeforeClass()

@@ -25,7 +25,7 @@ class AlterAuditTableCommand extends AuditCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function configure()
   {
@@ -54,7 +54,7 @@ EOL
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {

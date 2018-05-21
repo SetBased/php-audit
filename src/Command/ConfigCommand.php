@@ -25,7 +25,7 @@ class ConfigCommand extends BaseCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function configure()
   {
@@ -36,7 +36,7 @@ class ConfigCommand extends BaseCommand
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {

@@ -12,7 +12,7 @@ class MySqlAlterTableCodeStore extends CodeStore
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * {@inheritdoc}
+   * @inheritdoc
    */
   protected function indentationMode($line)
   {
