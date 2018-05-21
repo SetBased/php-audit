@@ -1,11 +1,10 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Command;
 
 use SetBased\Audit\Command\BaseCommand;
 use SetBased\Audit\MySql\AuditDataLayer;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Base class for commands which needs to connect to a MySQL instance.
  */

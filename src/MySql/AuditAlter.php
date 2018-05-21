@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Helper\MySqlAlterTableCodeStore;
@@ -7,7 +7,6 @@ use SetBased\Audit\MySql\Metadata\ColumnMetadata;
 use SetBased\Audit\MySql\Metadata\MultiSourceColumnMetadata;
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for executing auditing actions for tables.
  */

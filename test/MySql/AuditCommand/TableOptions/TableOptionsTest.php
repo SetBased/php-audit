@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\AuditCommand\TableOptions;
 
 use SetBased\Audit\MySql\AuditDataLayer;

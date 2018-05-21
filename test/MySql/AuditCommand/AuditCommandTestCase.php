@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\AuditCommand;
 
 use SetBased\Audit\MySql\Command\AuditCommand;
@@ -8,7 +8,6 @@ use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Tests changed character set of a column.
  */

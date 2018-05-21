@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\AuditCommand\MinimalConfig;
 
 use SetBased\Audit\MySql\Command\AuditCommand;

@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\AuditCommand\TriggerCode;
 
 use PHPUnit\Framework\TestCase;

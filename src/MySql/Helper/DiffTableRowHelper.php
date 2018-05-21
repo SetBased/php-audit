@@ -1,11 +1,10 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Helper;
 
 use SetBased\Audit\MySql\Metadata\ColumnMetadata;
 use SetBased\Audit\MySql\Metadata\MultiSourceColumnMetadata;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * A helper class for DiffTable rows.
  */

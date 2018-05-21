@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Helper\DiffTableHelper;
@@ -10,7 +10,6 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for executing auditing actions for tables.
  */

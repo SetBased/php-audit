@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Command;
 
 use SetBased\Audit\MySql\AuditDiff;
@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Command for comparing data tables with audit tables.
  */

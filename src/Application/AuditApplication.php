@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Application;
 
 use SetBased\Audit\Command\AboutCommand;
@@ -10,7 +10,6 @@ use SetBased\Audit\MySql\Command\DropTriggersCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * The Audit program.
  */

@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 
 use SetBased\Affirm\ErrorHandler;
 use SetBased\Stratum\MySql\StaticDataLayer;

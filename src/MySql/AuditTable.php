@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Metadata\AlterColumnMetadata;

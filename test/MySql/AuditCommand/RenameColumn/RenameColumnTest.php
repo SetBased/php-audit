@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\AuditCommand\RenameColumn;
 
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;

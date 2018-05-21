@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Helper;
 
 use SetBased\Audit\MySql\AuditDataLayer;
@@ -7,7 +7,6 @@ use SetBased\Audit\MySql\Metadata\MultiSourceColumnMetadata;
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use Symfony\Component\Console\Helper\TableSeparator;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * A helper class for creating printing Tables.
  */

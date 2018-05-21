@@ -1,12 +1,11 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Sql;
 
 use SetBased\Audit\MySql\Metadata\ColumnMetadata;
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for creating SQL statements for adding new columns to an audit table.
  */

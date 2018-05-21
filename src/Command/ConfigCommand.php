@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Command;
 
 use SetBased\Stratum\Style\StratumStyle;
@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Command for editing data in config file.
  */

@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Command;
 
 use SetBased\Audit\MySql\Audit;
@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Command for creating audit tables and audit triggers.
  */

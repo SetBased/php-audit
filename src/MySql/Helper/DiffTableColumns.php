@@ -1,10 +1,9 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Helper;
 
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class container for multi source column types.
  */

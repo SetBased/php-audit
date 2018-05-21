@@ -1,12 +1,11 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Metadata\TableMetadata;
 use SetBased\Stratum\Style\StratumStyle;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for executing auditing actions for tables.
  */

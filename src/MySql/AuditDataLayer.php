@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
@@ -10,7 +10,6 @@ use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use SetBased\Stratum\Style\StratumStyle;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for executing SQL statements and retrieving metadata from MySQL.
  */

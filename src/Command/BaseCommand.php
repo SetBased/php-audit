@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Command;
 
 use SetBased\Exception\RuntimeException;
@@ -7,7 +7,6 @@ use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Base command for other commands of AuditApplication.
  */

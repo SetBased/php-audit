@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql\Command;
 
 use SetBased\Audit\MySql\AuditDataLayer;
@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Command for dropping all triggers.
  */

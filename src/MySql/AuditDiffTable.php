@@ -1,12 +1,11 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\MySql;
 
 use SetBased\Audit\MySql\Helper\DiffTableColumns;
 use SetBased\Audit\MySql\Metadata\MultiSourceColumnMetadata;
 use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 
-//----------------------------------------------------------------------------------------------------------------------
 /**
  * Class for executing auditing actions for tables.
  */
