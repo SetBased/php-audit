@@ -46,7 +46,6 @@ class AuditCommand extends MySqlBaseCommand
     $audit  = new Audit($this->config, $this->configMetadata, $this->io);
     $status = $audit->main();
 
-    // Drop database connection
     AuditDataLayer::disconnect();
 
     $this->rewriteConfig();

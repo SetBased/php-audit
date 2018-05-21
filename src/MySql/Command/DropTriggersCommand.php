@@ -42,7 +42,6 @@ class DropTriggersCommand extends MySqlBaseCommand
 
     $this->dropTriggers();
 
-    // Drop database connection
     AuditDataLayer::disconnect();
 
     $this->rewriteConfig();
