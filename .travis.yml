@@ -2,6 +2,7 @@ language: php
 php:
   - '7.0'
   - '7.1'
+  - '7.2'
   - nightly
   
 sudo: true
@@ -11,11 +12,6 @@ addons:
 
 before_install:
   - mysql --version
-  - mysql -u root -e "create database if not exists test_audit character set = 'utf8' collate='utf8_general_ci';"
-  - mysql -u root -e "create database if not exists test_data character set = 'utf8' collate='utf8_general_ci';"
-  - mysql -u root -e "create user 'test'@'localhost' identified by 'test';"
-  - mysql -u root -e "grant all on test_audit.* to 'test'@'localhost';"
-  - mysql -u root -e "grant all on test_data.*  to 'test'@'localhost';"
   - mysql -u root -e "set global binlog_format = 'row';"
   - mysql -u root -e "set global log_bin_trust_function_creators = 1;"
   - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql

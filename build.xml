@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Phing Extensions" default="build"  basedir=".">
+<project name="PHP Audit" default="build"  basedir=".">
     <target name="build"/>
 
     <!-- Run composer update and executes various other updates -->
@@ -9,6 +9,8 @@
 
     <!-- Runs all unit tests -->
     <target name="unit">
+        <exec command="cat test/MySql/ddl/0010_create_database.sql      | mysql -v -u root"      passthru="true" checkreturn="true"/>
+        <exec command="cat test/MySql/ddl/0020_create_user.sql          | mysql -v -u root"      passthru="true" checkreturn="true"/>
         <exec command="bin/phpunit" passthru="true" checkreturn="true"/>
     </target>
 </project>
