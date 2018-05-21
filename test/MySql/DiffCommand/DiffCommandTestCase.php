@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Audit\Test\MySql\DiffCommand;
 
 use SetBased\Audit\MySql\Command\AuditCommand;
