@@ -1,4 +1,7 @@
 build:
+    environment:
+        mysql: 5.7
+
     tests:
         before:
             - mysql --version
