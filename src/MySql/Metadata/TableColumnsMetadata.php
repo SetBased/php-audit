@@ -163,7 +163,7 @@ class TableColumnsMetadata
   /**
    * Returns the underlying array with metadata of this list of table columns.
    *
-   * @return ColumnMetadata[]
+   * @return array<string,ColumnMetadata>
    */
   public function getColumns()
   {
@@ -204,7 +204,7 @@ class TableColumnsMetadata
    *
    * @param string $columnName The column name.
    *
-   * @return int|null
+   * @return string|null
    */
   public function getPreviousColumn($columnName)
   {

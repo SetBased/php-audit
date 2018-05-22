@@ -13,11 +13,11 @@ class TableMetadata
    *
    * var string[]
    */
-  private static $fields = ['table_schema',
-                            'table_name',
-                            'engine',
-                            'character_set_name',
-                            'table_collation'];
+  protected static $fields = ['table_schema',
+                              'table_name',
+                              'engine',
+                              'character_set_name',
+                              'table_collation'];
 
   /**
    * The metadata of the columns of this table.
