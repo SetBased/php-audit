@@ -19,7 +19,7 @@ class AuditDiff
   /**
    * The metadata (additional) audit columns (as stored in the config file).
    *
-   * @var array<integer,object<array>>
+   * @var array[]
    */
   private $auditColumnsMetadata;
 
@@ -87,6 +87,7 @@ class AuditDiff
   private $output;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -252,8 +253,8 @@ class AuditDiff
   /**
    * Print missing or obsolete tables;
    *
-   * @param string  $tableType Missing or obsolete.
-   * @param array[] $tables    Table names array.
+   * @param string   $tableType Missing or obsolete.
+   * @param string[] $tables    Table names array.
    */
   private function printMissObsoleteTables($tableType, $tables)
   {

@@ -22,7 +22,7 @@ class TableMetadata
   /**
    * The metadata of the columns of this table.
    *
-   * @var TableColumnsMetadata.
+   * @var TableColumnsMetadata
    */
   private $columns;
 

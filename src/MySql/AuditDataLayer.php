@@ -391,7 +391,7 @@ order by EVENT_OBJECT_TABLE
   {
     self::logQuery($query);
 
-    return parent::multiQuery($query);
+    return parent::query($query);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
