@@ -4,17 +4,20 @@ build:
 
 build:
     nodes:
-        tests: true
         analysis:
+            project_setup:
+                override: true
             tests:
-                before:
-                  - mysql --version
-                  - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
-                override:
-                    -
-                        command: './bin/phing unit'
-                        idle_timeout: 500
-                        coverage:
-                            file: 'test/coverage.xml'
-                            format: 'php-clover'
-                    - php-scrutinizer-run
+                override: php-scrutinizer-run               
+    dependencies:
+        before:
+          - mysql --version
+          - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
+    tests:
+        override:
+            -
+                command: './bin/phing unit'
+                idle_timeout: 500
+                coverage:
+                    file: 'test/coverage.xml'
+                    format: 'php-clover'
