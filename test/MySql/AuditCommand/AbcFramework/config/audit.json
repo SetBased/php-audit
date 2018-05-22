@@ -7,18 +7,11 @@
     "audit_schema": "test_audit"
   },
   "metadata": "audit_metadata.json",
-  "tables": {
-    "AUT_COMPANY": {
-      "audit": true,
-      "alias": "cmp",
-      "skip": null
-    }
-  },
   "audit_columns": [
     {
       "column_name": "audit_timestamp",
-      "column_type": "timestamp not null",
-      "expression": "sysdate()"
+      "column_type": "timestamp not null default now()",
+      "expression": "now()"
     },
     {
       "column_name": "audit_statement",
@@ -56,5 +49,12 @@
     "  set @audit_uuid = uuid_short();",
     "end if;",
     "set @audit_rownum = ifnull(@audit_rownum, 0) + 1;"
-  ]
+  ],
+  "tables": {
+    "ABC_AUTH_COMPANY": {
+      "audit": true,
+      "alias": "cmp",
+      "skip": null
+    }
+  }
 }

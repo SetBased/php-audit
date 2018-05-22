@@ -32,68 +32,79 @@ class AbcFrameworkTest extends AuditCommandTestCase
     // Reconnect to DB.
     StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
 
-    $sql = sprintf('
-select COLUMN_NAME        as column_name
-,      COLUMN_TYPE        as column_type
-,      IS_NULLABLE        as is_nullable
-,      CHARACTER_SET_NAME as character_set_name
-,      COLLATION_NAME     as collation_name
+    $sql = sprintf("
+select COLUMN_NAME                    as column_name
+,      COLUMN_TYPE                    as column_type
+,      ifnull(COLUMN_DEFAULT, 'NULL') as column_default 
+,      IS_NULLABLE                    as is_nullable
+,      CHARACTER_SET_NAME             as character_set_name
+,      COLLATION_NAME                 as collation_name
 from   information_schema.COLUMNS
 where  TABLE_SCHEMA = %s
 and    TABLE_NAME   = %s
-order by ORDINAL_POSITION',
+order by ORDINAL_POSITION",
                    StaticDataLayer::quoteString(self::$auditSchema),
-                   StaticDataLayer::quoteString('AUT_COMPANY'));
+                   StaticDataLayer::quoteString('ABC_AUTH_COMPANY'));
 
     $rows = StaticDataLayer::executeRows($sql);
 
     $expected = [['column_name'        => 'audit_timestamp',
                   'column_type'        => 'timestamp',
+                  'column_default'     => 'current_timestamp()',
                   'is_nullable'        => 'NO',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'audit_statement',
                   'column_type'        => "enum('INSERT','DELETE','UPDATE')",
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'NO',
                   'character_set_name' => 'ascii',
                   'collation_name'     => 'ascii_general_ci'],
                  ['column_name'        => 'audit_type',
                   'column_type'        => "enum('OLD','NEW')",
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'NO',
                   'character_set_name' => 'ascii',
                   'collation_name'     => 'ascii_general_ci'],
                  ['column_name'        => 'audit_uuid',
                   'column_type'        => 'bigint(20) unsigned',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'NO',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'audit_rownum',
                   'column_type'        => 'int(10) unsigned',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'NO',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'audit_ses_id',
                   'column_type'        => 'int(10) unsigned',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'YES',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'audit_usr_id',
                   'column_type'        => 'int(10) unsigned',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'YES',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'cmp_id',
                   'column_type'        => 'smallint(5) unsigned',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'YES',
                   'character_set_name' => null,
                   'collation_name'     => null],
                  ['column_name'        => 'cmp_abbr',
                   'column_type'        => 'varchar(15)',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'YES',
                   'character_set_name' => 'utf8',
                   'collation_name'     => 'utf8_general_ci'],
                  ['column_name'        => 'cmp_label',
                   'column_type'        => 'varchar(20)',
+                  'column_default'     => 'NULL',
                   'is_nullable'        => 'YES',
                   'character_set_name' => 'ascii',
                   'collation_name'     => 'ascii_general_ci']];
@@ -107,10 +118,10 @@ order by ORDINAL_POSITION',
    */
   public function test02a()
   {
-    // Insert a row into AUT_COMPANY.
+    // Insert a row into ABC_AUTH_COMPANY.
     $sql = sprintf('
-insert into `AUT_COMPANY`(`cmp_abbr`
-,                         `cmp_label`)
+insert into `ABC_AUTH_COMPANY`(`cmp_abbr`
+,                              `cmp_label`)
 values( %s
 ,       %s )',
                    StaticDataLayer::quoteString('SYS'),
@@ -121,7 +132,7 @@ values( %s
     // Get audit rows.
     $sql = sprintf("
 select * 
-from   `test_audit`.`AUT_COMPANY`
+from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'INSERT'");
 
     StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
@@ -156,9 +167,9 @@ where  `audit_statement` = 'INSERT'");
     StaticDataLayer::executeNone('set @abc_g_ses_id=12345');  // The combination of my suitcase.
     StaticDataLayer::executeNone('set @abc_g_usr_id=7011');
 
-    // Update a row into AUT_COMPANY.
+    // Update a row into ABC_AUTH_COMPANY.
     $sql = sprintf('
-update `AUT_COMPANY`
+update `ABC_AUTH_COMPANY`
 set   `cmp_label` = %s
 where `cmp_abbr` = %s',
                    StaticDataLayer::quoteString('CMP_ID_SYS'),
@@ -169,7 +180,7 @@ where `cmp_abbr` = %s',
     // Get audit rows.
     $sql = sprintf("
 select * 
-from   `test_audit`.`AUT_COMPANY`
+from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'UPDATE'");
 
     StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
@@ -217,9 +228,9 @@ where  `audit_statement` = 'UPDATE'");
   {
     StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
 
-    // Delete a row from AUT_COMPANY.
+    // Delete a row from ABC_AUTH_COMPANY.
     $sql = sprintf('
-delete from `AUT_COMPANY`
+delete from `ABC_AUTH_COMPANY`
 where `cmp_abbr` = %s',
                    StaticDataLayer::quoteString('SYS'));
 
@@ -228,7 +239,7 @@ where `cmp_abbr` = %s',
     // Get audit rows.
     $sql = sprintf("
 select * 
-from   `test_audit`.`AUT_COMPANY`
+from   `test_audit`.`ABC_AUTH_COMPANY`
 where  audit_statement = 'DELETE'");
 
     $rows = StaticDataLayer::executeRows($sql);
@@ -261,7 +272,7 @@ where  audit_statement = 'DELETE'");
     // Get all audit rows.
     $sql = sprintf("
 select * 
-from   `test_audit`.`AUT_COMPANY`");
+from   `test_audit`.`ABC_AUTH_COMPANY`");
 
     $rows = StaticDataLayer::executeRows($sql);
 
