@@ -261,8 +261,8 @@ from   information_schema.COLUMNS
 where  TABLE_SCHEMA = %s
 and    TABLE_NAME   = %s
 order by ORDINAL_POSITION",
-                   parent::quoteString($schemaName),
-                   parent::quoteString($tableName));
+                   static::quoteString($schemaName),
+                   static::quoteString($tableName));
 
     return self::executeRows($sql);
   }
@@ -288,8 +288,8 @@ FROM       information_schema.TABLES                                t1
 inner join information_schema.COLLATION_CHARACTER_SET_APPLICABILITY t2  on  t2.COLLATION_NAME = t1.TABLE_COLLATION
 WHERE t1.TABLE_SCHEMA = %s
 AND   t1.TABLE_NAME   = %s',
-                   parent::quoteString($schemaName),
-                   parent::quoteString($tableName));
+                   static::quoteString($schemaName),
+                   static::quoteString($tableName));
 
     return self::executeRow1($sql);
   }
@@ -311,8 +311,8 @@ from   information_schema.TRIGGERS
 where  TRIGGER_SCHEMA     = %s
 and    EVENT_OBJECT_TABLE = %s
 order by Trigger_Name',
-                   parent::quoteString($schemaName),
-                   parent::quoteString($tableName));
+                   static::quoteString($schemaName),
+                   static::quoteString($tableName));
 
     return self::executeRows($sql);
   }
@@ -332,7 +332,7 @@ select TABLE_NAME as table_name
 from   information_schema.TABLES
 where  TABLE_SCHEMA = %s
 and    TABLE_TYPE   = 'BASE TABLE'
-order by TABLE_NAME", parent::quoteString($schemaName));
+order by TABLE_NAME", static::quoteString($schemaName));
 
     return self::executeRows($sql);
   }
@@ -354,7 +354,7 @@ from   information_schema.TRIGGERS
 where  TRIGGER_SCHEMA     = %s
 order by EVENT_OBJECT_TABLE
 ,        TRIGGER_NAME',
-                   parent::quoteString($schemaName));
+                   static::quoteString($schemaName));
 
     return self::executeRows($sql);
   }

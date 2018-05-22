@@ -227,7 +227,7 @@ class AlterAuditTable
   {
     if (empty($this->config['audit_columns']))
     {
-      $this->auditColumnsMetadata = new TableColumnsMetadata([], 'AuditColumnMetadata');;
+      $this->auditColumnsMetadata = new TableColumnsMetadata([], 'AuditColumnMetadata');
     }
     else
     {
