@@ -240,9 +240,8 @@ class Audit
           $tableColumns = [];
         }
 
-        $configTable = new TableMetadata($table['table_name'],
-                                         $this->config['database']['data_schema'],
-                                         $tableColumns);
+        $metadata    = AuditDataLayer::getTableOptions($this->config['database']['data_schema'], $table['table_name']);
+        $configTable = new TableMetadata($metadata, $tableColumns);
 
         $currentTable = new AuditTable($this->io,
                                        $configTable,
@@ -272,9 +271,8 @@ class Audit
       }
       else
       {
-        $configTable = new TableMetadata($table['table_name'],
-                                         $this->config['database']['data_schema'],
-                                         []);
+        $metadata    = AuditDataLayer::getTableOptions($this->config['database']['data_schema'], $table['table_name']);
+        $configTable = new TableMetadata($metadata, []);
 
         $currentTable = new AuditTable($this->io,
                                        $configTable,

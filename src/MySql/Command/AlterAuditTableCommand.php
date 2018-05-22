@@ -2,7 +2,7 @@
 
 namespace SetBased\Audit\MySql\Command;
 
-use SetBased\Audit\MySql\AuditAlter;
+use SetBased\Audit\MySql\AlterAuditTable;
 use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,6 +24,7 @@ class AlterAuditTableCommand extends AuditCommand
   protected $io;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * @inheritdoc
    */
@@ -32,7 +33,7 @@ class AlterAuditTableCommand extends AuditCommand
     $this->setName('alter-audit-table')
          ->setDescription('Creates alter SQL statements for audit tables')
          ->addArgument('config file', InputArgument::REQUIRED, 'The audit configuration file')
-         ->addArgument('sql file', InputArgument::REQUIRED, 'The destination file for the SQL statements');
+         ->addArgument('sql file', InputArgument::OPTIONAL, 'The destination file for the SQL statements');
 
     $this->setHelp(<<<EOL
 Generates alter table SQL statements for aligning the audit tables with the 
@@ -60,17 +61,24 @@ EOL
   {
     $this->io = new StratumStyle($input, $output);
 
-    $resultSqlFile = $input->getArgument('sql file');
+    $sqlFilename = $input->getArgument('sql file');
 
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();
 
     $this->connect($this->config);
 
-    $alter   = new AuditAlter($this->config, $this->configMetadata);
-    $content = $alter->main();
+    $alter = new AlterAuditTable($this->config);
+    $sql   = $alter->main();
 
-    $this->writeTwoPhases($resultSqlFile, $content);
+    if ($sqlFilename!==null)
+    {
+      $this->writeTwoPhases($sqlFilename, $sql);
+    }
+    else
+    {
+      $this->io->write($sql);
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------

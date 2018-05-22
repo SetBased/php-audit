@@ -41,6 +41,7 @@ class CreateAuditTable
   private $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -97,42 +98,14 @@ class CreateAuditTable
   {
     $lines = [];
 
-    // Base format on column with longest name.
-    $format = $this->getFormat();
-
-    $columns = $this->columns->getColumns();
+    $columns   = $this->columns->getColumns();
+    $maxLength = $this->columns->getLongestColumnNameLength();
     foreach ($columns as $column)
     {
-      $line = sprintf($format, '`'.$column->getProperty('column_name').'`', $column->getProperty('column_type'));
+      $name   = $column->getName();
+      $filler = str_repeat(' ', $maxLength - mb_strlen($name) + 1);
 
-      // Timestamps require special settings for null values.
-      if ($column->getProperty('column_type')=='timestamp')
-      {
-        $line .= ' null';
-
-        if ($column->getProperty('is_nullable')=='YES')
-        {
-          $line .= ' default null';
-        }
-      }
-
-      // Set character set and collation.
-      if ($column->getProperty('character_set_name'))
-      {
-        $line .= ' character set ';
-        $line .= $column->getProperty('character_set_name');
-      }
-      if ($column->getProperty('collation_name'))
-      {
-        $line .= ' collate ';
-        $line .= $column->getProperty('collation_name');
-      }
-
-      // Set nullable.
-      if ($column->getProperty('is_nullable')=='NO')
-      {
-        $line .= ' not null';
-      }
+      $line = sprintf('  `%s`%s%s', $name, $filler, $column->getColumnDefinition());
 
       if (end($columns)!==$column)
       {
@@ -143,23 +116,6 @@ class CreateAuditTable
     }
 
     return $lines;
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Returns the format specifier for printing column names and column types
-   *
-   * @return string
-   */
-  private function getFormat()
-  {
-    $width = 0;
-    foreach ($this->columns->getColumns() as $column)
-    {
-      $width = max($width, mb_strlen($column->getProperty('column_name')));
-    }
-
-    return sprintf('  %%-%ds %%s', $width + 2);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ namespace SetBased\Audit\MySql\Metadata;
 use SetBased\Exception\FallenException;
 
 /**
- * Metadata of a set of table columns.
+ * Metadata of a list of table columns.
  */
 class TableColumnsMetadata
 {
@@ -13,16 +13,17 @@ class TableColumnsMetadata
   /**
    * The metadata of the columns.
    *
-   * @var ColumnMetadata[]
+   * @var array<string,ColumnMetadata>
    */
   private $columns = [];
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
    * @param array[] $columns The metadata of the columns as returned by AuditDataLayer::getTableColumns().
-   * @param string   $type    The class for columns metadata.
+   * @param string  $type    The class for columns metadata.
    */
   public function __construct($columns = [], $type = 'ColumnMetadata')
   {
@@ -34,10 +35,10 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Combines the metadata of two sets of metadata of table columns.
+   * Combines the metadata of two lists of table columns.
    *
-   * @param TableColumnsMetadata $columns1 The first set of metadata of table columns.
-   * @param TableColumnsMetadata $columns2 The second set of metadata of table columns.
+   * @param TableColumnsMetadata $columns1 The first metadata of a list of table columns.
+   * @param TableColumnsMetadata $columns2 The second metadata of a list of table columns.
    *
    * @return TableColumnsMetadata
    */
@@ -45,26 +46,19 @@ class TableColumnsMetadata
   {
     $columns = new TableColumnsMetadata();
 
-    foreach ($columns1->columns as $column)
-    {
-      $columns->appendTableColumn($column);
-    }
-
-    foreach ($columns2->columns as $column)
-    {
-      $columns->appendTableColumn($column);
-    }
+    $columns->appendTableColumns($columns1);
+    $columns->appendTableColumns($columns2);
 
     return $columns;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Compares two sets of metadata of table columns and returns a set of metadata of table columns the are in both sets
-   * but have different column type.
+   * Compares two lists of table columns and returns a list of  table columns the are in both lists but have different
+   * metadata
    *
-   * @param TableColumnsMetadata $columns1 The first sets of metadata of table columns.
-   * @param TableColumnsMetadata $columns2 The second sets of metadata of table columns.
+   * @param TableColumnsMetadata $columns1 The first list of table columns.
+   * @param TableColumnsMetadata $columns2 The second list of table columns.
    * @param string[]             $ignore   The properties to be ignored.
    *
    * @return TableColumnsMetadata
@@ -88,11 +82,11 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Compares two sets of metadata of table columns and returns a set of metadata of table columns that are in the first
-   * sets of metadata of table columns but not in the second sets of metadata of table columns.
+   * Compares two lists of table columns and returns a list of table columns that are in the first list of table columns
+   * but not in the second list of table columns.
    *
-   * @param TableColumnsMetadata $columns1 The first sets of metadata of table columns.
-   * @param TableColumnsMetadata $columns2 The second sets of metadata of table columns.
+   * @param TableColumnsMetadata $columns1 The first list of table columns.
+   * @param TableColumnsMetadata $columns2 The second list of table columns.
    *
    * @return TableColumnsMetadata
    */
@@ -142,24 +136,55 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Appends a table column to the table columns.
+   * Appends a table column to this list of table columns.
    *
-   * @param ColumnMetadata $column The metadata of the table columns.
+   * @param ColumnMetadata $column The metadata of the table column.
    */
   public function appendTableColumn($column)
   {
-    $this->columns[$column->getProperty('column_name')] = $column;
+    $this->columns[$column->getName()] = $column;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the underlying array with metadata of the columns.
+   * Appends table columns to this list of table columns.
+   *
+   * @param TableColumnsMetadata $columns The metadata of the table columns.
+   */
+  public function appendTableColumns($columns)
+  {
+    foreach ($columns->columns as $column)
+    {
+      $this->appendTableColumn($column);
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the underlying array with metadata of this list of table columns.
    *
    * @return ColumnMetadata[]
    */
   public function getColumns()
   {
     return $this->columns;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the length of the longest column name.
+   *
+   * @return int
+   */
+  public function getLongestColumnNameLength()
+  {
+    $max = 0;
+    foreach ($this->columns as $column)
+    {
+      $max = max($max, mb_strlen($column->getName()));
+    }
+
+    return $max;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -208,9 +233,20 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Remove column.
+   * Prepends table columns to this list of table columns.
    *
-   * @param string $columnName The columns name.
+   * @param TableColumnsMetadata $columns The metadata of the table columns.
+   */
+  public function prependTableColumns($columns)
+  {
+    $this->columns = array_merge($columns->columns, $this->columns);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Removes a table column.
+   *
+   * @param string $columnName The table column name.
    */
   public function removeColumn($columnName)
   {

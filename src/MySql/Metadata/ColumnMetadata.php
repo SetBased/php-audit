@@ -45,7 +45,7 @@ class ColumnMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Compares two the metadata of the columns.
+   * Compares the metadata of two columns.
    *
    * @param ColumnMetadata $column1 The metadata of the first column.
    * @param ColumnMetadata $column2 The metadata of the second column.
@@ -69,6 +69,57 @@ class ColumnMetadata
     }
 
     return $equal;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns a SQL snippet with the column definition (without column name) of this column.
+   *
+   * @return string
+   */
+  public function getColumnDefinition()
+  {
+    $parts = [];
+
+    if ($this->getProperty('column_type')!==null)
+    {
+      $parts[] = $this->getProperty('column_type');
+    }
+
+    if ($this->getProperty('character_set_name')!==null)
+    {
+      $parts[] = 'character set '.$this->getProperty('character_set_name');
+    }
+
+    if ($this->getProperty('collation_name')!==null)
+    {
+      $parts[] = 'collate '.$this->getProperty('collation_name');
+    }
+
+    $parts[] = ($this->getProperty('is_nullable')=='YES') ? 'null' : 'not null';
+
+    if ($this->getProperty('column_default')!==null)
+    {
+      $parts[] = 'default '.$this->getProperty('column_default');
+    }
+    elseif($this->getProperty('column_type')=='timestamp')
+    {
+      // Prevent automatic updates of timestamp columns.
+      $parts[] = 'default now()';
+    }
+
+    return implode(' ', $parts);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the name of this column.
+   *
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->properties['column_name'];
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -99,6 +150,7 @@ class ColumnMetadata
 
     return null;
   }
+
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Make this column nullable.

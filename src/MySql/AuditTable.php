@@ -68,7 +68,7 @@ class AuditTable
    * Object constructor.
    *
    * @param StratumStyle         $io                   The output for log messages.
-   * @param TableMetadata        $configTable          The table meta data.
+   * @param TableMetadata        $configTable          The table metadata.
    * @param string               $auditSchema          The name of the schema with audit tables.
    * @param TableColumnsMetadata $auditColumnsMetadata The columns of the audit table as stored in the config file.
    * @param string               $alias                An unique alias for this table.
@@ -373,21 +373,21 @@ class AuditTable
     {
       $this->io->logInfo('New column <dbo>%s.%s</dbo>',
                          $this->configTable->getTableName(),
-                         $column->getProperty('column_name'));
+                         $column->getName());
     }
 
     foreach ($obsoleteColumns->getColumns() as $column)
     {
       $this->io->logInfo('Obsolete column <dbo>%s.%s</dbo>',
                          $this->configTable->getTableName(),
-                         $column->getProperty('column_name'));
+                         $column->getName());
     }
 
     foreach ($alteredColumns->getColumns() as $column)
     {
       $this->io->logInfo('Type of <dbo>%s.%s</dbo> has been altered to <dbo>%s</dbo>',
                          $this->configTable->getTableName(),
-                         $column->getProperty('column_name'),
+                         $column->getName(),
                          $column->getProperty('column_type'));
     }
   }

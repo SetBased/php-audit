@@ -19,7 +19,7 @@ class MySqlAlterTableCodeStore extends CodeStore
 
     $line = trim($line);
 
-    if (substr($line, -6, 6)=='CHANGE')
+    if (substr($line, 0, 11)=='alter table' && substr($line, -1)<>';')
     {
       $mode |= self::C_INDENT_INCREMENT_AFTER;
     }

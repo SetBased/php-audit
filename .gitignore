@@ -5,4 +5,5 @@
 /composer.lock
 /test/report
 /test/coverage.xml
+/test/MySql/AlterAuditTableCommand/config/alter.sql
 /vendor/

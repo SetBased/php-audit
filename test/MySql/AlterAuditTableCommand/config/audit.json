@@ -1,0 +1,60 @@
+{
+    "database": {
+        "host": "localhost",
+        "user": "test",
+        "password": "test",
+        "data_schema": "test_data",
+        "audit_schema": "test_audit"
+    },
+    "metadata": "audit_metadata.json",
+    "tables": {
+        "TABLE1": {
+            "audit": true,
+            "skip": null,
+            "alias": "t1"
+        }
+    },
+    "audit_columns": [
+        {
+            "column_name": "audit_timestamp",
+            "column_type": "datetime not null",
+            "expression": "sysdate()"
+        },
+        {
+            "column_name": "audit_statement",
+            "column_type": "enum('INSERT','DELETE','UPDATE') character set ascii collate ascii_general_ci not null",
+            "value_type": "ACTION"
+        },
+        {
+            "column_name": "audit_type",
+            "column_type": "enum('OLD','NEW') character set ascii collate ascii_general_ci not null",
+            "value_type": "STATE"
+        },
+        {
+            "column_name": "audit_uuid",
+            "column_type": "bigint(20) unsigned not null",
+            "expression": "@audit_uuid"
+        },
+        {
+            "column_name": "audit_rownum",
+            "column_type": "int(10) unsigned not null",
+            "expression": "@audit_rownum"
+        },
+        {
+            "column_name": "audit_ses_id",
+            "column_type": "int(10) unsigned",
+            "expression": "@abc_g_ses_id"
+        },
+        {
+            "column_name": "audit_rel_id",
+            "column_type": "int(10) unsigned",
+            "expression": "@abc_g_usr_id"
+        }
+    ],
+    "additional_sql": [
+        "if (@audit_uuid is null) then",
+        "  set @audit_uuid = uuid_short();",
+        "end if;",
+        "set @audit_rownum = ifnull(@audit_rownum, 0) + 1;"
+    ]
+}

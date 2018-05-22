@@ -9,6 +9,17 @@ class TableMetadata
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * The properties of the table that are stored by this class.
+   *
+   * var string[]
+   */
+  private static $fields = ['table_schema',
+                            'table_name',
+                            'engine',
+                            'character_set_name',
+                            'table_collation'];
+
+  /**
    * The metadata of the columns of this table.
    *
    * @var TableColumnsMetadata.
@@ -16,32 +27,57 @@ class TableMetadata
   private $columns;
 
   /**
-   * The name of the schema were the table is located.
+   * The the properties of this table column.
    *
-   * @var string
+   * @var array
    */
-  private $schemaName;
-
-  /**
-   * The name of this table.
-   *
-   * @var string
-   */
-  private $tableName;
+  private $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Object constructor.
    *
-   * @param string   $tableName  The table name.
-   * @param string   $schemaName The name of the schema were the table is located.
+   * @param array[] $properties The metadata of the table.
    * @param array[] $columns    The metadata of the columns of this table.
    */
-  public function __construct($tableName, $schemaName, $columns)
+  public function __construct($properties, $columns)
   {
-    $this->tableName  = $tableName;
-    $this->columns    = new TableColumnsMetadata($columns);
-    $this->schemaName = $schemaName;
+    foreach (static::$fields as $field)
+    {
+      if (isset($properties[$field]))
+      {
+        $this->properties[$field] = $properties[$field];
+      }
+    }
+
+    $this->columns = new TableColumnsMetadata($columns);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Compares two the metadata of two tables. Returns an array with the names of the different properties.
+   *
+   * @param TableMetadata $table1 The metadata of the first table.
+   * @param TableMetadata $table2 The metadata of the second table.
+   *
+   * @return string[]
+   */
+  public static function compareOptions($table1, $table2)
+  {
+    $diff = [];
+
+    foreach (self::$fields as $field)
+    {
+      if (!in_array($field, ['table_schema', 'table_name']))
+      {
+        if ($table1->getProperty($field)!=$table2->getProperty($field))
+        {
+          $diff[] = $field;
+        }
+      }
+    }
+
+    return $diff;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -57,13 +93,31 @@ class TableMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Returns a property of this table.
+   *
+   * @param string $name The name of the property.
+   *
+   * @return string|null
+   */
+  public function getProperty($name)
+  {
+    if (isset($this->properties[$name]))
+    {
+      return $this->properties[$name];
+    }
+
+    return null;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Returns the name of schema.
    *
    * @return string
    */
   public function getSchemaName()
   {
-    return $this->schemaName;
+    return $this->properties['table_schema'];
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -74,7 +128,7 @@ class TableMetadata
    */
   public function getTableName()
   {
-    return $this->tableName;
+    return $this->properties['table_name'];
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -24,6 +24,7 @@ class AuditDataLayer extends StaticDataLayer
   private static $io;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Adds new columns to an audit table.
    *
@@ -250,6 +251,7 @@ class AuditDataLayer extends StaticDataLayer
     $sql = sprintf('
 select COLUMN_NAME        as column_name
 ,      COLUMN_TYPE        as column_type
+,      COLUMN_DEFAULT     as column_default 
 ,      IS_NULLABLE        as is_nullable
 ,      CHARACTER_SET_NAME as character_set_name
 ,      COLLATION_NAME     as collation_name
@@ -275,7 +277,9 @@ order by ORDINAL_POSITION',
   public static function getTableOptions($schemaName, $tableName)
   {
     $sql = sprintf('
-SELECT t1.TABLE_COLLATION    as table_collation
+SELECT t1.TABLE_SCHEMA       as table_schema
+,      t1.TABLE_NAME         as table_name
+,      t1.TABLE_COLLATION    as table_collation
 ,      t1.ENGINE             as engine
 ,      t2.CHARACTER_SET_NAME as character_set_name
 FROM       information_schema.TABLES                                t1
@@ -434,7 +438,7 @@ order by EVENT_OBJECT_TABLE
   {
     self::logQuery($query);
 
-    return parent::realQuery($query);
+    parent::realQuery($query);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

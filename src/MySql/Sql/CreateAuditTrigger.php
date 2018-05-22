@@ -197,14 +197,14 @@ class CreateAuditTrigger
     foreach ($this->auditColumns->getColumns() as $column)
     {
       if ($columnNames) $columnNames .= ',';
-      $columnNames .= sprintf('`%s`', $column->getProperty('column_name'));
+      $columnNames .= sprintf('`%s`', $column->getName());
     }
 
     // Second the audit columns.
     foreach ($this->tableColumns->getColumns() as $column)
     {
       if ($columnNames) $columnNames .= ',';
-      $columnNames .= sprintf('`%s`', $column->getProperty('column_name'));
+      $columnNames .= sprintf('`%s`', $column->getName());
     }
 
     $this->code->append(sprintf('insert into `%s`.`%s`(%s)', $this->auditSchemaName, $this->tableName, $columnNames));
@@ -257,7 +257,7 @@ class CreateAuditTrigger
     foreach ($this->tableColumns->getColumns() as $column)
     {
       if ($values) $values .= ',';
-      $values .= sprintf('%s.`%s`', $rowState, $column->getProperty('column_name'));
+      $values .= sprintf('%s.`%s`', $rowState, $column->getName());
     }
 
     $this->code->append(sprintf('values(%s);', $values));

@@ -15,6 +15,7 @@ class AuditColumnMetadata extends ColumnMetadata
    */
   protected static $fields = ['column_name',
                               'column_type',
+                              'column_default',
                               'is_nullable',
                               'character_set_name',
                               'collation_name',

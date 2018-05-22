@@ -43,21 +43,25 @@ class DropColumnTest extends AuditCommandTestCase
     $expected   = [];
     $expected[] = ['column_name'        => 'c1',
                    'column_type'        => 'tinyint(4)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c2',
                    'column_type'        => 'smallint(6)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c3',
                    'column_type'        => 'mediumint(9)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c4',
                    'column_type'        => 'int(11)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
@@ -94,21 +98,25 @@ class DropColumnTest extends AuditCommandTestCase
     $expected   = [];
     $expected[] = ['column_name'        => 'c1',
                    'column_type'        => 'tinyint(4)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c2',
                    'column_type'        => 'smallint(6)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c3',
                    'column_type'        => 'mediumint(9)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
     $expected[] = ['column_name'        => 'c4',
                    'column_type'        => 'int(11)',
+                   'column_default'     => 'NULL',
                    'is_nullable'        => 'YES',
                    'character_set_name' => null,
                    'collation_name'     => null];
