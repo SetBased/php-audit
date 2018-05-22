@@ -48,6 +48,15 @@ order by ORDINAL_POSITION",
 
     $rows = StaticDataLayer::executeRows($sql);
 
+    // MariaDB 10.2.x uses 'current_timestamp()' older versions use 'CURRENT_TIMESTAMP'.
+    foreach ($rows as &$row)
+    {
+      if ($row['column_default']=='CURRENT_TIMESTAMP')
+      {
+        $row['column_default'] = 'current_timestamp()';
+      }
+    }
+
     $expected = [['column_name'        => 'audit_timestamp',
                   'column_type'        => 'timestamp',
                   'column_default'     => 'current_timestamp()',
