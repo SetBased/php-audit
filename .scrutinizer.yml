@@ -5,15 +5,13 @@ build:
 build:
     nodes:
         analysis:
-            project_setup:
-                override: true
             tests:
-                override: php-scrutinizer-run               
-    dependencies:
-        before:
-          - mysql --version
-          - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
+                override: 
+                    - php-scrutinizer-run    
     tests:
+        before:
+            - mysql --version
+            - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
         override:
             -
                 command: './bin/phing unit'
