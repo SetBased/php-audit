@@ -98,7 +98,7 @@ class ColumnMetadata
 
     $parts[] = ($this->getProperty('is_nullable')=='YES') ? 'null' : 'not null';
 
-    if ($this->getProperty('column_default')!==null)
+    if ($this->getProperty('column_default')!==null && $this->getProperty('column_default')!='NULL')
     {
       $parts[] = 'default '.$this->getProperty('column_default');
     }

@@ -248,17 +248,19 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function getTableColumns($schemaName, $tableName)
   {
-    $sql = sprintf('
-select COLUMN_NAME        as column_name
-,      COLUMN_TYPE        as column_type
-,      COLUMN_DEFAULT     as column_default 
-,      IS_NULLABLE        as is_nullable
-,      CHARACTER_SET_NAME as character_set_name
-,      COLLATION_NAME     as collation_name
+    // When a column has no default prior to MariaDB 10.2.7 column_default is null from MariaDB 10.2.7
+    // column_default = 'NULL' (string(4)).
+    $sql = sprintf("
+select COLUMN_NAME                    as column_name
+,      COLUMN_TYPE                    as column_type
+,      ifnull(COLUMN_DEFAULT, 'NULL') as column_default 
+,      IS_NULLABLE                    as is_nullable
+,      CHARACTER_SET_NAME             as character_set_name
+,      COLLATION_NAME                 as collation_name
 from   information_schema.COLUMNS
 where  TABLE_SCHEMA = %s
 and    TABLE_NAME   = %s
-order by ORDINAL_POSITION',
+order by ORDINAL_POSITION",
                    parent::quoteString($schemaName),
                    parent::quoteString($tableName));
 
