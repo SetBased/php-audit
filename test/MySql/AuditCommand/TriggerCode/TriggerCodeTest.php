@@ -3,7 +3,7 @@
 namespace SetBased\Audit\Test\MySql\AuditCommand\TriggerCode;
 
 use PHPUnit\Framework\TestCase;
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
+use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
 
 /**

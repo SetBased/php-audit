@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\Test\MySql\DiffCommand;
 
-use SetBased\Audit\MySql\Command\AuditCommand;
-use SetBased\Audit\MySql\Command\DiffCommand;
+use SetBased\Audit\Command\AuditCommand;
+use SetBased\Audit\Command\DiffCommand;
 use SetBased\Audit\Test\MySql\AuditTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;

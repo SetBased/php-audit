@@ -2,7 +2,7 @@
 
 namespace SetBased\Audit\MySql;
 
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
+use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Sql\AlterAuditTableAddColumns;
 use SetBased\Audit\MySql\Sql\CreateAuditTable;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
@@ -24,13 +24,12 @@ class AuditDataLayer extends StaticDataLayer
   private static $io;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Adds new columns to an audit table.
    *
-   * @param string               $auditSchemaName The name of audit schema.
-   * @param string               $tableName       The name of the table.
-   * @param TableColumnsMetadata $columns         The metadata of the new columns.
+   * @param string                                        $auditSchemaName The name of audit schema.
+   * @param string                                        $tableName       The name of the table.
+   * @param \SetBased\Audit\Metadata\TableColumnsMetadata $columns         The metadata of the new columns.
    */
   public static function addNewColumns($auditSchemaName, $tableName, $columns)
   {
@@ -62,22 +61,22 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * Creates a trigger on a table.
    *
-   * @param string               $dataSchemaName  The name of the data schema.
-   * @param string               $auditSchemaName The name of the audit schema.
-   * @param string               $tableName       The name of the table.
-   * @param string               $triggerAction   The trigger action (i.e. INSERT, UPDATE, or DELETE).
-   * @param string               $triggerName     The name of the trigger.
-   * @param TableColumnsMetadata $auditColumns    The audit table columns.
-   * @param TableColumnsMetadata $tableColumns    The data table columns.
-   * @param string               $skipVariable    The skip variable.
-   * @param string[]             $additionSql     Additional SQL statements.
+   * @param string               $dataSchemaName         The name of the data schema.
+   * @param string               $auditSchemaName        The name of the audit schema.
+   * @param string               $tableName              The name of the table.
+   * @param string               $triggerAction          The trigger action (i.e. INSERT, UPDATE, or DELETE).
+   * @param string               $triggerName            The name of the trigger.
+   * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
+   * @param TableColumnsMetadata $tableColumns           The metadata of the data table columns.
+   * @param string               $skipVariable           The skip variable.
+   * @param string[]             $additionSql            Additional SQL statements.
    */
   public static function createAuditTrigger($dataSchemaName,
                                             $auditSchemaName,
                                             $tableName,
                                             $triggerName,
                                             $triggerAction,
-                                            $auditColumns,
+                                            $additionalAuditColumns,
                                             $tableColumns,
                                             $skipVariable,
                                             $additionSql)
@@ -87,7 +86,7 @@ class AuditDataLayer extends StaticDataLayer
                                      $tableName,
                                      $triggerName,
                                      $triggerAction,
-                                     $auditColumns,
+                                     $additionalAuditColumns,
                                      $tableColumns,
                                      $skipVariable,
                                      $additionSql);
@@ -363,11 +362,12 @@ order by EVENT_OBJECT_TABLE
   /**
    * Acquires a write lock on a table.
    *
-   * @param string $tableName The table name.
+   * @param string $schemaName The schema of the table.
+   * @param string $tableName  The table name.
    */
-  public static function lockTable($tableName)
+  public static function lockTable($schemaName, $tableName)
   {
-    $sql = sprintf('lock tables `%s` write', $tableName);
+    $sql = sprintf('lock tables `%s`.`%s` write', $schemaName, $tableName);
 
     self::executeNone($sql);
   }
@@ -392,6 +392,44 @@ order by EVENT_OBJECT_TABLE
     self::logQuery($query);
 
     return parent::query($query);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Resolves the canonical column types of the additional audit columns.
+   *
+   * @param string  $auditSchema            The name of the audit schema.
+   * @param array[] $additionalAuditColumns The metadata of the additional audit columns.
+   *
+   * @return TableColumnsMetadata
+   */
+  public static function resolveCanonicalAdditionalAuditColumns($auditSchema, $additionalAuditColumns)
+  {
+    if (empty($additionalAuditColumns))
+    {
+      return new TableColumnsMetadata([], 'AuditColumnMetadata');
+    }
+
+    $tableName = '_TMP_'.uniqid();
+    static::createTemporaryTable($auditSchema, $tableName, $additionalAuditColumns);
+    $columns = AuditDataLayer::getTableColumns($auditSchema, $tableName);
+    static::dropTemporaryTable($auditSchema, $tableName);
+
+    foreach ($additionalAuditColumns as $column)
+    {
+      $key = AuditDataLayer::searchInRowSet('column_name', $column['column_name'], $columns);
+
+      if (isset($column['value_type']))
+      {
+        $columns[$key]['value_type'] = $column['value_type'];
+      }
+      if (isset($column['expression']))
+      {
+        $columns[$key]['expression'] = $column['expression'];
+      }
+    }
+
+    return new TableColumnsMetadata($columns, 'AuditColumnMetadata');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

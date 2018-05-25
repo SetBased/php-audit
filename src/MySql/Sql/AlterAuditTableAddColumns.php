@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\MySql\Sql;
 
+use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Metadata\ColumnMetadata;
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 
 /**

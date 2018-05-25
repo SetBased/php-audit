@@ -32,9 +32,9 @@ class NewColumnDataTableTest extends DiffCommandTestCase
     // Create new column.
     StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/create_new_column.sql'));
 
-    $output = $this->runDiff();
+    $output = preg_replace('/\ +/', ' ', $this->runDiff());
 
-    self::assertContains('| c3     | mediumint(9) |             |        |', $output, 'acquire');
+    self::assertContains('| c3 | | mediumint(9) |', $output, 'acquire');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

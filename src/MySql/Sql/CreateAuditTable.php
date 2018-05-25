@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\MySql\Sql;
 
+use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 
 /**
@@ -41,14 +41,13 @@ class CreateAuditTable
   private $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *
-   * @param string               $dataSchemaName  The name of the data schema.
-   * @param string               $auditSchemaName The name of the audit schema.
-   * @param string               $tableName       The name of the table.
-   * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
+   * @param string                                        $dataSchemaName  The name of the data schema.
+   * @param string                                        $auditSchemaName The name of the audit schema.
+   * @param string                                        $tableName       The name of the table.
+   * @param \SetBased\Audit\Metadata\TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
   public function __construct($dataSchemaName,
@@ -105,7 +104,7 @@ class CreateAuditTable
       $name   = $column->getName();
       $filler = str_repeat(' ', $maxLength - mb_strlen($name) + 1);
 
-      $line = sprintf('  `%s`%s%s', $name, $filler, $column->getColumnDefinition());
+      $line = sprintf('  `%s`%s%s', $name, $filler, $column->getColumnAuditDefinition());
 
       if (end($columns)!==$column)
       {

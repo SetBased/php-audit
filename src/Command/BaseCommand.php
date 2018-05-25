@@ -2,6 +2,7 @@
 
 namespace SetBased\Audit\Command;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Exception\RuntimeException;
 use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Command\Command;
@@ -26,13 +27,6 @@ class BaseCommand extends Command
    * @var string
    */
   protected $configFileName = '';
-
-  /**
-   * Table metadata from config file.
-   *
-   * @var array
-   */
-  protected $configMetadata = [];
 
   /**
    * The Output decorator.
@@ -123,8 +117,6 @@ class BaseCommand extends Command
     {
       $this->config['tables'] = [];
     }
-
-    $this->readMetadata();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -141,6 +133,23 @@ class BaseCommand extends Command
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Connects to a MySQL instance.
+   *
+   * @param array $settings The settings from the configuration file.
+   */
+  protected function connect($settings)
+  {
+    $host     = $this->getSetting($settings, true, 'database', 'host');
+    $user     = $this->getSetting($settings, true, 'database', 'user');
+    $password = $this->getSetting($settings, true, 'database', 'password');
+    $database = $this->getSetting($settings, true, 'database', 'data_schema');
+
+    AuditDataLayer::setIo($this->io);
+    AuditDataLayer::connect($host, $user, $password, $database);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Rewrites the config file with updated data.
    */
   protected function rewriteConfig()
@@ -150,13 +159,6 @@ class BaseCommand extends Command
 
     ksort($this->config['tables']);
     $this->writeTwoPhases($this->configFileName, json_encode($this->config, JSON_PRETTY_PRINT));
-
-    $filename = $this->getTableMetadataPath();
-    if ($filename!==null)
-    {
-      ksort($this->configMetadata);
-      $this->writeTwoPhases($filename, json_encode($this->configMetadata, JSON_PRETTY_PRINT));
-    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -193,44 +195,6 @@ class BaseCommand extends Command
     else
     {
       $this->io->text(sprintf('File <fso>%s</fso> is up to date', OutputFormatter::escape($filename)));
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Returns the path of the table metadata file.
-   *
-   * @return string|null
-   */
-  private function getTableMetadataPath()
-  {
-    if (isset($this->config['metadata']))
-    {
-      return dirname($this->configFileName).'/'.$this->config['metadata'];
-    }
-
-    return null;
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Reads table metadata from the table metadata config file (if any).
-   */
-  private function readMetadata()
-  {
-    $filename = $this->getTableMetadataPath();
-    if ($filename!==null)
-    {
-      if (file_exists($filename))
-      {
-        $content = file_get_contents($filename);
-
-        $this->configMetadata = (array)json_decode($content, true);
-        if (json_last_error()!=JSON_ERROR_NONE)
-        {
-          throw new RuntimeException("Error decoding JSON: '%s'.", json_last_error_msg());
-        }
-      }
     }
   }
 

@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\MySql\Sql;
 
+use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
 use SetBased\Exception\FallenException;
 use SetBased\Exception\RuntimeException;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
@@ -15,18 +15,18 @@ class CreateAuditTrigger
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * The metadata of the additional audit columns.
+   *
+   * @var TableColumnsMetadata
+   */
+  private $additionalAuditColumns;
+
+  /**
    * Additional SQL statements.
    *
    * @var string[]
    */
   private $additionalSql;
-
-  /**
-   * AuditApplication columns from metadata.
-   *
-   * @var TableColumnsMetadata
-   */
-  private $auditColumns;
 
   /**
    * The name of the audit schema.
@@ -88,35 +88,35 @@ class CreateAuditTrigger
   /**
    * Creates a trigger on a table.
    *
-   * @param string               $dataSchemaName  The name of the data schema.
-   * @param string               $auditSchemaName The name of the audit schema.
-   * @param string               $tableName       The name of the table.
-   * @param string               $triggerAction   The trigger action (i.e. INSERT, UPDATE, or DELETE).
-   * @param string               $triggerName     The name of the trigger.
-   * @param TableColumnsMetadata $auditColumns    The audit table columns.
-   * @param TableColumnsMetadata $tableColumns    The data table columns.
-   * @param string               $skipVariable    The skip variable.
-   * @param string[]             $additionalSql   Additional SQL statements.
+   * @param string               $dataSchemaName         The name of the data schema.
+   * @param string               $auditSchemaName        The name of the audit schema.
+   * @param string               $tableName              The name of the table.
+   * @param string               $triggerAction          The trigger action (i.e. INSERT, UPDATE, or DELETE).
+   * @param string               $triggerName            The name of the trigger.
+   * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
+   * @param TableColumnsMetadata $tableColumns           The metadata of the data table columns.
+   * @param string               $skipVariable           The skip variable.
+   * @param string[]             $additionalSql          Additional SQL statements.
    */
   public function __construct($dataSchemaName,
                               $auditSchemaName,
                               $tableName,
                               $triggerName,
                               $triggerAction,
-                              $auditColumns,
+                              $additionalAuditColumns,
                               $tableColumns,
                               $skipVariable,
                               $additionalSql)
   {
-    $this->dataSchemaName  = $dataSchemaName;
-    $this->auditSchemaName = $auditSchemaName;
-    $this->tableName       = $tableName;
-    $this->triggerName     = $triggerName;
-    $this->triggerAction   = $triggerAction;
-    $this->skipVariable    = $skipVariable;
-    $this->auditColumns    = $auditColumns;
-    $this->tableColumns    = $tableColumns;
-    $this->additionalSql   = $additionalSql;
+    $this->dataSchemaName         = $dataSchemaName;
+    $this->auditSchemaName        = $auditSchemaName;
+    $this->tableName              = $tableName;
+    $this->triggerName            = $triggerName;
+    $this->triggerAction          = $triggerAction;
+    $this->skipVariable           = $skipVariable;
+    $this->additionalAuditColumns = $additionalAuditColumns;
+    $this->tableColumns           = $tableColumns;
+    $this->additionalSql          = $additionalSql;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ class CreateAuditTrigger
     $columnNames = '';
 
     // First the audit columns.
-    foreach ($this->auditColumns->getColumns() as $column)
+    foreach ($this->additionalAuditColumns->getColumns() as $column)
     {
       if ($columnNames) $columnNames .= ',';
       $columnNames .= sprintf('`%s`', $column->getName());
@@ -221,7 +221,7 @@ class CreateAuditTrigger
     $values = '';
 
     // First the values for the audit columns.
-    foreach ($this->auditColumns->getColumns() as $column)
+    foreach ($this->additionalAuditColumns->getColumns() as $column)
     {
       $column = $column->getProperties();
       if ($values) $values .= ',';

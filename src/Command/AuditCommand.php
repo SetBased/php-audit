@@ -1,39 +1,32 @@
 <?php
 
-namespace SetBased\Audit\MySql\Command;
+namespace SetBased\Audit\Command;
 
-use SetBased\Audit\MySql\AuditDiff;
+use SetBased\Audit\Audit\Audit;
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command for comparing data tables with audit tables.
+ * Command for creating audit tables and audit triggers.
  */
-class DiffCommand extends AuditCommand
+class AuditCommand extends BaseCommand
 {
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Check full full and return array without new or obsolete columns if full not set.
-   *
-   * @param array[] $columns The metadata of the columns of a table.
-   *
-   * @var StratumStyle
-   */
-  protected $io;
-
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * @inheritdoc
    */
   protected function configure()
   {
-    $this->setName('diff')
-         ->setDescription('Compares data tables and audit tables')
-         ->addArgument('config file', InputArgument::REQUIRED, 'The audit configuration file')
-         ->addOption('full', 'f', InputOption::VALUE_NONE, 'Show all columns');
+    $this->setName('audit')
+         ->setDescription('Maintains audit tables and audit triggers')
+         ->setHelp("Maintains audit tables and audit triggers:\n".
+                   "- creates new audit tables\n".
+                   "- adds new columns to exiting audit tables\n".
+                   "- creates new and recreates existing audit triggers\n")
+         ->addArgument('config file', InputArgument::REQUIRED, 'The audit configuration file');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -47,14 +40,18 @@ class DiffCommand extends AuditCommand
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();
 
+    // Create database connection with params from config file
     $this->connect($this->config);
 
-    $diff = new AuditDiff($this->config, $this->configMetadata, $this->io, $input, $output);
-    $diff->main();
+    $audit = new Audit($this->config, $this->io);
+    $audit->main();
+
+    AuditDataLayer::disconnect();
+
+    $this->rewriteConfig();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------

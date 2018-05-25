@@ -2,7 +2,7 @@
 
 namespace SetBased\Audit\Test\MySql\AuditCommand;
 
-use SetBased\Audit\MySql\Command\AuditCommand;
+use SetBased\Audit\Command\AuditCommand;
 use SetBased\Audit\Test\MySql\AuditTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
@@ -47,7 +47,7 @@ class AuditCommandTestCase extends AuditTestCase
     $application = new Application();
     $application->add(new AuditCommand());
 
-    /** @var AuditCommand $command */
+    /** @var \SetBased\Audit\Command\AuditCommand $command */
     $command = $application->find('audit');
     $command->setRewriteConfigFile($rewriteConfigFile);
     $commandTester = new CommandTester($command);

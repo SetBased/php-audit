@@ -2,7 +2,7 @@
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\LockTable;
 
-use SetBased\Audit\MySql\Command\AuditCommand;
+use SetBased\Audit\Command\AuditCommand;
 use SetBased\Audit\Test\MySql\AuditTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
@@ -49,7 +49,7 @@ class LockTableTestCase extends AuditTestCase
     self::assertSame(0, $status, 'status code');
 
     $output = $commandTester->getDisplay();
-    self::assertContains('lock tables `TABLE1` write', $output, 'acquire');
+    self::assertContains('lock tables `test_data`.`TABLE1` write', $output, 'acquire');
     self::assertContains('unlock tables', $output, 'release');
   }
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace SetBased\Audit\MySql;
+namespace SetBased\Audit\Audit;
 
-use SetBased\Audit\MySql\Helper\MySqlAlterTableCodeStore;
-use SetBased\Audit\MySql\Metadata\TableColumnsMetadata;
+use SetBased\Audit\Metadata\TableColumnsMetadata;
+use SetBased\Audit\MySql\AlterTableCodeStore;
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\MySql\Metadata\TableMetadata;
 use SetBased\Exception\FallenException;
 
@@ -14,16 +15,16 @@ class AlterAuditTable
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * The metadata (additional) audit columns (as stored in the config file).
+   * The metadata of the additional audit columns.
    *
-   * @var TableColumnsMetadata
+   * @var \SetBased\Audit\Metadata\TableColumnsMetadata
    */
-  private $auditColumnsMetadata;
+  private $additionalAuditColumns;
 
   /**
    * Code store for alter table statement.
    *
-   * @var MySqlAlterTableCodeStore
+   * @var \SetBased\Audit\MySql\AlterTableCodeStore
    */
   private $codeStore;
 
@@ -35,7 +36,6 @@ class AlterAuditTable
   private $config;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *
@@ -44,7 +44,11 @@ class AlterAuditTable
   public function __construct(&$config)
   {
     $this->config    = &$config;
-    $this->codeStore = new MySqlAlterTableCodeStore();
+    $this->codeStore = new AlterTableCodeStore();
+
+    $this->additionalAuditColumns =
+      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config['database']['audit_schema'],
+                                                             $this->config['audit_columns']);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -55,8 +59,6 @@ class AlterAuditTable
    */
   public function main()
   {
-    $this->resolveCanonicalAuditColumns();
-
     $tables = $this->getTableList();
     foreach ($tables as $table)
     {
@@ -79,7 +81,7 @@ class AlterAuditTable
 
     // In the audit schema columns corresponding with the columns from the data table are always nullable.
     $dataTable->getColumns()->makeNullable();
-    $dataTable->getColumns()->prependTableColumns($this->auditColumnsMetadata);
+    $dataTable->getColumns()->prependTableColumns($this->additionalAuditColumns);
 
     $this->compareTableOptions($dataTable, $auditTable);
     $this->compareTableColumns($dataTable, $auditTable);
@@ -117,7 +119,7 @@ class AlterAuditTable
                                          $filler,
                                          $name,
                                          $filler,
-                                         $column->getColumnDefinition()));
+                                         $column->getColumnAuditDefinition()));
 
         $first = false;
       }
@@ -173,6 +175,8 @@ class AlterAuditTable
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns the names of the tables that must be compared.
+   *
+   * @return string[]
    */
   private function getTableList()
   {
@@ -216,43 +220,7 @@ class AlterAuditTable
     $table   = AuditDataLayer::getTableOptions($schemaName, $tableName);
     $columns = AuditDataLayer::getTableColumns($schemaName, $tableName);
 
-    return new TableMetadata($table, $columns);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Resolves the canonical column types of the audit table columns.
-   */
-  private function resolveCanonicalAuditColumns()
-  {
-    if (empty($this->config['audit_columns']))
-    {
-      $this->auditColumnsMetadata = new TableColumnsMetadata([], 'AuditColumnMetadata');
-    }
-    else
-    {
-      $schema    = $this->config['database']['audit_schema'];
-      $tableName = '_TMP_'.uniqid();
-      AuditDataLayer::createTemporaryTable($schema, $tableName, $this->config['audit_columns']);
-      $columns = AuditDataLayer::getTableColumns($schema, $tableName);
-      AuditDataLayer::dropTemporaryTable($schema, $tableName);
-
-      foreach ($this->config['audit_columns'] as $audit_column)
-      {
-        $key = AuditDataLayer::searchInRowSet('column_name', $audit_column['column_name'], $columns);
-
-        if (isset($audit_column['value_type']))
-        {
-          $columns[$key]['value_type'] = $audit_column['value_type'];
-        }
-        if (isset($audit_column['expression']))
-        {
-          $columns[$key]['expression'] = $audit_column['expression'];
-        }
-      }
-
-      $this->auditColumnsMetadata = new TableColumnsMetadata($columns, 'AuditColumnMetadata');
-    }
+    return new TableMetadata($table, new TableColumnsMetadata($columns));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 <?php
 
-namespace SetBased\Audit\MySql\Command;
+namespace SetBased\Audit\Command;
 
-use SetBased\Audit\MySql\AlterAuditTable;
+use SetBased\Audit\Audit\AlterAuditTable;
 use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +24,6 @@ class AlterAuditTableCommand extends AuditCommand
   protected $io;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * @inheritdoc
    */

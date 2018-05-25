@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\RenameColumn;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
-use SetBased\Stratum\MySql\Exception\DataLayerException;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
@@ -34,62 +34,19 @@ class RenameColumnTest extends AuditCommandTestCase
     // Insert a row into TABLE1.
     StaticDataLayer::query('insert into `TABLE1`(c1, c2, c3, c4) values(1, 2, 3, 4)');
 
-    // Rename column c3 and d3.
+    // Rename column c3 to d3.
     StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/rename_column.sql'));
 
-    // We expect exit status 1.
-    $this->runAudit(1);
-  }
+    // We expect exit status 0.
+    $this->runAudit(0);
 
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Trigger must use column c3 that does not exists anymore.
-   */
-  public function test02()
-  {
-    try
-    {
-      StaticDataLayer::query('insert into `TABLE1`(c1, c2, c4) values(1, 2, 4)');
-    }
-    catch (DataLayerException $e)
-    {
-      self::assertContains('Unknown column', $e->getMessage());
-      self::assertContains('c3', $e->getMessage());
-    }
-  }
+    $columns = AuditDataLayer::getTableColumns(self::$auditSchema, 'TABLE1');
 
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Trigger must use column c3 that does not exists anymore.
-   */
-  public function test03()
-  {
-    try
-    {
-      StaticDataLayer::query('update `TABLE1` set c1=10, c2=20, c4=40');
-    }
-    catch (DataLayerException $e)
-    {
-      self::assertContains('Unknown column', $e->getMessage());
-      self::assertContains('c3', $e->getMessage());
-    }
-  }
+    // Assert column c3 still exists.
+    self::assertNotNull(StaticDataLayer::searchInRowSet('column_name', 'c3', $columns));
 
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Trigger must use column c3 that does not exists anymore.
-   */
-  public function test04()
-  {
-    try
-    {
-      StaticDataLayer::query('delete from `TABLE1`');
-    }
-    catch (DataLayerException $e)
-    {
-      self::assertContains('Unknown column', $e->getMessage());
-      self::assertContains('c3', $e->getMessage());
-    }
+    // Assert column d3 exists.
+    self::assertNotNull(StaticDataLayer::searchInRowSet('column_name', 'd3', $columns));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

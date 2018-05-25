@@ -1,0 +1,167 @@
+<?php
+
+namespace SetBased\Audit\Metadata;
+
+/**
+ * Metadata of table columns.
+ */
+abstract class ColumnMetadata
+{
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * The properties of the column that are stored by this class.
+   *
+   * var string[]
+   */
+  protected static $fields = ['column_name',
+                              'column_type',
+                              'is_nullable',
+                              'character_set_name',
+                              'collation_name'];
+
+  /**
+   * The the properties of this table column.
+   *
+   * @var array
+   */
+  private $properties = [];
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Object constructor.
+   *
+   * @param array $properties The metadata of the column.
+   */
+  public function __construct($properties)
+  {
+    foreach (static::$fields as $field)
+    {
+      if (isset($properties[$field]))
+      {
+        $this->properties[$field] = $properties[$field];
+      }
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Compares the metadata of two columns.
+   *
+   * @param ColumnMetadata $column1 The metadata of the first column.
+   * @param ColumnMetadata $column2 The metadata of the second column.
+   * @param string[]       $ignore  The properties to be ignored.
+   *
+   * @return bool True if the columns are equal, false otherwise.
+   */
+  public static function compare($column1, $column2, $ignore = [])
+  {
+    $equal = true;
+
+    foreach (static::$fields as $field)
+    {
+      if (!in_array($field, $ignore))
+      {
+        if ($column1->getProperty($field)!=$column2->getProperty($field))
+        {
+          $equal = false;
+        }
+      }
+    }
+
+    return $equal;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns a SQL snippet with the column definition (without column name) of this column to be used in audit tables.
+   *
+   * @return string
+   */
+  abstract public function getColumnAuditDefinition();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns a SQL snippet with the column definition (without column name) of this column.
+   *
+   * @return string
+   */
+  abstract public function getColumnDefinition();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the name of this column.
+   *
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->properties['column_name'];
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the properties of this table column as an array.
+   *
+   * @return array
+   */
+  public function getProperties()
+  {
+    return $this->properties;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns a property of this table column.
+   *
+   * @param string $name The name of the property.
+   *
+   * @return string|null
+   */
+  public function getProperty($name)
+  {
+    if (isset($this->properties[$name]))
+    {
+      return $this->properties[$name];
+    }
+
+    return null;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns column type info
+   *
+   * @return string
+   */
+  abstract public function getTypeInfo1();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns additional column type info
+   *
+   * @return string|null
+   */
+  abstract public function getTypeInfo2();
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Make this column nullable.
+   */
+  public function makeNullable()
+  {
+    $this->properties['is_nullable'] = 'YES';
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Removes the default value.
+   */
+  public function unsetDefault()
+  {
+    if (isset($this->properties['column_default'])) $this->properties['column_default'] = 'NULL';
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+}
+
+//----------------------------------------------------------------------------------------------------------------------

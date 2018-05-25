@@ -1,13 +1,13 @@
 <?php
 
-namespace SetBased\Audit\MySql\Helper;
+namespace SetBased\Audit\MySql;
 
 use SetBased\Helper\CodeStore\CodeStore;
 
 /**
  * A helper class for automatically generating MySQL alter table syntax code with proper indentation.
  */
-class MySqlAlterTableCodeStore extends CodeStore
+class AlterTableCodeStore extends CodeStore
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**

@@ -1,8 +1,7 @@
 <?php
 
-namespace SetBased\Audit\MySql\Command;
+namespace SetBased\Audit\Command;
 
-use SetBased\Audit\MySql\Audit;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,9 +9,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command for creating audit tables and audit triggers.
+ * Command for dropping all triggers.
  */
-class AuditCommand extends MySqlBaseCommand
+class DropTriggersCommand extends AuditCommand
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -20,12 +19,10 @@ class AuditCommand extends MySqlBaseCommand
    */
   protected function configure()
   {
-    $this->setName('audit')
-         ->setDescription('Maintains audit tables and audit triggers')
-         ->setHelp("Maintains audit tables and audit triggers:\n".
-                   "- creates new audit tables\n".
-                   "- adds new columns to exiting audit tables\n".
-                   "- creates new and recreates existing audit triggers\n")
+    $this->setName('drop-triggers')
+         ->setDescription('Drops all triggers')
+         ->setHelp('Drops all triggers (including triggers not created by audit) from all tables (including tables '.
+                   'excluded for auditing) in the data schema.')
          ->addArgument('config file', InputArgument::REQUIRED, 'The audit configuration file');
   }
 
@@ -43,14 +40,29 @@ class AuditCommand extends MySqlBaseCommand
     // Create database connection with params from config file
     $this->connect($this->config);
 
-    $audit  = new Audit($this->config, $this->configMetadata, $this->io);
-    $status = $audit->main();
+    $this->dropTriggers();
 
     AuditDataLayer::disconnect();
 
     $this->rewriteConfig();
+  }
 
-    return $status;
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Drops all triggers.
+   */
+  private function dropTriggers()
+  {
+    $data_schema = $this->config['database']['data_schema'];
+    $triggers    = AuditDataLayer::getTriggers($data_schema);
+    foreach ($triggers as $trigger)
+    {
+      $this->io->logInfo('Dropping trigger <dbo>%s</dbo> from table <dbo>%s</dbo>',
+                         $trigger['trigger_name'],
+                         $trigger['table_name']);
+
+      AuditDataLayer::dropTrigger($data_schema, $trigger['trigger_name']);
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------

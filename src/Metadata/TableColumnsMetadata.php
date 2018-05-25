@@ -1,7 +1,10 @@
 <?php
 
-namespace SetBased\Audit\MySql\Metadata;
+namespace SetBased\Audit\Metadata;
 
+use SetBased\Audit\MySql\Metadata\AlterColumnMetadata;
+use SetBased\Audit\MySql\Metadata\AuditColumnMetadata;
+use SetBased\Audit\MySql\Metadata\ColumnMetadata;
 use SetBased\Exception\FallenException;
 
 /**
@@ -13,12 +16,11 @@ class TableColumnsMetadata
   /**
    * The metadata of the columns.
    *
-   * @var array<string,ColumnMetadata>
+   * @var ColumnMetadata[]
    */
   private $columns = [];
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *
@@ -29,7 +31,7 @@ class TableColumnsMetadata
   {
     foreach ($columns as $columnName => $column)
     {
-      $this->columns[$column['column_name']] = self::columnFactory($type, $column);
+      $this->columns[$column['column_name']] = static::columnFactory($type, $column);
     }
   }
 
@@ -111,7 +113,7 @@ class TableColumnsMetadata
    * @param string $type   The type of the metadata.
    * @param array  $column The metadata of the column
    *
-   * @return MultiSourceColumnMetadata|AlterColumnMetadata|AuditColumnMetadata|ColumnMetadata
+   * @return AlterColumnMetadata|AuditColumnMetadata|ColumnMetadata
    */
   private static function columnFactory($type, $column)
   {
@@ -125,9 +127,6 @@ class TableColumnsMetadata
 
       case 'AuditColumnMetadata':
         return new AuditColumnMetadata($column);
-
-      case 'MultiSourceColumnMetadata':
-        return new MultiSourceColumnMetadata($column);
 
       default:
         throw new FallenException('type', $type);
@@ -161,9 +160,33 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Returns a column given the column name.
+   *
+   * @param string $columnName The name of the column.
+   *
+   * @return ColumnMetadata
+   */
+  public function getColumn($columnName)
+  {
+    return $this->columns[$columnName];
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the columns names.
+   *
+   * @return string[]
+   */
+  public function getColumnNames()
+  {
+    return array_keys($this->columns);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Returns the underlying array with metadata of this list of table columns.
    *
-   * @return array<string,ColumnMetadata>
+   * @return ColumnMetadata[]
    */
   public function getColumns()
   {
@@ -251,6 +274,18 @@ class TableColumnsMetadata
   public function removeColumn($columnName)
   {
     unset($this->columns[$columnName]);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Removes the default values from all columns.
+   */
+  public function unsetDefaults()
+  {
+    foreach ($this->columns as $column)
+    {
+      $column->unsetDefault();
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------

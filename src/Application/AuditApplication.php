@@ -2,11 +2,10 @@
 
 namespace SetBased\Audit\Application;
 
-use SetBased\Audit\Command\AboutCommand;
-use SetBased\Audit\MySql\Command\AlterAuditTableCommand;
-use SetBased\Audit\MySql\Command\AuditCommand;
-use SetBased\Audit\MySql\Command\DiffCommand;
-use SetBased\Audit\MySql\Command\DropTriggersCommand;
+use SetBased\Audit\Command\AlterAuditTableCommand;
+use SetBased\Audit\Command\AuditCommand;
+use SetBased\Audit\Command\DiffCommand;
+use SetBased\Audit\Command\DropTriggersCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 
@@ -34,7 +33,6 @@ class AuditApplication extends Application
   {
     $commands = parent::getDefaultCommands();
 
-    $commands[] = new AboutCommand();
     $commands[] = new AuditCommand();
     $commands[] = new DiffCommand();
     $commands[] = new DropTriggersCommand();

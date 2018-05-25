@@ -2,8 +2,8 @@
 
 namespace SetBased\Audit\Test\MySql\AlterAuditTableCommand;
 
-use SetBased\Audit\MySql\Command\AlterAuditTableCommand;
-use SetBased\Audit\MySql\Command\AuditCommand;
+use SetBased\Audit\Command\AlterAuditTableCommand;
+use SetBased\Audit\Command\AuditCommand;
 use SetBased\Audit\Test\MySql\AuditTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
@@ -111,7 +111,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $application = new Application();
     $application->add(new AlterAuditTableCommand());
 
-    /** @var AlterAuditTableCommand $command */
+    /** @var \SetBased\Audit\Command\AlterAuditTableCommand $command */
     $command = $application->find('alter-audit-table');
     $command->setRewriteConfigFile($rewriteConfigFile);
     $commandTester = new CommandTester($command);
@@ -134,7 +134,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $application = new Application();
     $application->add(new AuditCommand());
 
-    /** @var AuditCommand $command */
+    /** @var \SetBased\Audit\Command\AuditCommand $command */
     $command = $application->find('audit');
     $command->setRewriteConfigFile(true);
     $commandTester = new CommandTester($command);
