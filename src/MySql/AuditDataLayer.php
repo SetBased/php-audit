@@ -36,7 +36,7 @@ class AuditDataLayer extends StaticDataLayer
     $helper = new AlterAuditTableAddColumns($auditSchemaName, $tableName, $columns);
     $sql    = $helper->buildStatement();
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ class AuditDataLayer extends StaticDataLayer
     $helper = new CreateAuditTable($dataSchemaName, $auditSchemaName, $tableName, $columns);
     $sql    = $helper->buildStatement();
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ class AuditDataLayer extends StaticDataLayer
                                      $additionSql);
     $sql    = $helper->buildStatement();
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ class AuditDataLayer extends StaticDataLayer
     }
     $sql->append(')');
 
-    self::executeNone($sql->getCode());
+    static::executeNone($sql->getCode());
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ class AuditDataLayer extends StaticDataLayer
   {
     $sql = sprintf('drop table `%s`.`%s`', $schemaName, $tableName);
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ class AuditDataLayer extends StaticDataLayer
   {
     $sql = sprintf('drop trigger `%s`.`%s`', $triggerSchema, $triggerName);
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -154,7 +154,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeBulk($bulkHandler, $query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     parent::executeBulk($bulkHandler, $query);
   }
@@ -165,7 +165,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeNone($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeNone($query);
   }
@@ -176,7 +176,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeRow0($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeRow0($query);
   }
@@ -187,7 +187,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeRow1($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeRow1($query);
   }
@@ -198,7 +198,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeRows($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeRows($query);
   }
@@ -209,7 +209,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeSingleton0($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeSingleton0($query);
   }
@@ -220,7 +220,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeSingleton1($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeSingleton1($query);
   }
@@ -231,7 +231,7 @@ class AuditDataLayer extends StaticDataLayer
    */
   public static function executeTable($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::executeTable($query);
   }
@@ -263,7 +263,7 @@ order by ORDINAL_POSITION",
                    static::quoteString($schemaName),
                    static::quoteString($tableName));
 
-    return self::executeRows($sql);
+    return static::executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ AND   t1.TABLE_NAME   = %s',
                    static::quoteString($schemaName),
                    static::quoteString($tableName));
 
-    return self::executeRow1($sql);
+    return static::executeRow1($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ order by Trigger_Name',
                    static::quoteString($schemaName),
                    static::quoteString($tableName));
 
-    return self::executeRows($sql);
+    return static::executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ where  TABLE_SCHEMA = %s
 and    TABLE_TYPE   = 'BASE TABLE'
 order by TABLE_NAME", static::quoteString($schemaName));
 
-    return self::executeRows($sql);
+    return static::executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -355,7 +355,7 @@ order by EVENT_OBJECT_TABLE
 ,        TRIGGER_NAME',
                    static::quoteString($schemaName));
 
-    return self::executeRows($sql);
+    return static::executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -369,7 +369,7 @@ order by EVENT_OBJECT_TABLE
   {
     $sql = sprintf('lock tables `%s`.`%s` write', $schemaName, $tableName);
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -378,7 +378,7 @@ order by EVENT_OBJECT_TABLE
    */
   public static function multiQuery($queries)
   {
-    self::logQuery($queries);
+    static::logQuery($queries);
 
     return parent::multiQuery($queries);
   }
@@ -389,7 +389,7 @@ order by EVENT_OBJECT_TABLE
    */
   public static function query($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     return parent::query($query);
   }
@@ -440,7 +440,7 @@ order by EVENT_OBJECT_TABLE
    */
   public static function setIo($io)
   {
-    self::$io = $io;
+    static::$io = $io;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -456,7 +456,7 @@ order by EVENT_OBJECT_TABLE
   {
     $sql = sprintf('SHOW COLUMNS FROM `%s`.`%s`', $schemaName, $tableName);
 
-    return self::executeRows($sql);
+    return static::executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -467,7 +467,7 @@ order by EVENT_OBJECT_TABLE
   {
     $sql = 'unlock tables';
 
-    self::executeNone($sql);
+    static::executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -476,7 +476,7 @@ order by EVENT_OBJECT_TABLE
    */
   protected static function realQuery($query)
   {
-    self::logQuery($query);
+    static::logQuery($query);
 
     parent::realQuery($query);
   }
@@ -494,13 +494,13 @@ order by EVENT_OBJECT_TABLE
     if (strpos($query, "\n")!==false)
     {
       // Query is a multi line query.
-      self::$io->logVeryVerbose('Executing query:');
-      self::$io->logVeryVerbose('<sql>%s</sql>', $query);
+      static::$io->logVeryVerbose('Executing query:');
+      static::$io->logVeryVerbose('<sql>%s</sql>', $query);
     }
     else
     {
       // Query is a single line query.
-      self::$io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
+      static::$io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
     }
   }
 
