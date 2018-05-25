@@ -440,7 +440,7 @@ order by EVENT_OBJECT_TABLE
    */
   public static function setIo($io)
   {
-    static::$io = $io;
+    self::$io = $io;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -494,13 +494,13 @@ order by EVENT_OBJECT_TABLE
     if (strpos($query, "\n")!==false)
     {
       // Query is a multi line query.
-      static::$io->logVeryVerbose('Executing query:');
-      static::$io->logVeryVerbose('<sql>%s</sql>', $query);
+      self::$io->logVeryVerbose('Executing query:');
+      self::$io->logVeryVerbose('<sql>%s</sql>', $query);
     }
     else
     {
       // Query is a single line query.
-      static::$io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
+      self::$io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
     }
   }
 
