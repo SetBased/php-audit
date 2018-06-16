@@ -49,13 +49,14 @@ class Audit
   private $io;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
    * @param array[]      $config The content of the configuration file.
    * @param StratumStyle $io     The Output decorator.
    */
-  public function __construct(&$config, $io)
+  public function __construct(array &$config, StratumStyle $io)
   {
     $this->config = &$config;
     $this->io     = $io;
@@ -69,7 +70,7 @@ class Audit
   /**
    * Getting list of all tables from information_schema of database from config file.
    */
-  public function listOfTables()
+  public function listOfTables(): void
   {
     $this->dataSchemaTables  = AuditDataLayer::getTablesNames($this->config['database']['data_schema']);
     $this->auditSchemaTables = AuditDataLayer::getTablesNames($this->config['database']['audit_schema']);
@@ -79,7 +80,7 @@ class Audit
   /**
    * The main method: executes the auditing actions for tables.
    */
-  public function main()
+  public function main(): void
   {
     $this->listOfTables();
 
@@ -94,7 +95,7 @@ class Audit
   /**
    * Removes tables listed in the config file that are not longer in the data schema from the config file.
    */
-  public function obsoleteTables()
+  public function obsoleteTables(): void
   {
     foreach ($this->config['tables'] as $tableName => $dummy)
     {
@@ -110,7 +111,7 @@ class Audit
   /**
    * Compares the tables listed in the config file and the tables found in the data schema.
    */
-  public function unknownTables()
+  public function unknownTables(): void
   {
     foreach ($this->dataSchemaTables as $table)
     {
@@ -145,7 +146,7 @@ class Audit
   /**
    * Processed known tables.
    */
-  private function knownTables()
+  private function knownTables(): void
   {
     foreach ($this->dataSchemaTables as $table)
     {

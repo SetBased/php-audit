@@ -42,7 +42,7 @@ class DiffTable
    * @param TableMetadata $dataTable  The data table.
    * @param TableMetadata $auditTable The audit table.
    */
-  public function __construct($dataTable, $auditTable)
+  public function __construct(TableMetadata $dataTable, TableMetadata $auditTable)
   {
     $this->dataTable  = $dataTable;
     $this->auditTable = $auditTable;
@@ -53,7 +53,7 @@ class DiffTable
    * @param StratumStyle $io   The IO object.
    * @param bool         $full If false and only if only differences are shown.
    */
-  public function print($io, $full)
+  public function print(StratumStyle $io, bool $full): void
   {
     $this->rowsEnhanceWithTableColumns();
     $this->rowsEnhanceWithTableOptions();
@@ -78,11 +78,11 @@ class DiffTable
   /**
    * Returns the rows suitable for Symfony's table.
    *
-   * @param bool         $full If false and only if only differences are shown.
+   * @param bool $full If false and only if only differences are shown.
    *
    * @return array[]
    */
-  private function getRows($full)
+  private function getRows(bool $full): array
   {
     $ret     = [];
     $options = false;
@@ -115,7 +115,7 @@ class DiffTable
    *
    * @return bool
    */
-  private function hasDifferences()
+  private function hasDifferences(): bool
   {
     foreach ($this->rows as &$row)
     {
@@ -129,7 +129,7 @@ class DiffTable
   /**
    * Enhances rows with column type info.
    */
-  private function rowsEnhanceWithColumnTypeInfo()
+  private function rowsEnhanceWithColumnTypeInfo(): void
   {
     foreach ($this->rows as &$row)
     {
@@ -166,7 +166,7 @@ class DiffTable
   /**
    * Enhances rows with diff indicator.
    */
-  private function rowsEnhanceWithDiffIndicator()
+  private function rowsEnhanceWithDiffIndicator(): void
   {
     foreach ($this->rows as &$row)
     {
@@ -191,7 +191,7 @@ class DiffTable
   /**
    * Enhances rows text with formatting.
    */
-  private function rowsEnhanceWithFormatting()
+  private function rowsEnhanceWithFormatting(): void
   {
     foreach ($this->rows as &$row)
     {
@@ -218,7 +218,7 @@ class DiffTable
   /**
    * Computes the joins columns of the audit and data table.
    */
-  private function rowsEnhanceWithTableColumns()
+  private function rowsEnhanceWithTableColumns(): void
   {
     $auditColumns = $this->auditTable->getColumns()->getColumnNames();
     $dataColumns  = $this->dataTable->getColumns()->getColumnNames();
@@ -264,7 +264,7 @@ class DiffTable
   /**
    * Adds table options to the rows.
    */
-  private function rowsEnhanceWithTableOptions()
+  private function rowsEnhanceWithTableOptions(): void
   {
     $auditOptions = array_keys($this->auditTable->getOptions());
     $dataOptions  = array_keys($this->dataTable->getOptions());

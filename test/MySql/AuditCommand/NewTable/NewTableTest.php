@@ -39,7 +39,7 @@ class NewTableTest extends AuditCommandTestCase
     self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_delete', $triggers));
 
     // Create new table TABLE2.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/create_new_table.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_table.sql'));
 
     $this->runAudit();
 

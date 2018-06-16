@@ -48,7 +48,7 @@ class ObsoleteTableTest extends AuditCommandTestCase
     self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t2_delete', $triggers));
 
     // Drop obsolete table TABLE2.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
 
     $this->runAudit(0, true);
 

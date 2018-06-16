@@ -36,7 +36,7 @@ class TableMetadata
    * @param array[]              $properties The metadata of the table.
    * @param TableColumnsMetadata $columns    The metadata of the columns of this table.
    */
-  public function __construct($properties, $columns)
+  public function __construct(array $properties, TableColumnsMetadata $columns)
   {
     foreach (static::$fields as $field)
     {
@@ -58,7 +58,7 @@ class TableMetadata
    *
    * @return string[]
    */
-  public static function compareOptions($table1, $table2)
+  public static function compareOptions(TableMetadata $table1, TableMetadata $table2): array
   {
     $diff = [];
 
@@ -82,7 +82,7 @@ class TableMetadata
    *
    * @return TableColumnsMetadata
    */
-  public function getColumns()
+  public function getColumns(): TableColumnsMetadata
   {
     return $this->columns;
   }
@@ -93,7 +93,7 @@ class TableMetadata
    *
    * @return array[]
    */
-  public function getOptions()
+  public function getOptions(): array
   {
     $ret = $this->properties;
 
@@ -111,7 +111,7 @@ class TableMetadata
    *
    * @return string|null
    */
-  public function getProperty($name)
+  public function getProperty(string $name): ?string
   {
     if (isset($this->properties[$name]))
     {
@@ -127,7 +127,7 @@ class TableMetadata
    *
    * @return string
    */
-  public function getSchemaName()
+  public function getSchemaName(): string
   {
     return $this->properties['table_schema'];
   }
@@ -138,7 +138,7 @@ class TableMetadata
    *
    * @return string
    */
-  public function getTableName()
+  public function getTableName(): string
   {
     return $this->properties['table_name'];
   }

@@ -144,7 +144,7 @@ select *
 from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'INSERT'");
 
-    StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
+    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
     $rows = StaticDataLayer::executeRows($sql);
 
     // We expect 1 row.
@@ -192,7 +192,7 @@ select *
 from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'UPDATE'");
 
-    StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
+    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
     $rows = StaticDataLayer::executeRows($sql);
 
     // We expect 2 rows.
@@ -235,7 +235,7 @@ where  `audit_statement` = 'UPDATE'");
    */
   public function test02c()
   {
-    StaticDataLayer::query("SET time_zone = 'Europe/Amsterdam'");
+    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
 
     // Delete a row from ABC_AUTH_COMPANY.
     $sql = sprintf('

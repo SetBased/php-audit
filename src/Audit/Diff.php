@@ -61,7 +61,7 @@ class Diff
    * @param InputInterface  $input
    * @param OutputInterface $output
    */
-  public function __construct(&$config, $io, $input, $output)
+  public function __construct(array &$config, StratumStyle $io, InputInterface $input, OutputInterface $output)
   {
     $this->io     = $io;
     $this->config = &$config;
@@ -77,7 +77,7 @@ class Diff
   /**
    * The main method: executes the auditing actions for tables.
    */
-  public function main()
+  public function main(): void
   {
     // Style for column names with miss matched column types.
     $style = new OutputFormatterStyle(null, 'red');
@@ -110,7 +110,7 @@ class Diff
    *
    * @param string $tableName The table name.
    */
-  private function currentAuditTable($tableName)
+  private function currentAuditTable(string $tableName): void
   {
     $columns           = AuditDataLayer::getTableColumns($this->config['database']['data_schema'], $tableName);
     $dataTableColumns  = new TableColumnsMetadata($columns);
@@ -147,7 +147,7 @@ class Diff
    *
    * @param string[] $tableNames The names of the current tables.
    */
-  private function currentAuditTables($tableNames)
+  private function currentAuditTables(array $tableNames): void
   {
     foreach ($tableNames as $tableName)
     {
@@ -161,7 +161,7 @@ class Diff
    *
    * @return array[]
    */
-  private function getTableLists()
+  private function getTableLists(): array
   {
     $tables1 = [];
     foreach ($this->config['tables'] as $tableName => $config)
@@ -197,7 +197,7 @@ class Diff
    *
    * @param string[] $tableNames The names of the obsolete tables.
    */
-  private function missingAuditTables($tableNames)
+  private function missingAuditTables(array $tableNames): void
   {
     if (empty($tableNames)) return;
 
@@ -211,7 +211,7 @@ class Diff
    *
    * @param string[] $tableNames The names of the obsolete tables.
    */
-  private function obsoleteAuditTables($tableNames)
+  private function obsoleteAuditTables(array $tableNames): void
   {
     if (empty($tableNames) || !$this->input->getOption('full')) return;
 

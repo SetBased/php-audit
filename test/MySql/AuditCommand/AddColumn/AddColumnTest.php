@@ -63,7 +63,7 @@ class AddColumnTest extends AuditCommandTestCase
     self::assertSame($expected, $actual);
 
     // Create new column.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/create_new_column.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_column.sql'));
 
     $this->runAudit();
 
@@ -109,9 +109,9 @@ class AddColumnTest extends AuditCommandTestCase
     self::assertSame($expected, $actual);
 
     // Test triggers.
-    StaticDataLayer::query('insert into `TABLE1`(c1, c2, c3, c4) values(1,  2, 3, 4)');
-    StaticDataLayer::query('update `TABLE1` set c1=10, c2=20, c3=30, c4=40');
-    StaticDataLayer::query('delete from `TABLE1`');
+    StaticDataLayer::executeNone('insert into `TABLE1`(c1, c2, c3, c4) values(1,  2, 3, 4)');
+    StaticDataLayer::executeNone('update `TABLE1` set c1=10, c2=20, c3=30, c4=40');
+    StaticDataLayer::executeNone('delete from `TABLE1`');
 
     $rows = StaticDataLayer::executeRows(sprintf('select * from `%s`.`TABLE1` where c3 is not null',
                                                  self::$auditSchema));

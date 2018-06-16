@@ -13,9 +13,5 @@
       "skip": null,
       "alias": "t1"
     }
-  },
-  "audit_columns": [
-  ],
-  "additional_sql": [
-  ]
+  }
 }

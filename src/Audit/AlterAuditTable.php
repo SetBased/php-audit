@@ -41,7 +41,7 @@ class AlterAuditTable
    *
    * @param array[] $config The content of the configuration file.
    */
-  public function __construct(&$config)
+  public function __construct(array &$config)
   {
     $this->config    = &$config;
     $this->codeStore = new AlterTableCodeStore();
@@ -57,7 +57,7 @@ class AlterAuditTable
    *
    * return string
    */
-  public function main()
+  public function main(): string
   {
     $tables = $this->getTableList();
     foreach ($tables as $table)
@@ -74,7 +74,7 @@ class AlterAuditTable
    *
    * @param string $tableName The name of the table.
    */
-  private function compareTable($tableName)
+  private function compareTable(string $tableName): void
   {
     $dataTable  = $this->getTableMetadata($this->config['database']['data_schema'], $tableName);
     $auditTable = $this->getTableMetadata($this->config['database']['audit_schema'], $tableName);
@@ -94,7 +94,7 @@ class AlterAuditTable
    * @param TableMetadata $dataTable  The metadata of the data table.
    * @param TableMetadata $auditTable The metadata of the audit table.
    */
-  private function compareTableColumns($dataTable, $auditTable)
+  private function compareTableColumns(TableMetadata $dataTable, TableMetadata $auditTable): void
   {
     $diff = TableColumnsMetadata::differentColumnTypes($dataTable->getColumns(), $auditTable->getColumns());
 
@@ -136,7 +136,7 @@ class AlterAuditTable
    * @param TableMetadata $dataTable  The metadata of the data table.
    * @param TableMetadata $auditTable The metadata of the audit table.
    */
-  private function compareTableOptions($dataTable, $auditTable)
+  private function compareTableOptions(TableMetadata $dataTable, TableMetadata $auditTable): void
   {
     $options = TableMetadata::compareOptions($dataTable, $auditTable);
 
@@ -178,7 +178,7 @@ class AlterAuditTable
    *
    * @return string[]
    */
-  private function getTableList()
+  private function getTableList(): array
   {
     $tables1 = [];
     foreach ($this->config['tables'] as $tableName => $config)
@@ -215,7 +215,7 @@ class AlterAuditTable
    *
    * @return TableMetadata
    */
-  private function getTableMetadata($schemaName, $tableName)
+  private function getTableMetadata(string $schemaName, string $tableName): TableMetadata
   {
     $table   = AuditDataLayer::getTableOptions($schemaName, $tableName);
     $columns = AuditDataLayer::getTableColumns($schemaName, $tableName);

@@ -32,10 +32,10 @@ class RenameColumnTest extends AuditCommandTestCase
     $this->runAudit();
 
     // Insert a row into TABLE1.
-    StaticDataLayer::query('insert into `TABLE1`(c1, c2, c3, c4) values(1, 2, 3, 4)');
+    StaticDataLayer::executeNone('insert into `TABLE1`(c1, c2, c3, c4) values(1, 2, 3, 4)');
 
     // Rename column c3 to d3.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/rename_column.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/rename_column.sql'));
 
     // We expect exit status 0.
     $this->runAudit(0);

@@ -33,7 +33,7 @@ class DiffCommandTestCase extends AuditTestCase
     StaticDataLayer::disconnect();
     StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
 
-    StaticDataLayer::multiQuery(file_get_contents(self::$dir.'/config/setup.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(self::$dir.'/config/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

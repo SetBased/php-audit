@@ -13,7 +13,7 @@ class AlterTableCodeStore extends CodeStore
   /**
    * @inheritdoc
    */
-  protected function indentationMode($line)
+  protected function indentationMode(string $line): int
   {
     $mode = 0;
 

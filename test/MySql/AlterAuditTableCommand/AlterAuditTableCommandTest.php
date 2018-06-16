@@ -24,7 +24,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
 
     $this->dropAllTables();
 
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/'.$this->getName().'/setup.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/'.$this->getName().'/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $this->runAudit();
 
     // Alter table(s) in the data schema.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/'.$name.'/alter.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/'.$name.'/alter.sql'));
 
     $this->runAlter();
 
@@ -166,7 +166,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
                         trim(file_get_contents(__DIR__.'/config/alter.sql')));
 
     // Run the alter script.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/alter.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/alter.sql'));
 
     // Rerun the alter-audit-table command.
     $this->runAlter();

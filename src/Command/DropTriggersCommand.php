@@ -51,7 +51,7 @@ class DropTriggersCommand extends AuditCommand
   /**
    * Drops all triggers.
    */
-  private function dropTriggers()
+  private function dropTriggers(): void
   {
     $data_schema = $this->config['database']['data_schema'];
     $triggers    = AuditDataLayer::getTriggers($data_schema);

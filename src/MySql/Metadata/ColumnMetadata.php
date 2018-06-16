@@ -25,7 +25,7 @@ class ColumnMetadata extends BaseColumnMetadata
   /**
    * @inheritdoc
    */
-  public function getColumnDefinition()
+  public function getColumnDefinition(): string
   {
     $parts = [];
 
@@ -58,7 +58,7 @@ class ColumnMetadata extends BaseColumnMetadata
   /**
    * @inheritdoc
    */
-  public function getColumnAuditDefinition()
+  public function getColumnAuditDefinition(): string
   {
     $parts = [];
 
@@ -96,7 +96,7 @@ class ColumnMetadata extends BaseColumnMetadata
   /**
    * @inheritdoc
    */
-  public function getTypeInfo1()
+  public function getTypeInfo1(): string
   {
     if ($this->getProperty('is_nullable')=='YES')
     {
@@ -110,7 +110,7 @@ class ColumnMetadata extends BaseColumnMetadata
   /**
    * @inheritdoc
    */
-  public function getTypeInfo2()
+  public function getTypeInfo2(): ?string
   {
     if ($this->getProperty('collation_name')!==null)
     {

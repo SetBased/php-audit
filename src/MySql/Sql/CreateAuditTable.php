@@ -44,16 +44,16 @@ class CreateAuditTable
   /**
    * Object constructor.
    *
-   * @param string                                        $dataSchemaName  The name of the data schema.
-   * @param string                                        $auditSchemaName The name of the audit schema.
-   * @param string                                        $tableName       The name of the table.
-   * @param \SetBased\Audit\Metadata\TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
+   * @param string               $dataSchemaName  The name of the data schema.
+   * @param string               $auditSchemaName The name of the audit schema.
+   * @param string               $tableName       The name of the table.
+   * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
-  public function __construct($dataSchemaName,
-                              $auditSchemaName,
-                              $tableName,
-                              $columns)
+  public function __construct(string $dataSchemaName,
+                              string $auditSchemaName,
+                              string $tableName,
+                              TableColumnsMetadata $columns)
   {
     $this->dataSchemaName  = $dataSchemaName;
     $this->auditSchemaName = $auditSchemaName;
@@ -67,7 +67,7 @@ class CreateAuditTable
    *
    * @return string
    */
-  public function buildStatement()
+  public function buildStatement(): string
   {
     $code = new MySqlCompoundSyntaxCodeStore();
 
@@ -93,7 +93,7 @@ class CreateAuditTable
    *
    * @return string[]
    */
-  private function getColumnDefinitions()
+  private function getColumnDefinitions(): array
   {
     $lines = [];
 

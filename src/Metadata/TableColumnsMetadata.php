@@ -22,21 +22,6 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Object constructor.
-   *
-   * @param array[] $columns The metadata of the columns as returned by AuditDataLayer::getTableColumns().
-   * @param string  $type    The class for columns metadata.
-   */
-  public function __construct($columns = [], $type = 'ColumnMetadata')
-  {
-    foreach ($columns as $columnName => $column)
-    {
-      $this->columns[$column['column_name']] = static::columnFactory($type, $column);
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Combines the metadata of two lists of table columns.
    *
    * @param TableColumnsMetadata $columns1 The first metadata of a list of table columns.
@@ -44,7 +29,7 @@ class TableColumnsMetadata
    *
    * @return TableColumnsMetadata
    */
-  public static function combine($columns1, $columns2)
+  public static function combine(TableColumnsMetadata $columns1, TableColumnsMetadata $columns2): TableColumnsMetadata
   {
     $columns = new TableColumnsMetadata();
 
@@ -65,7 +50,9 @@ class TableColumnsMetadata
    *
    * @return TableColumnsMetadata
    */
-  public static function differentColumnTypes($columns1, $columns2, $ignore = [])
+  public static function differentColumnTypes(TableColumnsMetadata $columns1,
+                                              TableColumnsMetadata $columns2,
+                                              array $ignore = []): TableColumnsMetadata
   {
     $diff = new TableColumnsMetadata();
     foreach ($columns1->columns as $column_name => $column1)
@@ -92,7 +79,8 @@ class TableColumnsMetadata
    *
    * @return TableColumnsMetadata
    */
-  public static function notInOtherSet($columns1, $columns2)
+  public static function notInOtherSet(TableColumnsMetadata $columns1,
+                                       TableColumnsMetadata $columns2): TableColumnsMetadata
   {
     $diff = new TableColumnsMetadata();
     foreach ($columns1->columns as $column_name => $column1)
@@ -115,7 +103,7 @@ class TableColumnsMetadata
    *
    * @return AlterColumnMetadata|AuditColumnMetadata|ColumnMetadata
    */
-  private static function columnFactory($type, $column)
+  private static function columnFactory(string $type, array $column): ColumnMetadata
   {
     switch ($type)
     {
@@ -135,11 +123,26 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Object constructor.
+   *
+   * @param array[] $columns The metadata of the columns as returned by AuditDataLayer::getTableColumns().
+   * @param string  $type    The class for columns metadata.
+   */
+  public function __construct(array $columns = [], string $type = 'ColumnMetadata')
+  {
+    foreach ($columns as $columnName => $column)
+    {
+      $this->columns[$column['column_name']] = static::columnFactory($type, $column);
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Appends a table column to this list of table columns.
    *
    * @param ColumnMetadata $column The metadata of the table column.
    */
-  public function appendTableColumn($column)
+  public function appendTableColumn(ColumnMetadata $column): void
   {
     $this->columns[$column->getName()] = $column;
   }
@@ -150,7 +153,7 @@ class TableColumnsMetadata
    *
    * @param TableColumnsMetadata $columns The metadata of the table columns.
    */
-  public function appendTableColumns($columns)
+  public function appendTableColumns(TableColumnsMetadata $columns): void
   {
     foreach ($columns->columns as $column)
     {
@@ -166,7 +169,7 @@ class TableColumnsMetadata
    *
    * @return ColumnMetadata
    */
-  public function getColumn($columnName)
+  public function getColumn(string $columnName): ColumnMetadata
   {
     return $this->columns[$columnName];
   }
@@ -177,7 +180,7 @@ class TableColumnsMetadata
    *
    * @return string[]
    */
-  public function getColumnNames()
+  public function getColumnNames(): array
   {
     return array_keys($this->columns);
   }
@@ -188,7 +191,7 @@ class TableColumnsMetadata
    *
    * @return ColumnMetadata[]
    */
-  public function getColumns()
+  public function getColumns(): array
   {
     return $this->columns;
   }
@@ -199,7 +202,7 @@ class TableColumnsMetadata
    *
    * @return int
    */
-  public function getLongestColumnNameLength()
+  public function getLongestColumnNameLength(): int
   {
     $max = 0;
     foreach ($this->columns as $column)
@@ -216,7 +219,7 @@ class TableColumnsMetadata
    *
    * @return int
    */
-  public function getNumberOfColumns()
+  public function getNumberOfColumns(): int
   {
     return count($this->columns);
   }
@@ -229,7 +232,7 @@ class TableColumnsMetadata
    *
    * @return string|null
    */
-  public function getPreviousColumn($columnName)
+  public function getPreviousColumn(string $columnName): ?string
   {
     $columns = array_keys($this->columns);
     $key     = array_search($columnName, $columns);
@@ -246,7 +249,7 @@ class TableColumnsMetadata
   /**
    * Makes all columns nullable.
    */
-  public function makeNullable()
+  public function makeNullable(): void
   {
     foreach ($this->columns as $column)
     {
@@ -260,7 +263,7 @@ class TableColumnsMetadata
    *
    * @param TableColumnsMetadata $columns The metadata of the table columns.
    */
-  public function prependTableColumns($columns)
+  public function prependTableColumns(TableColumnsMetadata $columns): void
   {
     $this->columns = array_merge($columns->columns, $this->columns);
   }
@@ -271,7 +274,7 @@ class TableColumnsMetadata
    *
    * @param string $columnName The table column name.
    */
-  public function removeColumn($columnName)
+  public function removeColumn(string $columnName): void
   {
     unset($this->columns[$columnName]);
   }
@@ -280,7 +283,7 @@ class TableColumnsMetadata
   /**
    * Removes the default values from all columns.
    */
-  public function unsetDefaults()
+  public function unsetDefaults(): void
   {
     foreach ($this->columns as $column)
     {

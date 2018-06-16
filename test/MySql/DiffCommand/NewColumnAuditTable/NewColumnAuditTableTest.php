@@ -31,7 +31,7 @@ class NewColumnAuditTableTest extends DiffCommandTestCase
     $this->runAudit();
 
     // Create new column c3 in the audit table.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/create_new_column.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_column.sql'));
 
     $output = preg_replace('/\ +/', ' ', $this->runDiff());
 

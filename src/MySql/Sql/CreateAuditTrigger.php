@@ -24,7 +24,7 @@ class CreateAuditTrigger
   /**
    * Additional SQL statements.
    *
-   * @var string[]
+   * @var string[]|null
    */
   private $additionalSql;
 
@@ -52,7 +52,7 @@ class CreateAuditTrigger
   /**
    * The skip variable.
    *
-   * @var string
+   * @var string|null
    */
   private $skipVariable;
 
@@ -95,18 +95,18 @@ class CreateAuditTrigger
    * @param string               $triggerName            The name of the trigger.
    * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
    * @param TableColumnsMetadata $tableColumns           The metadata of the data table columns.
-   * @param string               $skipVariable           The skip variable.
-   * @param string[]             $additionalSql          Additional SQL statements.
+   * @param string|null          $skipVariable           The skip variable.
+   * @param string[]|null        $additionalSql          Additional SQL statements.
    */
-  public function __construct($dataSchemaName,
-                              $auditSchemaName,
-                              $tableName,
-                              $triggerName,
-                              $triggerAction,
-                              $additionalAuditColumns,
-                              $tableColumns,
-                              $skipVariable,
-                              $additionalSql)
+  public function __construct(string $dataSchemaName,
+                              string $auditSchemaName,
+                              string $tableName,
+                              string $triggerName,
+                              string $triggerAction,
+                              TableColumnsMetadata $additionalAuditColumns,
+                              TableColumnsMetadata $tableColumns,
+                              ?string $skipVariable,
+                              ?array $additionalSql)
   {
     $this->dataSchemaName         = $dataSchemaName;
     $this->auditSchemaName        = $auditSchemaName;
@@ -123,9 +123,11 @@ class CreateAuditTrigger
   /**
    * Returns the SQL code for creating an audit trigger.
    *
+   * @return string
+   *
    * @throws FallenException
    */
-  public function buildStatement()
+  public function buildStatement(): string
   {
     $this->code = new MySqlCompoundSyntaxCodeStore();
 
@@ -162,7 +164,7 @@ class CreateAuditTrigger
     $this->code->append($this->additionalSql);
 
     $this->createInsertStatement($rowState[0]);
-    if (sizeof($rowState)==2)
+    if (count($rowState)==2)
     {
       $this->createInsertStatement($rowState[1]);
     }
@@ -179,7 +181,7 @@ class CreateAuditTrigger
    *
    * @param string $rowState The row state (i.e. OLD or NEW).
    */
-  private function createInsertStatement($rowState)
+  private function createInsertStatement(string $rowState): void
   {
     $this->createInsertStatementInto();
     $this->createInsertStatementValues($rowState);
@@ -189,7 +191,7 @@ class CreateAuditTrigger
   /**
    * Adds the "insert into" part of an insert SQL statement to SQL code for a trigger.
    */
-  private function createInsertStatementInto()
+  private function createInsertStatementInto(): void
   {
     $columnNames = '';
 
@@ -216,7 +218,7 @@ class CreateAuditTrigger
    *
    * @param string $rowState The row state (i.e. OLD or NEW).
    */
-  private function createInsertStatementValues($rowState)
+  private function createInsertStatementValues(string $rowState): void
   {
     $values = '';
 

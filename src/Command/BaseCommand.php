@@ -43,6 +43,7 @@ class BaseCommand extends Command
   protected $rewriteConfigFile = true;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Returns the value of a setting.
    *
@@ -56,7 +57,10 @@ class BaseCommand extends Command
    *
    * @throws RuntimeException
    */
-  protected static function getSetting($settings, $mandatory, $sectionName, $settingName)
+  protected static function getSetting(array $settings,
+                                       bool $mandatory,
+                                       string $sectionName,
+                                       string $settingName): ?string
   {
     // Test if the section exists.
     if (!array_key_exists($sectionName, $settings))
@@ -93,7 +97,7 @@ class BaseCommand extends Command
   /**
    * Reads configuration parameters from the configuration file.
    */
-  public function readConfigFile()
+  public function readConfigFile(): void
   {
     $content = file_get_contents($this->configFileName);
 
@@ -126,7 +130,7 @@ class BaseCommand extends Command
    * @param bool $rewriteConfigFile If true the config file must be rewritten. Otherwise the config must not be
    *                                rewritten.
    */
-  public function setRewriteConfigFile($rewriteConfigFile)
+  public function setRewriteConfigFile(bool $rewriteConfigFile)
   {
     $this->rewriteConfigFile = $rewriteConfigFile;
   }
@@ -137,7 +141,7 @@ class BaseCommand extends Command
    *
    * @param array $settings The settings from the configuration file.
    */
-  protected function connect($settings)
+  protected function connect(array $settings): void
   {
     $host     = $this->getSetting($settings, true, 'database', 'host');
     $user     = $this->getSetting($settings, true, 'database', 'user');
@@ -152,7 +156,7 @@ class BaseCommand extends Command
   /**
    * Rewrites the config file with updated data.
    */
-  protected function rewriteConfig()
+  protected function rewriteConfig(): void
   {
     // Return immediately when the config file must not be rewritten.
     if (!$this->rewriteConfigFile) return;
@@ -175,7 +179,7 @@ class BaseCommand extends Command
    * @param string $filename The name of the file were the data must be stored.
    * @param string $data     The data that must be written.
    */
-  protected function writeTwoPhases($filename, $data)
+  protected function writeTwoPhases(string $filename, string $data): void
   {
     $write_flag = true;
     if (file_exists($filename))

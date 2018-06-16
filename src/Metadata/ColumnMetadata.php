@@ -32,7 +32,7 @@ abstract class ColumnMetadata
    *
    * @param array $properties The metadata of the column.
    */
-  public function __construct($properties)
+  public function __construct(array $properties)
   {
     foreach (static::$fields as $field)
     {
@@ -53,7 +53,7 @@ abstract class ColumnMetadata
    *
    * @return bool True if the columns are equal, false otherwise.
    */
-  public static function compare($column1, $column2, $ignore = [])
+  public static function compare(ColumnMetadata $column1, ColumnMetadata $column2, array $ignore = []): bool
   {
     $equal = true;
 
@@ -77,7 +77,7 @@ abstract class ColumnMetadata
    *
    * @return string
    */
-  abstract public function getColumnAuditDefinition();
+  abstract public function getColumnAuditDefinition(): string;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -85,7 +85,7 @@ abstract class ColumnMetadata
    *
    * @return string
    */
-  abstract public function getColumnDefinition();
+  abstract public function getColumnDefinition(): string;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -93,7 +93,7 @@ abstract class ColumnMetadata
    *
    * @return string
    */
-  public function getName()
+  public function getName(): string
   {
     return $this->properties['column_name'];
   }
@@ -104,7 +104,7 @@ abstract class ColumnMetadata
    *
    * @return array
    */
-  public function getProperties()
+  public function getProperties(): array
   {
     return $this->properties;
   }
@@ -117,7 +117,7 @@ abstract class ColumnMetadata
    *
    * @return string|null
    */
-  public function getProperty($name)
+  public function getProperty(string $name): ?string
   {
     if (isset($this->properties[$name]))
     {
@@ -133,7 +133,7 @@ abstract class ColumnMetadata
    *
    * @return string
    */
-  abstract public function getTypeInfo1();
+  abstract public function getTypeInfo1(): string;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -141,13 +141,13 @@ abstract class ColumnMetadata
    *
    * @return string|null
    */
-  abstract public function getTypeInfo2();
+  abstract public function getTypeInfo2(): ?string;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Make this column nullable.
    */
-  public function makeNullable()
+  public function makeNullable(): void
   {
     $this->properties['is_nullable'] = 'YES';
   }
@@ -156,7 +156,7 @@ abstract class ColumnMetadata
   /**
    * Removes the default value.
    */
-  public function unsetDefault()
+  public function unsetDefault(): void
   {
     if (isset($this->properties['column_default'])) $this->properties['column_default'] = 'NULL';
   }

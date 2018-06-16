@@ -42,7 +42,7 @@ class AlterAuditTableAddColumns
    * @param TableColumnsMetadata $columns         The metadata of the new columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
-  public function __construct($auditSchemaName, $tableName, $columns)
+  public function __construct(string $auditSchemaName, string $tableName, TableColumnsMetadata $columns)
   {
     $this->auditSchemaName = $auditSchemaName;
     $this->tableName       = $tableName;
@@ -55,7 +55,7 @@ class AlterAuditTableAddColumns
    *
    * @return string
    */
-  public function buildStatement()
+  public function buildStatement(): string
   {
     $code = new MySqlCompoundSyntaxCodeStore();
 

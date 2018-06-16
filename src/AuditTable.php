@@ -23,7 +23,7 @@ class AuditTable
   /**
    * The unique alias for this data table.
    *
-   * @var string
+   * @var string|null
    */
   private $alias;
 
@@ -58,7 +58,7 @@ class AuditTable
   /**
    * The skip variable for triggers.
    *
-   * @var string
+   * @var string|null
    */
   private $skipVariable;
 
@@ -78,16 +78,16 @@ class AuditTable
    * @param string               $auditSchemaName        The name of the schema with audit tables.
    * @param string               $tableName              The name of the data and audit table.
    * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
-   * @param string               $alias                  An unique alias for this table.
-   * @param string               $skipVariable           The skip variable
+   * @param string|null          $alias                  An unique alias for this table.
+   * @param string|null          $skipVariable           The skip variable
    */
-  public function __construct($io,
-                              $dataSchemaName,
-                              $auditSchemaName,
-                              $tableName,
-                              $additionalAuditColumns,
-                              $alias,
-                              $skipVariable)
+  public function __construct(StratumStyle $io,
+                              string $dataSchemaName,
+                              string $auditSchemaName,
+                              string $tableName,
+                              TableColumnsMetadata $additionalAuditColumns,
+                              ?string $alias,
+                              ?string $skipVariable)
   {
     $this->io                       = $io;
     $this->dataSchemaName           = $dataSchemaName;
@@ -107,7 +107,7 @@ class AuditTable
    * @param string       $schemaName The name of the table schema.
    * @param string       $tableName  The name of the table.
    */
-  public static function dropAuditTriggers($io, $schemaName, $tableName)
+  public static function dropAuditTriggers(StratumStyle $io, string $schemaName, string $tableName): void
   {
     $triggers = AuditDataLayer::getTableTriggers($schemaName, $tableName);
     foreach ($triggers as $trigger)
@@ -130,7 +130,7 @@ class AuditTable
    *
    * @return string
    */
-  public static function getRandomAlias()
+  public static function getRandomAlias(): string
   {
     return uniqid();
   }
@@ -139,7 +139,7 @@ class AuditTable
   /**
    * Creates an audit table for this table.
    */
-  public function createAuditTable()
+  public function createAuditTable(): void
   {
     $this->io->logInfo('Creating audit table <dbo>%s.%s<dbo>', $this->auditSchemaName, $this->tableName);
 
@@ -157,7 +157,7 @@ class AuditTable
    *
    * @param string[] $additionalSql Additional SQL statements to be include in triggers.
    */
-  public function createTriggers($additionalSql)
+  public function createTriggers(array $additionalSql): void
   {
     // Lock the table to prevent insert, updates, or deletes between dropping and creating triggers.
     $this->lockTable();
@@ -180,7 +180,7 @@ class AuditTable
    *
    * @return string
    */
-  public function getTableName()
+  public function getTableName(): string
   {
     return $this->tableName;
   }
@@ -191,7 +191,7 @@ class AuditTable
    *
    * @param string[] $additionalSql Additional SQL statements to be include in triggers.
    */
-  public function main($additionalSql)
+  public function main(array $additionalSql): void
   {
     $comparedColumns = $this->getTableColumnInfo();
     $newColumns      = $comparedColumns['new_columns'];
@@ -206,7 +206,7 @@ class AuditTable
    *
    * @param TableColumnsMetadata $columns TableColumnsMetadata array
    */
-  private function addNewColumns($columns)
+  private function addNewColumns(TableColumnsMetadata $columns): void
   {
     // Return immediately if there are no columns to add.
     if ($columns->getNumberOfColumns()==0) return;
@@ -222,9 +222,9 @@ class AuditTable
    *
    * @param TableColumnsMetadata $newColumns The metadata new table columns.
    *
-   * @return \SetBased\Audit\Metadata\TableColumnsMetadata
+   * @return TableColumnsMetadata
    */
-  private function alterNewColumns($newColumns)
+  private function alterNewColumns(TableColumnsMetadata $newColumns): TableColumnsMetadata
   {
     $alterNewColumns = new TableColumnsMetadata();
     foreach ($newColumns->getColumns() as $newColumn)
@@ -246,7 +246,7 @@ class AuditTable
    * @param string|null $skipVariable
    * @param string[]    $additionSql The additional SQL statements to be included in triggers.
    */
-  private function createTableTrigger($action, $skipVariable, $additionSql)
+  private function createTableTrigger(string $action, ?string $skipVariable, array $additionSql): void
   {
     $triggerName = $this->getTriggerName($action);
 
@@ -273,7 +273,7 @@ class AuditTable
    *
    * @return array[]
    */
-  private function getColumnsFromInformationSchema()
+  private function getColumnsFromInformationSchema(): array
   {
     $result = AuditDataLayer::getTableColumns($this->dataSchemaName, $this->tableName);
 
@@ -286,7 +286,7 @@ class AuditTable
    *
    * @return array<string,TableColumnsMetadata>
    */
-  private function getTableColumnInfo()
+  private function getTableColumnInfo(): array
   {
     $actual = new TableColumnsMetadata(AuditDataLayer::getTableColumns($this->auditSchemaName, $this->tableName));
     $target = TableColumnsMetadata::combine($this->additionalAuditColumns, $this->dataTableColumnsDatabase);
@@ -310,7 +310,7 @@ class AuditTable
    *
    * @return string
    */
-  private function getTriggerName($action)
+  private function getTriggerName(string $action): string
   {
     return strtolower(sprintf('trg_audit_%s_%s', $this->alias, $action));
   }
@@ -319,7 +319,7 @@ class AuditTable
   /**
    * Lock the data table to prevent insert, updates, or deletes between dropping and creating triggers.
    */
-  private function lockTable()
+  private function lockTable(): void
   {
     AuditDataLayer::lockTable($this->dataSchemaName, $this->tableName);
   }
@@ -328,11 +328,13 @@ class AuditTable
   /**
    * Logs info about new, obsolete, and altered columns.
    *
-   * @param \SetBased\Audit\Metadata\TableColumnsMetadata $newColumns      The metadata of the new columns.
-   * @param TableColumnsMetadata                          $obsoleteColumns The metadata of the obsolete columns.
-   * @param \SetBased\Audit\Metadata\TableColumnsMetadata $alteredColumns  The metadata of the altered columns.
+   * @param TableColumnsMetadata $newColumns      The metadata of the new columns.
+   * @param TableColumnsMetadata $obsoleteColumns The metadata of the obsolete columns.
+   * @param TableColumnsMetadata $alteredColumns  The metadata of the altered columns.
    */
-  private function logColumnInfo($newColumns, $obsoleteColumns, $alteredColumns)
+  private function logColumnInfo(TableColumnsMetadata $newColumns,
+                                 TableColumnsMetadata $obsoleteColumns,
+                                 TableColumnsMetadata $alteredColumns): void
   {
     foreach ($newColumns->getColumns() as $column)
     {
@@ -361,7 +363,7 @@ class AuditTable
   /**
    * Releases the table lock.
    */
-  private function unlockTable()
+  private function unlockTable(): void
   {
     AuditDataLayer::unlockTables();
   }

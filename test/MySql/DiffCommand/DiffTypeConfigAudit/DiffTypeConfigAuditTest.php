@@ -30,7 +30,7 @@ class DiffTypeConfigAuditTest extends DiffCommandTestCase
     $this->runAudit();
 
     // Change type of column c4.
-    StaticDataLayer::multiQuery(file_get_contents(__DIR__.'/config/change_column_type.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/change_column_type.sql'));
 
     $output = preg_replace('/\ +/', ' ', $this->runDiff());
 
