@@ -359,7 +359,7 @@ order by TABLE_NAME", static::quoteString($schemaName));
    *
    * @return array[]
    */
-  public static function getTriggers(string $schemaName): string
+  public static function getTriggers(string $schemaName): array
   {
     $sql = sprintf('
 select EVENT_OBJECT_TABLE as table_name
