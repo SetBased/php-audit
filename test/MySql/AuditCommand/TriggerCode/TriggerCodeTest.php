@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\TriggerCode;
 
@@ -12,7 +13,7 @@ use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
 class TriggerCodeTest extends TestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
-  public function test01()
+  public function test01(): void
   {
     $actions = ['INSERT', 'UPDATE', 'DELETE'];
 
@@ -23,7 +24,7 @@ class TriggerCodeTest extends TestCase
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function test10()
+  public function test10(): void
   {
     $lines2 = [null,
                [],
@@ -42,7 +43,13 @@ class TriggerCodeTest extends TestCase
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  private function additionalSqlTest($triggerAction, $additionalSql)
+  /**
+   * Test case for additional trigger code.
+   *
+   * @param string        $triggerAction The trigger action (i.e. INSERT, UPDATE, or DELETE).
+   * @param string[]|null $additionalSql Additional SQL statements
+   */
+  private function additionalSqlTest(string $triggerAction, ?array $additionalSql): void
   {
     $audit_columns = new TableColumnsMetadata();
 
@@ -68,13 +75,18 @@ class TriggerCodeTest extends TestCase
     {
       foreach ($additionalSql as $line)
       {
-        self::assertContains($line.PHP_EOL, $sql, sprintf('%s: %s', $line, $triggerAction));
+        self::assertStringContainsString($line.PHP_EOL, $sql, sprintf('%s: %s', $line, $triggerAction));
       }
     }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  private function triggerEndingTest($triggerAction)
+  /**
+   * Test cases for end of SQL code of trigger.
+   *
+   * @param string $triggerAction The trigger action (i.e. INSERT, UPDATE, or DELETE).
+   */
+  private function triggerEndingTest(string $triggerAction): void
   {
     $audit_columns = new TableColumnsMetadata();
 

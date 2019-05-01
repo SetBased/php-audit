@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql;
 
@@ -17,7 +18,7 @@ class NoStaticDataLayerTest extends TestCase
   /**
    * The actual test.
    */
-  public function testNoStaticDataLayer()
+  public function testNoStaticDataLayer(): void
   {
     $files = $this->findPhpFiles();
     self::assertNotEmpty($files);
@@ -34,7 +35,7 @@ class NoStaticDataLayerTest extends TestCase
   /**
    * Finds all PHP sources files.
    */
-  private function findPhpFiles()
+  private function findPhpFiles(): array
   {
     // Get the class loader.
     /** @var \Composer\Autoload\ClassLoader $loader */

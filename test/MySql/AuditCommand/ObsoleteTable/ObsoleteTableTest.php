@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\ObsoleteTable;
 
@@ -15,7 +16,7 @@ class ObsoleteTableTest extends AuditCommandTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -23,7 +24,7 @@ class ObsoleteTableTest extends AuditCommandTestCase
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function test01()
+  public function test01(): void
   {
     // Preserve config file.
     copy(__DIR__.'/config/audit.json', __DIR__.'/config/audit.org.json');
@@ -65,8 +66,8 @@ class ObsoleteTableTest extends AuditCommandTestCase
 
     // TABLE2 MUST not be in audit.json.
     $config = file_get_contents(__DIR__.'/config/audit.json');
-    self::assertContains('TABLE1', $config);
-    self::assertNotContains('TABLE2', $config);
+    self::assertStringContainsString('TABLE1', $config);
+    self::assertStringNotContainsString('TABLE2', $config);
 
     // Restore config file.
     copy(__DIR__.'/config/audit.org.json', __DIR__.'/config/audit.json');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql;
 
@@ -29,7 +30,7 @@ class AuditTestCase extends TestCase
   /**
    * Connects to the MySQL server.
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     parent::setUpBeforeClass();
 
@@ -42,7 +43,7 @@ class AuditTestCase extends TestCase
   /**
    * Drops all tables in test_data and test_audit.
    */
-  protected static function dropAllTables()
+  protected static function dropAllTables(): void
   {
     $sql = "
 select TABLE_SCHEMA as table_schema
@@ -69,7 +70,7 @@ where TABLE_SCHEMA in (%s,%s)";
   /**
    * Connects to MySQL instance.
    */
-  protected function setUp()
+  protected function setUp(): void
   {
     StaticDataLayer::disconnect();
     StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
@@ -79,7 +80,7 @@ where TABLE_SCHEMA in (%s,%s)";
   /**
    * Disconnects from MySQL instance.
    */
-  protected function tearDown()
+  protected function tearDown(): void
   {
     StaticDataLayer::disconnect();
   }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AlterAuditTableCommand;
 
@@ -18,7 +19,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * @inheritdoc
    */
-  public function setUp()
+  public function setUp(): void
   {
     parent::setUp();
 
@@ -31,7 +32,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test default character set has changed.
    */
-  public function testCharset()
+  public function testCharset(): void
   {
     $this->base('testCharset');
   }
@@ -40,7 +41,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test default collation has changed.
    */
-  public function testCollation()
+  public function testCollation(): void
   {
     $this->base('testCollation');
   }
@@ -49,7 +50,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test engine has changed,
    */
-  public function testEngine()
+  public function testEngine(): void
   {
     $this->base('testEngine');
   }
@@ -58,7 +59,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test from 'int(11)' to 'int(8)'.
    */
-  public function testIntColumn()
+  public function testIntColumn(): void
   {
     $this->base('testIntColumn');
   }
@@ -67,7 +68,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test with many changes.
    */
-  public function testMany()
+  public function testMany(): void
   {
     $this->base('testMany');
   }
@@ -76,7 +77,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test multiple columns changed.
    */
-  public function testMultipleColumns()
+  public function testMultipleColumns(): void
   {
     $this->base('testMultipleColumns');
   }
@@ -85,7 +86,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test from 'datetime' to 'timestamp'.
    */
-  public function testTimestampColumn()
+  public function testTimestampColumn(): void
   {
     $this->base('testTimestampColumn');
   }
@@ -94,7 +95,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Test from 'varchar(10) utf8' to 'varchar(10) ascii collate ascii_bin' (same length different charset and collate).
    */
-  public function testVarcharColumn()
+  public function testVarcharColumn(): void
   {
     $this->base('testVarcharColumn');
   }
@@ -106,7 +107,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
    * @param int  $statusCode        The expected status code of the command.
    * @param bool $rewriteConfigFile If true the config file will be rewritten.
    */
-  protected function runAlter($statusCode = 0, $rewriteConfigFile = false)
+  protected function runAlter(int $statusCode = 0, bool $rewriteConfigFile = false): void
   {
     $application = new Application();
     $application->add(new AlterAuditTableCommand());
@@ -129,7 +130,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
   /**
    * Runs the audit command, i.e. creates the audit table.
    */
-  protected function runAudit()
+  protected function runAudit(): void
   {
     $application = new Application();
     $application->add(new AuditCommand());
@@ -151,7 +152,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
    *
    * @param string $name The name of the test.
    */
-  private function base($name)
+  private function base(string $name): void
   {
     // Run audit.
     $this->runAudit();

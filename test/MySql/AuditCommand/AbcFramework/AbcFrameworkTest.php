@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\AbcFramework;
 
@@ -14,7 +15,7 @@ class AbcFrameworkTest extends AuditCommandTestCase
   /**
    * Connects to the MySQL server.
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -25,7 +26,7 @@ class AbcFrameworkTest extends AuditCommandTestCase
   /**
    * Test audit table is created correctly.
    */
-  public function test01()
+  public function test01(): void
   {
     $this->runAudit();
 
@@ -125,7 +126,7 @@ order by ORDINAL_POSITION",
   /**
    * Test insert trigger is working correctly.
    */
-  public function test02a()
+  public function test02a(): void
   {
     // Insert a row into ABC_AUTH_COMPANY.
     $sql = sprintf('
@@ -170,7 +171,7 @@ where  `audit_statement` = 'INSERT'");
   /**
    * Test update trigger is working correctly.
    */
-  public function test02b()
+  public function test02b(): void
   {
     // Set session and user ID.
     StaticDataLayer::executeNone('set @abc_g_ses_id=12345');  // The combination of my suitcase.
@@ -233,7 +234,7 @@ where  `audit_statement` = 'UPDATE'");
   /**
    * Test delete trigger is working correctly.
    */
-  public function test02c()
+  public function test02c(): void
   {
     StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
 
@@ -276,7 +277,7 @@ where  audit_statement = 'DELETE'");
   /**
    * Test total number of rows in audit table.
    */
-  public function test02d()
+  public function test02d(): void
   {
     // Get all audit rows.
     $sql = sprintf("
@@ -293,7 +294,7 @@ from   `test_audit`.`ABC_AUTH_COMPANY`");
   /**
    * Does not disconnect and connect to the database because we need continues numbering of audit_uuid and audit_rownum.
    */
-  protected function setUp()
+  protected function setUp(): void
   {
     // Nothing to do.
   }
@@ -302,7 +303,7 @@ from   `test_audit`.`ABC_AUTH_COMPANY`");
   /**
    * Does not disconnect and connect to the database because we need continues numbering of audit_uuid and audit_rownum.
    */
-  protected function tearDown()
+  protected function tearDown(): void
   {
     // Nothing to do.
   }

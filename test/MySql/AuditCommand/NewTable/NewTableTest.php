@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\NewTable;
 
@@ -15,7 +16,7 @@ class NewTableTest extends AuditCommandTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -23,7 +24,7 @@ class NewTableTest extends AuditCommandTestCase
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function test01()
+  public function test01(): void
   {
     $this->runAudit();
 

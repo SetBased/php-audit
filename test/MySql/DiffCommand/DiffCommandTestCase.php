@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand;
 
@@ -26,7 +27,7 @@ class DiffCommandTestCase extends AuditTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     parent::setUpBeforeClass();
 
@@ -40,7 +41,7 @@ class DiffCommandTestCase extends AuditTestCase
   /**
    * Runs the audit command, i.e. creates the audit table.
    */
-  protected function runAudit()
+  protected function runAudit(): void
   {
     $application = new Application();
     $application->add(new AuditCommand());
@@ -62,7 +63,7 @@ class DiffCommandTestCase extends AuditTestCase
    *
    * @return string
    */
-  protected function runDiff()
+  protected function runDiff(): string
   {
     $application = new Application();
     $application->add(new DiffCommand());

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand\CharacterSetName;
 
@@ -14,7 +15,7 @@ class CharacterSetNameTest extends DiffCommandTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -25,7 +26,7 @@ class CharacterSetNameTest extends DiffCommandTestCase
   /**
    * Runs the test.
    */
-  public function test01()
+  public function test01(): void
   {
     $this->runAudit();
 
@@ -34,8 +35,8 @@ class CharacterSetNameTest extends DiffCommandTestCase
 
     $output = preg_replace('/\ +/', ' ', $this->runDiff());
 
-    self::assertContains('| c4 | varchar(20) | varchar(20) |', $output);
-    self::assertContains('| | [utf8] [utf8_general_ci] | [ascii] [ascii_general_ci] |', $output);
+    self::assertStringContainsString('| c4 | varchar(20) | varchar(20) |', $output);
+    self::assertStringContainsString('| | [utf8] [utf8_general_ci] | [ascii] [ascii_general_ci] |', $output);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

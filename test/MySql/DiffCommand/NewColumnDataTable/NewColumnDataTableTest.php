@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnDataTable;
 
@@ -14,7 +15,7 @@ class NewColumnDataTableTest extends DiffCommandTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -25,7 +26,7 @@ class NewColumnDataTableTest extends DiffCommandTestCase
   /**
    * Runs the test.
    */
-  public function test01()
+  public function test01(): void
   {
     $this->runAudit();
 
@@ -34,7 +35,7 @@ class NewColumnDataTableTest extends DiffCommandTestCase
 
     $output = preg_replace('/\ +/', ' ', $this->runDiff());
 
-    self::assertContains('| c3 | | mediumint(9) |', $output, 'acquire');
+    self::assertStringContainsString('| c3 | | mediumint(9) |', $output, 'acquire');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

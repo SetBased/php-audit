@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\LockTable;
 
@@ -14,7 +15,7 @@ class LockTableMyisamTest extends LockTableTestCase
    * @inheritdoc
    *
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     parent::setUpBeforeClass();
 

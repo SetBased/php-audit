@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\MinimalConfig;
 
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class MinimalConfigTest extends AuditTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
-  public function test01()
+  public function test01(): void
   {
     $application = new Application();
     $application->add(new AuditCommand());

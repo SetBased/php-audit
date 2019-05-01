@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\RenameColumn;
 
@@ -15,7 +16,7 @@ class RenameColumnTest extends AuditCommandTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     self::$dir = __DIR__;
 
@@ -26,7 +27,7 @@ class RenameColumnTest extends AuditCommandTestCase
   /**
    * Run audit on a table with a renamed column.
    */
-  public function test01()
+  public function test01(): void
   {
     // Run audit.
     $this->runAudit();

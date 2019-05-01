@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand;
 
@@ -25,7 +26,7 @@ class AuditCommandTestCase extends AuditTestCase
   /**
    * @inheritdoc
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     parent::setUpBeforeClass();
 
@@ -42,7 +43,7 @@ class AuditCommandTestCase extends AuditTestCase
    * @param int  $statusCode        The expected status code of the command.
    * @param bool $rewriteConfigFile If true the config file will be rewritten.
    */
-  protected function runAudit($statusCode = 0, $rewriteConfigFile = false)
+  protected function runAudit(int $statusCode = 0, bool $rewriteConfigFile = false): void
   {
     $application = new Application();
     $application->add(new AuditCommand());

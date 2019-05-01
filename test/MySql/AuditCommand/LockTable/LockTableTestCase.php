@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\LockTable;
 
@@ -18,7 +19,7 @@ class LockTableTestCase extends AuditTestCase
   /**
    * Connects to the MySQL server.
    */
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass(): void
   {
     parent::setUpBeforeClass();
 
@@ -29,7 +30,7 @@ class LockTableTestCase extends AuditTestCase
   /**
    * Test locking table is in verbose output.
    */
-  public function test01()
+  public function test01(): void
   {
     $application = new Application();
     $application->add(new AuditCommand());
@@ -49,15 +50,15 @@ class LockTableTestCase extends AuditTestCase
     self::assertSame(0, $status, 'status code');
 
     $output = $commandTester->getDisplay();
-    self::assertContains('lock tables `test_data`.`TABLE1` write', $output, 'acquire');
-    self::assertContains('unlock tables', $output, 'release');
+    self::assertStringContainsString('lock tables `test_data`.`TABLE1` write', $output, 'acquire');
+    self::assertStringContainsString('unlock tables', $output, 'release');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test that the table is actually locked.
    */
-  public function test02()
+  public function test02(): void
   {
     $application = new Application();
     $application->add(new AuditCommand());
