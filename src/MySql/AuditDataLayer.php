@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace SetBased\Audit\MySql;
 
@@ -32,7 +33,7 @@ class AuditDataLayer extends StaticDataLayer
    * @param string               $tableName       The name of the table.
    * @param TableColumnsMetadata $columns         The metadata of the new columns.
    */
-  public static function addNewColumns(string $auditSchemaName, string $tableName, TableColumnsMetadata $columns)
+  public static function addNewColumns(string $auditSchemaName, string $tableName, TableColumnsMetadata $columns): void
   {
     $helper = new AlterAuditTableAddColumns($auditSchemaName, $tableName, $columns);
     $sql    = $helper->buildStatement();

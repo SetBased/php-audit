@@ -10,6 +10,7 @@
   "license": "MIT",
   "require": {
     "php": ">=7.1.0",
+    "ext-json": "*",
     "setbased/exception": "^1.0.0",
     "setbased/helper-code-store-mysql": "^2.0.0",
     "setbased/php-stratum": "^0.9.64",
