@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SetBased\Audit\Command;
 
 use SetBased\Audit\MySql\AuditDataLayer;
-use SetBased\Stratum\Style\StratumStyle;
+use SetBased\Audit\Style\AuditStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,7 +33,7 @@ class DropTriggersCommand extends AuditCommand
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $this->io = new StratumStyle($input, $output);
+    $this->io = new AuditStyle($input, $output);
 
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();

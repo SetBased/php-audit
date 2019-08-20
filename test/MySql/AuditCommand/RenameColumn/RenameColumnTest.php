@@ -5,6 +5,7 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\RenameColumn;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
+use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
@@ -44,10 +45,10 @@ class RenameColumnTest extends AuditCommandTestCase
     $columns = AuditDataLayer::getTableColumns(self::$auditSchema, 'TABLE1');
 
     // Assert column c3 still exists.
-    self::assertNotNull(StaticDataLayer::searchInRowSet('column_name', 'c3', $columns));
+    self::assertNotNull(RowSetHelper::searchInRowSet($columns, 'column_name', 'c3'));
 
     // Assert column d3 exists.
-    self::assertNotNull(StaticDataLayer::searchInRowSet('column_name', 'd3', $columns));
+    self::assertNotNull(RowSetHelper::searchInRowSet($columns, 'column_name', 'd3'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

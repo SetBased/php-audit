@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SetBased\Audit\Command;
 
 use SetBased\Audit\Audit\AlterAuditTable;
-use SetBased\Stratum\Style\StratumStyle;
+use SetBased\Audit\Style\AuditStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,7 @@ class AlterAuditTableCommand extends AuditCommand
    *
    * @param array[] $columns The metadata of the columns of a table.
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   protected $io;
 
@@ -59,7 +59,7 @@ EOL
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $this->io = new StratumStyle($input, $output);
+    $this->io = new AuditStyle($input, $output);
 
     $sqlFilename = $input->getArgument('sql file');
 

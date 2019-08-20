@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SetBased\Audit;
 
 use SetBased\Audit\Metadata\TableMetadata;
+use SetBased\Audit\Style\AuditStyle;
 use SetBased\Exception\FallenException;
-use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
 
@@ -37,6 +37,7 @@ class DiffTable
   private $rows = [];
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -51,10 +52,10 @@ class DiffTable
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * @param StratumStyle $io   The IO object.
-   * @param bool         $full If false and only if only differences are shown.
+   * @param AuditStyle $io   The IO object.
+   * @param bool       $full If false and only if only differences are shown.
    */
-  public function print(StratumStyle $io, bool $full): void
+  public function print(AuditStyle $io, bool $full): void
   {
     $this->rowsEnhanceWithTableColumns();
     $this->rowsEnhanceWithTableOptions();

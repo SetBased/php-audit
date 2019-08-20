@@ -5,6 +5,7 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\AddColumn;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
+use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
@@ -31,13 +32,13 @@ class AddColumnTest extends AuditCommandTestCase
 
     // TABLE1 MUST exist.
     $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE1', $tables));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
 
     // TABLE1 MUST have triggers.
     $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_insert', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_update', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_delete', $triggers));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     $actual = AuditDataLayer::getTableColumns(self::$auditSchema, 'TABLE1');
 
@@ -70,13 +71,13 @@ class AddColumnTest extends AuditCommandTestCase
 
     // TABLE1 MUST exist.
     $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE1', $tables));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
 
     // TABLE1 MUST have triggers.
     $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_insert', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_update', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_delete', $triggers));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE1 must have column c3.
     $actual = AuditDataLayer::getTableColumns(self::$auditSchema, 'TABLE1');

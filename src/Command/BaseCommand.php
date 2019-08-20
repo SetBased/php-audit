@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SetBased\Audit\Command;
 
 use SetBased\Audit\MySql\AuditDataLayer;
+use SetBased\Audit\Style\AuditStyle;
 use SetBased\Exception\RuntimeException;
-use SetBased\Stratum\Style\StratumStyle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -32,7 +32,7 @@ class BaseCommand extends Command
   /**
    * The Output decorator.
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   protected $io;
 

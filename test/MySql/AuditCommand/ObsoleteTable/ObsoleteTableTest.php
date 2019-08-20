@@ -5,6 +5,7 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\ObsoleteTable;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
+use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
@@ -33,20 +34,20 @@ class ObsoleteTableTest extends AuditCommandTestCase
 
     // TABLE1 and TABLE2 MUST exist.
     $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE1', $tables));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE2', $tables));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
     $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_insert', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_update', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_delete', $triggers));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE2 MUST have triggers.
     $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t2_insert', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t2_update', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t2_delete', $triggers));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_insert'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_update'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_delete'));
 
     // Drop obsolete table TABLE2.
     StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
@@ -55,14 +56,14 @@ class ObsoleteTableTest extends AuditCommandTestCase
 
     // TABLE1 and TABLE2 MUST still exist.
     $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE1', $tables));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('table_name', 'TABLE2', $tables));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 have triggers.
     $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_insert', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_update', $triggers));
-    self::assertNotNull(StaticDataLayer::searchInRowSet('trigger_name', 'trg_audit_t1_delete', $triggers));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
+    self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE2 MUST not be in audit.json.
     $config = file_get_contents(__DIR__.'/config/audit.json');

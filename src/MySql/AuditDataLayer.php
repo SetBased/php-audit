@@ -7,10 +7,11 @@ use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\Sql\AlterAuditTableAddColumns;
 use SetBased\Audit\MySql\Sql\CreateAuditTable;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
+use SetBased\Audit\Style\AuditStyle;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 use SetBased\Stratum\BulkHandler;
+use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
-use SetBased\Stratum\Style\StratumStyle;
 
 /**
  * Class for executing SQL statements and retrieving metadata from MySQL.
@@ -21,7 +22,7 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * The Output decorator.
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   private static $io;
 
@@ -294,15 +295,15 @@ order by ORDINAL_POSITION",
   public static function getTableOptions(string $schemaName, string $tableName): array
   {
     $sql = sprintf('
-SELECT t1.TABLE_SCHEMA       as table_schema
+select t1.TABLE_SCHEMA       as table_schema
 ,      t1.TABLE_NAME         as table_name
 ,      t1.TABLE_COLLATION    as table_collation
 ,      t1.ENGINE             as engine
 ,      t2.CHARACTER_SET_NAME as character_set_name
-FROM       information_schema.TABLES                                t1
+from       information_schema.TABLES                                t1
 inner join information_schema.COLLATION_CHARACTER_SET_APPLICABILITY t2  on  t2.COLLATION_NAME = t1.TABLE_COLLATION
-WHERE t1.TABLE_SCHEMA = %s
-AND   t1.TABLE_NAME   = %s',
+where t1.TABLE_SCHEMA = %s
+and   t1.TABLE_NAME   = %s',
                    static::quoteString($schemaName),
                    static::quoteString($tableName));
 
@@ -412,7 +413,7 @@ order by EVENT_OBJECT_TABLE
 
     foreach ($additionalAuditColumns as $column)
     {
-      $key = AuditDataLayer::searchInRowSet('column_name', $column['column_name'], $columns);
+      $key = RowSetHelper::findInRowSet($columns, 'column_name', $column['column_name']);
 
       if (isset($column['value_type']))
       {
@@ -431,9 +432,9 @@ order by EVENT_OBJECT_TABLE
   /**
    * Sets the Output decorator.
    *
-   * @param StratumStyle $io The Output decorator.
+   * @param AuditStyle $io The Output decorator.
    */
-  public static function setIo(StratumStyle $io)
+  public static function setIo(AuditStyle $io)
   {
     self::$io = $io;
   }

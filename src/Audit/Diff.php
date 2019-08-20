@@ -7,7 +7,7 @@ use SetBased\Audit\DiffTable;
 use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\MySql\Metadata\TableMetadata;
-use SetBased\Stratum\Style\StratumStyle;
+use SetBased\Audit\Style\AuditStyle;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +42,7 @@ class Diff
   /**
    * The Output decorator.
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   private $io;
 
@@ -58,11 +58,11 @@ class Diff
    * Object constructor.
    *
    * @param array[]         $config The content of the configuration file.
-   * @param StratumStyle    $io     The Output decorator.
+   * @param AuditStyle      $io     The Output decorator.
    * @param InputInterface  $input
    * @param OutputInterface $output
    */
-  public function __construct(array &$config, StratumStyle $io, InputInterface $input, OutputInterface $output)
+  public function __construct(array &$config, AuditStyle $io, InputInterface $input, OutputInterface $output)
   {
     $this->io     = $io;
     $this->config = &$config;
@@ -124,7 +124,7 @@ class Diff
     $dataTableColumns = TableColumnsMetadata::combine($this->additionalAuditColumns, $dataTableColumns);
 
     // In the audit table columns coming from the data table don't have defaults.
-    foreach($auditTableColumns->getColumns() as $column)
+    foreach ($auditTableColumns->getColumns() as $column)
     {
       if (!in_array($column->getName(), $this->additionalAuditColumns->getColumnNames()))
       {

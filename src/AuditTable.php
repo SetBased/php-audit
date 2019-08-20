@@ -6,7 +6,7 @@ namespace SetBased\Audit;
 use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\MySql\Metadata\AlterColumnMetadata;
-use SetBased\Stratum\Style\StratumStyle;
+use SetBased\Audit\Style\AuditStyle;
 
 /**
  * Class for creating audit tables and triggers.
@@ -52,7 +52,7 @@ class AuditTable
   /**
    * The output decorator
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   private $io;
 
@@ -71,10 +71,11 @@ class AuditTable
   private $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
-   * @param StratumStyle         $io                     The output for log messages.
+   * @param AuditStyle           $io                     The output for log messages.
    * @param string               $dataSchemaName         The name of the schema with data tables.
    * @param string               $auditSchemaName        The name of the schema with audit tables.
    * @param string               $tableName              The name of the data and audit table.
@@ -82,7 +83,7 @@ class AuditTable
    * @param string|null          $alias                  An unique alias for this table.
    * @param string|null          $skipVariable           The skip variable
    */
-  public function __construct(StratumStyle $io,
+  public function __construct(AuditStyle $io,
                               string $dataSchemaName,
                               string $auditSchemaName,
                               string $tableName,
@@ -104,11 +105,11 @@ class AuditTable
   /**
    * Drops all audit triggers from a table.
    *
-   * @param StratumStyle $io         The output decorator.
-   * @param string       $schemaName The name of the table schema.
-   * @param string       $tableName  The name of the table.
+   * @param AuditStyle $io         The output decorator.
+   * @param string     $schemaName The name of the table schema.
+   * @param string     $tableName  The name of the table.
    */
-  public static function dropAuditTriggers(StratumStyle $io, string $schemaName, string $tableName): void
+  public static function dropAuditTriggers(AuditStyle $io, string $schemaName, string $tableName): void
   {
     $triggers = AuditDataLayer::getTableTriggers($schemaName, $tableName);
     foreach ($triggers as $trigger)

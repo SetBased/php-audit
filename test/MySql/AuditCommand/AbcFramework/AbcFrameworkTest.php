@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SetBased\Audit\Test\MySql\AuditCommand\AbcFramework;
 
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
+use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
@@ -200,7 +201,7 @@ where  `audit_statement` = 'UPDATE'");
     self::assertEquals(2, count($rows), 'row count');
 
     // Tests on 'OLD' fields.
-    $row  = $rows[StaticDataLayer::searchInRowSet('audit_type', 'OLD', $rows)];
+    $row  = $rows[RowSetHelper::searchInRowSet($rows, 'audit_type', 'OLD')];
     $time = new \DateTime();
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     $time = new \DateTime();
@@ -215,7 +216,7 @@ where  `audit_statement` = 'UPDATE'");
     self::assertSame('SYS', $row['cmp_label']);
 
     // Tests on 'NEW' fields.
-    $row  = $rows[StaticDataLayer::searchInRowSet('audit_type', 'NEW', $rows)];
+    $row  = $rows[RowSetHelper::searchInRowSet($rows, 'audit_type', 'NEW')];
     $time = new \DateTime();
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     $time = new \DateTime();

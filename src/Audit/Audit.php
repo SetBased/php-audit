@@ -6,7 +6,8 @@ namespace SetBased\Audit\Audit;
 use SetBased\Audit\AuditTable;
 use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
-use SetBased\Stratum\Style\StratumStyle;
+use SetBased\Audit\Style\AuditStyle;
+use SetBased\Stratum\Helper\RowSetHelper;
 
 /**
  * Class for executing auditing actions for tables.
@@ -45,19 +46,18 @@ class Audit
   /**
    * The Output decorator.
    *
-   * @var StratumStyle
+   * @var AuditStyle
    */
   private $io;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *
-   * @param array[]      $config The content of the configuration file.
-   * @param StratumStyle $io     The Output decorator.
+   * @param array[]    $config The content of the configuration file.
+   * @param AuditStyle $io     The Output decorator.
    */
-  public function __construct(array &$config, StratumStyle $io)
+  public function __construct(array &$config, AuditStyle $io)
   {
     $this->config = &$config;
     $this->io     = $io;
@@ -100,7 +100,7 @@ class Audit
   {
     foreach ($this->config['tables'] as $tableName => $dummy)
     {
-      if (AuditDataLayer::searchInRowSet('table_name', $tableName, $this->dataSchemaTables)===null)
+      if (RowSetHelper::searchInRowSet($this->dataSchemaTables, 'table_name', $tableName)===null)
       {
         $this->io->writeln(sprintf('<info>Removing obsolete table %s from config file</info>', $tableName));
         unset($this->config['tables'][$tableName]);
@@ -162,7 +162,7 @@ class Audit
                                        $this->config['tables'][$table['table_name']]['skip']);
 
         // Ensure the audit table exists.
-        if (AuditDataLayer::searchInRowSet('table_name', $table['table_name'], $this->auditSchemaTables)===null)
+        if (RowSetHelper::searchInRowSet($this->auditSchemaTables, 'table_name', $table['table_name'])===null)
         {
           $currentTable->createAuditTable();
         }

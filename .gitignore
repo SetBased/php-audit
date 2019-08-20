@@ -2,7 +2,6 @@
 /.phpunit.result.cache
 /bin/phing
 /bin/phpunit
-/bin/stratum
 /composer.lock
 /test/report
 /test/coverage.xml

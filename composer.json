@@ -13,7 +13,9 @@
     "ext-json": "*",
     "setbased/exception": "^1.0.0",
     "setbased/helper-code-store-mysql": "^2.0.0",
-    "setbased/php-stratum": "^0.9.64",
+    "setbased/php-affirm": "^0.2.0",
+    "setbased/php-stratum-midlle": "^4.0.0",
+    "setbased/php-stratum-mysql": "^4.0.0",
     "symfony/console": "^3.0.0 || ^4.0.0"
   },
   "require-dev": {
