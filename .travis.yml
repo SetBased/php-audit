@@ -7,7 +7,7 @@ php:
 sudo: true
 
 addons:
-  mariadb: 10.1
+  mariadb: '10.2'
 
 before_install:
   - mysql --version
