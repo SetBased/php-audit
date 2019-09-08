@@ -6,14 +6,13 @@
         "data_schema": "test_data",
         "audit_schema": "test_audit"
     },
-    "metadata": "audit_metadata.json",
+    "audit_columns": [],
+    "additional_sql": [],
     "tables": {
         "TABLE1": {
             "audit": true,
             "skip": null,
             "alias": "t1"
         }
-    },
-    "audit_columns": [],
-    "additional_sql": []
+    }
 }

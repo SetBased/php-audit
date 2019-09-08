@@ -5,6 +5,5 @@
     "password": "test",
     "data_schema": "test_data",
     "audit_schema": "test_audit"
-  },
-  "metadata": "audit_metadata.json"
+  }
 }

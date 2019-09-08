@@ -6,7 +6,20 @@
     "data_schema": "test_data",
     "audit_schema": "test_audit"
   },
-  "metadata": "audit_metadata.json",
+  "audit_columns": [
+    {
+      "column_name": "audit_statement",
+      "column_type": "enum('INSERT','DELETE','UPDATE') not null",
+      "value_type": "ACTION"
+    },
+    {
+      "column_name": "audit_type",
+      "column_type": "enum('OLD','NEW') not null",
+      "value_type": "STATE"
+    }
+  ],
+  "additional_sql": [
+  ],
   "tables": {
     "TABLE1": {
       "audit": true,
@@ -23,19 +36,5 @@
       "alias": null,
       "skip": null
     }
-  },
-  "audit_columns": [
-    {
-      "column_name": "audit_statement",
-      "column_type": "enum('INSERT','DELETE','UPDATE') not null",
-      "value_type": "ACTION"
-    },
-    {
-      "column_name": "audit_type",
-      "column_type": "enum('OLD','NEW') not null",
-      "value_type": "STATE"
-    }
-  ],
-  "additional_sql": [
-  ]
+  }
 }

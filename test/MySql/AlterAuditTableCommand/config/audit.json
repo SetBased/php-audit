@@ -6,14 +6,6 @@
         "data_schema": "test_data",
         "audit_schema": "test_audit"
     },
-    "metadata": "audit_metadata.json",
-    "tables": {
-        "TABLE1": {
-            "audit": true,
-            "skip": null,
-            "alias": "t1"
-        }
-    },
     "audit_columns": [
         {
             "column_name": "audit_timestamp",
@@ -56,5 +48,12 @@
         "  set @audit_uuid = uuid_short();",
         "end if;",
         "set @audit_rownum = ifnull(@audit_rownum, 0) + 1;"
-    ]
+    ],
+    "tables": {
+        "TABLE1": {
+            "audit": true,
+            "skip": null,
+            "alias": "t1"
+        }
+    }
 }
