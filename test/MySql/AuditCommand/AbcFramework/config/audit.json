@@ -1,8 +1,6 @@
 {
   "database": {
-    "host": "localhost",
-    "user": "test",
-    "password": "test",
+    "credentials": "credentials.xml",
     "data_schema": "test_data",
     "audit_schema": "test_audit"
   },

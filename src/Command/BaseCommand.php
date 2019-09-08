@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Command;
 
+use Noodlehaus\Config;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Style\AuditStyle;
-use SetBased\Exception\RuntimeException;
+use SetBased\Config\TypedConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -16,11 +17,18 @@ class BaseCommand extends Command
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * All config file as array.
+   * The sections in the configurations file.
    *
    * @var array
    */
-  protected $config = [];
+  private static $sections = ['database', 'audit_columns', 'additional_sql', 'tables'];
+
+  /**
+   * The strong typed configuration reader and writer.
+   *
+   * @var TypedConfig
+   */
+  protected $config;
 
   /**
    * The name of the configuration file.
@@ -44,83 +52,30 @@ class BaseCommand extends Command
   protected $rewriteConfigFile = true;
 
   //--------------------------------------------------------------------------------------------------------------------
-
-  /**
-   * Returns the value of a setting.
-   *
-   * @param array  $settings    The settings as returned by parse_ini_file.
-   * @param bool   $mandatory   If set and setting $settingName is not found in section $sectionName an exception
-   *                            will be thrown.
-   * @param string $sectionName The name of the section of the requested setting.
-   * @param string $settingName The name of the setting of the requested setting.
-   *
-   * @return null|string
-   *
-   * @throws RuntimeException
-   */
-  protected static function getSetting(array $settings,
-                                       bool $mandatory,
-                                       string $sectionName,
-                                       string $settingName): ?string
-  {
-    // Test if the section exists.
-    if (!array_key_exists($sectionName, $settings))
-    {
-      if ($mandatory)
-      {
-        throw new RuntimeException("Section '%s' not found in configuration file.", $sectionName);
-      }
-      else
-      {
-        return null;
-      }
-    }
-
-    // Test if the setting in the section exists.
-    if (!array_key_exists($settingName, $settings[$sectionName]))
-    {
-      if ($mandatory)
-      {
-        throw new RuntimeException("Setting '%s' not found in section '%s' configuration file.",
-                                   $settingName,
-                                   $sectionName);
-      }
-      else
-      {
-        return null;
-      }
-    }
-
-    return $settings[$sectionName][$settingName];
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
   /**
    * Reads configuration parameters from the configuration file.
    */
   public function readConfigFile(): void
   {
-    $content = file_get_contents($this->configFileName);
+    $this->config = new TypedConfig(new Config($this->configFileName));
+    $config       = $this->config->getConfig();
 
-    $this->config = (array)json_decode($content, true);
-    if (json_last_error()!=JSON_ERROR_NONE)
+    foreach (self::$sections as $key)
     {
-      throw new RuntimeException("Error decoding JSON: '%s'.", json_last_error_msg());
+      if (!isset($config[$key]))
+      {
+        $config[$key] = [];
+      }
     }
 
-    if (!isset($this->config['audit_columns']))
+    $credentials = $this->config->getOptString('database.credentials');
+    if ($credentials!==null)
     {
-      $this->config['audit_columns'] = [];
-    }
-
-    if (!isset($this->config['additional_sql']))
-    {
-      $this->config['additional_sql'] = [];
-    }
-
-    if (!isset($this->config['tables']))
-    {
-      $this->config['tables'] = [];
+      $tmp = new TypedConfig(new Config(dirname($this->configFileName).'/'.$credentials));
+      foreach ($tmp->getManArray('database') as $key => $value)
+      {
+        $config->set('database.'.$key, $value);
+      }
     }
   }
 
@@ -139,18 +94,15 @@ class BaseCommand extends Command
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Connects to a MySQL instance.
-   *
-   * @param array $settings The settings from the configuration file.
    */
-  protected function connect(array $settings): void
+  protected function connect(): void
   {
-    $host     = $this->getSetting($settings, true, 'database', 'host');
-    $user     = $this->getSetting($settings, true, 'database', 'user');
-    $password = $this->getSetting($settings, true, 'database', 'password');
-    $database = $this->getSetting($settings, true, 'database', 'data_schema');
-
     AuditDataLayer::setIo($this->io);
-    AuditDataLayer::connect($host, $user, $password, $database);
+    AuditDataLayer::connect($this->config->getManString('database.host'),
+                            $this->config->getManString('database.user'),
+                            $this->config->getManString('database.password'),
+                            $this->config->getManString('database.data_schema'),
+                            $this->config->getManInt('database.port', 3306));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -162,8 +114,22 @@ class BaseCommand extends Command
     // Return immediately when the config file must not be rewritten.
     if (!$this->rewriteConfigFile) return;
 
-    ksort($this->config['tables']);
-    $this->writeTwoPhases($this->configFileName, json_encode($this->config, JSON_PRETTY_PRINT));
+    $tables = $this->config->getManArray('tables');
+    ksort($tables);
+
+    $config           = new Config($this->configFileName);
+    $config['tables'] = $tables;
+
+    $data = [];
+    foreach (self::$sections as $key)
+    {
+      if (!empty($config->get($key)))
+      {
+        $data[$key] = $config->get($key);
+      }
+    }
+
+    $this->writeTwoPhases($this->configFileName, json_encode($data, JSON_PRETTY_PRINT));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

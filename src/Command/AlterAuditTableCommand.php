@@ -16,16 +16,6 @@ class AlterAuditTableCommand extends AuditCommand
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Check full full and return array without new or obsolete columns if full not set.
-   *
-   * @param array[] $columns The metadata of the columns of a table.
-   *
-   * @var AuditStyle
-   */
-  protected $io;
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * @inheritdoc
    */
   protected function configure()
@@ -66,7 +56,7 @@ EOL
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();
 
-    $this->connect($this->config);
+    $this->connect();
 
     $alter = new AlterAuditTable($this->config);
     $sql   = $alter->main();

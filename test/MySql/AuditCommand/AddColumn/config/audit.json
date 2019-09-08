@@ -1,10 +1,6 @@
 {
   "database": {
-    "host": "localhost",
-    "user": "test",
-    "password": "test",
-    "data_schema": "test_data",
-    "audit_schema": "test_audit"
+    "credentials": "credentials.ini"
   },
   "tables": {
     "TABLE1": {

@@ -39,7 +39,7 @@ class DropTriggersCommand extends AuditCommand
     $this->readConfigFile();
 
     // Create database connection with params from config file
-    $this->connect($this->config);
+    $this->connect();
 
     $this->dropTriggers();
 
@@ -54,15 +54,15 @@ class DropTriggersCommand extends AuditCommand
    */
   private function dropTriggers(): void
   {
-    $data_schema = $this->config['database']['data_schema'];
-    $triggers    = AuditDataLayer::getTriggers($data_schema);
+    $dataSchema = $this->config->getManString('database.data_schema');
+    $triggers   = AuditDataLayer::getTriggers($dataSchema);
     foreach ($triggers as $trigger)
     {
       $this->io->logInfo('Dropping trigger <dbo>%s</dbo> from table <dbo>%s</dbo>',
                          $trigger['trigger_name'],
                          $trigger['table_name']);
 
-      AuditDataLayer::dropTrigger($data_schema, $trigger['trigger_name']);
+      AuditDataLayer::dropTrigger($dataSchema, $trigger['trigger_name']);
     }
   }
 

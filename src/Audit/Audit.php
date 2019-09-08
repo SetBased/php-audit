@@ -7,6 +7,7 @@ use SetBased\Audit\AuditTable;
 use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Style\AuditStyle;
+use SetBased\Config\TypedConfig;
 use SetBased\Stratum\Helper\RowSetHelper;
 
 /**
@@ -30,9 +31,9 @@ class Audit
   private $auditSchemaTables;
 
   /**
-   * The content of the configuration file.
+   * The strong typed configuration reader and writer.
    *
-   * @var array
+   * @var TypedConfig
    */
   private $config;
 
@@ -54,17 +55,17 @@ class Audit
   /**
    * Object constructor.
    *
-   * @param array[]    $config The content of the configuration file.
-   * @param AuditStyle $io     The Output decorator.
+   * @param TypedConfig $config The strong typed configuration reader and writer.
+   * @param AuditStyle  $io     The Output decorator.
    */
-  public function __construct(array &$config, AuditStyle $io)
+  public function __construct(TypedConfig $config, AuditStyle $io)
   {
-    $this->config = &$config;
+    $this->config = $config;
     $this->io     = $io;
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config['database']['audit_schema'],
-                                                             $this->config['audit_columns']);
+      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                             $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -73,8 +74,8 @@ class Audit
    */
   public function listOfTables(): void
   {
-    $this->dataSchemaTables  = AuditDataLayer::getTablesNames($this->config['database']['data_schema']);
-    $this->auditSchemaTables = AuditDataLayer::getTablesNames($this->config['database']['audit_schema']);
+    $this->dataSchemaTables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
+    $this->auditSchemaTables = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -98,12 +99,17 @@ class Audit
    */
   public function obsoleteTables(): void
   {
-    foreach ($this->config['tables'] as $tableName => $dummy)
+    foreach ($this->config->getManArray('tables') as $tableName => $dummy)
     {
       if (RowSetHelper::searchInRowSet($this->dataSchemaTables, 'table_name', $tableName)===null)
       {
         $this->io->writeln(sprintf('<info>Removing obsolete table %s from config file</info>', $tableName));
-        unset($this->config['tables'][$tableName]);
+
+        // Unset table (work a round bug in \Noodlehaus\Config::remove()).
+        $config = $this->config->getConfig();
+        $tables = $config['tables'];
+        unset($tables[$tableName]);
+        $config->set('tables', $tables);
       }
     }
   }
@@ -116,19 +122,20 @@ class Audit
   {
     foreach ($this->dataSchemaTables as $table)
     {
-      if (isset($this->config['tables'][$table['table_name']]))
+      if ($this->config->getOptArray('tables.'.$table['table_name'])!==null)
       {
-        if (!isset($this->config['tables'][$table['table_name']]['audit']))
+        if ($this->config->getOptBool('tables.'.$table['table_name'].'.audit')===null)
         {
           $this->io->writeln(sprintf('<info>Audit not set for table %s</info>', $table['table_name']));
         }
         else
         {
-          if ($this->config['tables'][$table['table_name']]['audit'])
+          if ($this->config->getManBool('tables.'.$table['table_name'].'.audit'))
           {
-            if (!isset($this->config['tables'][$table['table_name']]['alias']))
+            if ($this->config->getOptString('tables.'.$table['table_name'].'.alias')===null)
             {
-              $this->config['tables'][$table['table_name']]['alias'] = AuditTable::getRandomAlias();
+              $config                                          = $this->config->getConfig();
+              $config['tables'][$table['table_name']]['alias'] = AuditTable::getRandomAlias();
             }
           }
         }
@@ -136,9 +143,8 @@ class Audit
       else
       {
         $this->io->writeln(sprintf('<info>Found new table %s</info>', $table['table_name']));
-        $this->config['tables'][$table['table_name']] = ['audit' => null,
-                                                         'alias' => null,
-                                                         'skip'  => null];
+        $config = $this->config->getConfig();
+        $config->set('tables.'.$table['table_name'], ['audit' => null, 'alias' => null, 'skip' => null]);
       }
     }
   }
@@ -151,15 +157,15 @@ class Audit
   {
     foreach ($this->dataSchemaTables as $table)
     {
-      if ($this->config['tables'][$table['table_name']]['audit'])
+      if ($this->config->getManBool('tables.'.$table['table_name'].'.audit'))
       {
         $currentTable = new AuditTable($this->io,
-                                       $this->config['database']['data_schema'],
-                                       $this->config['database']['audit_schema'],
+                                       $this->config->getManString('database.data_schema'),
+                                       $this->config->getManString('database.audit_schema'),
                                        $table['table_name'],
                                        $this->additionalAuditColumns,
-                                       $this->config['tables'][$table['table_name']]['alias'],
-                                       $this->config['tables'][$table['table_name']]['skip']);
+                                       $this->config->getOptString('tables.'.$table['table_name'].'.alias'),
+                                       $this->config->getOptString('tables.'.$table['table_name'].'.skip'));
 
         // Ensure the audit table exists.
         if (RowSetHelper::searchInRowSet($this->auditSchemaTables, 'table_name', $table['table_name'])===null)
@@ -168,11 +174,13 @@ class Audit
         }
 
         // Drop and create audit triggers and add new columns to the audit table.
-        $currentTable->main($this->config['additional_sql']);
+        $currentTable->main($this->config->getManArray('additional_sql'));
       }
       else
       {
-        AuditTable::dropAuditTriggers($this->io, $this->config['database']['data_schema'], $table['table_name']);
+        AuditTable::dropAuditTriggers($this->io,
+                                      $this->config->getManString('database.data_schema'),
+                                      $table['table_name']);
       }
     }
   }

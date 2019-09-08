@@ -7,6 +7,7 @@ use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AlterTableCodeStore;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\MySql\Metadata\TableMetadata;
+use SetBased\Config\TypedConfig;
 use SetBased\Exception\FallenException;
 
 /**
@@ -18,21 +19,21 @@ class AlterAuditTable
   /**
    * The metadata of the additional audit columns.
    *
-   * @var \SetBased\Audit\Metadata\TableColumnsMetadata
+   * @var TableColumnsMetadata
    */
   private $additionalAuditColumns;
 
   /**
    * Code store for alter table statement.
    *
-   * @var \SetBased\Audit\MySql\AlterTableCodeStore
+   * @var AlterTableCodeStore
    */
   private $codeStore;
 
   /**
-   * The content of the configuration file.
+   * The strong typed configuration reader and writer.
    *
-   * @var array
+   * @var TypedConfig
    */
   private $config;
 
@@ -40,16 +41,16 @@ class AlterAuditTable
   /**
    * Object constructor.
    *
-   * @param array[] $config The content of the configuration file.
+   * @param TypedConfig $config The strong typed configuration reader and writer.
    */
-  public function __construct(array &$config)
+  public function __construct(TypedConfig $config)
   {
-    $this->config    = &$config;
+    $this->config    = $config;
     $this->codeStore = new AlterTableCodeStore();
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config['database']['audit_schema'],
-                                                             $this->config['audit_columns']);
+      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                             $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -77,8 +78,8 @@ class AlterAuditTable
    */
   private function compareTable(string $tableName): void
   {
-    $dataTable  = $this->getTableMetadata($this->config['database']['data_schema'], $tableName);
-    $auditTable = $this->getTableMetadata($this->config['database']['audit_schema'], $tableName);
+    $dataTable  = $this->getTableMetadata($this->config->getManString('database.data_schema'), $tableName);
+    $auditTable = $this->getTableMetadata($this->config->getManString('database.audit_schema'), $tableName);
 
     // In the audit schema columns corresponding with the columns from the data table are always nullable.
     $dataTable->getColumns()->makeNullable();
@@ -104,7 +105,7 @@ class AlterAuditTable
       $maxLength = $diff->getLongestColumnNameLength();
 
       $this->codeStore->append(sprintf('alter table `%s`.`%s`',
-                                       $this->config['database']['audit_schema'],
+                                       $this->config->getManString('database.audit_schema'),
                                        $auditTable->getTableName()));
 
       $first = true;
@@ -166,7 +167,7 @@ class AlterAuditTable
       }
 
       $this->codeStore->append(sprintf('alter table `%s`.`%s` %s;',
-                                       $this->config['database']['audit_schema'],
+                                       $this->config->getManString('database.audit_schema'),
                                        $auditTable->getTableName(),
                                        implode(' ', $parts)));
       $this->codeStore->append('');
@@ -182,7 +183,7 @@ class AlterAuditTable
   private function getTableList(): array
   {
     $tables1 = [];
-    foreach ($this->config['tables'] as $tableName => $config)
+    foreach ($this->config->getManArray('tables') as $tableName => $config)
     {
       if ($config['audit'])
       {
@@ -190,14 +191,14 @@ class AlterAuditTable
       }
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config['database']['data_schema']);
+    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
     $tables2 = [];
     foreach ($tables as $table)
     {
       $tables2[] = $table['table_name'];
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config['database']['audit_schema']);
+    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
     $tables3 = [];
     foreach ($tables as $table)
     {

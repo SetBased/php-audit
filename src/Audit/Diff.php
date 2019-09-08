@@ -8,6 +8,7 @@ use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\MySql\Metadata\TableMetadata;
 use SetBased\Audit\Style\AuditStyle;
+use SetBased\Config\TypedConfig;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,9 +27,9 @@ class Diff
   private $additionalAuditColumns;
 
   /**
-   * The content of the configuration file.
+   * The strong typed configuration reader and writer.
    *
-   * @var array
+   * @var TypedConfig
    */
   private $config;
 
@@ -57,21 +58,21 @@ class Diff
   /**
    * Object constructor.
    *
-   * @param array[]         $config The content of the configuration file.
+   * @param TypedConfig     $config The strong typed configuration reader and writer.
    * @param AuditStyle      $io     The Output decorator.
    * @param InputInterface  $input
    * @param OutputInterface $output
    */
-  public function __construct(array &$config, AuditStyle $io, InputInterface $input, OutputInterface $output)
+  public function __construct(TypedConfig $config, AuditStyle $io, InputInterface $input, OutputInterface $output)
   {
     $this->io     = $io;
-    $this->config = &$config;
+    $this->config = $config;
     $this->input  = $input;
     $this->output = $output;
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config['database']['audit_schema'],
-                                                             $this->config['audit_columns']);
+      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                             $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -113,9 +114,9 @@ class Diff
    */
   private function currentAuditTable(string $tableName): void
   {
-    $columns           = AuditDataLayer::getTableColumns($this->config['database']['data_schema'], $tableName);
+    $columns           = AuditDataLayer::getTableColumns($this->config->getManString('database.data_schema'), $tableName);
     $dataTableColumns  = new TableColumnsMetadata($columns);
-    $columns           = AuditDataLayer::getTableColumns($this->config['database']['audit_schema'], $tableName);
+    $columns           = AuditDataLayer::getTableColumns($this->config->getManString('database.audit_schema'), $tableName);
     $auditTableColumns = new TableColumnsMetadata($columns, 'AuditColumnMetadata');
 
     // In the audit table columns coming from the data table are always nullable.
@@ -132,8 +133,8 @@ class Diff
       }
     }
 
-    $dataTableOptions  = AuditDataLayer::getTableOptions($this->config['database']['data_schema'], $tableName);
-    $auditTableOptions = AuditDataLayer::getTableOptions($this->config['database']['audit_schema'], $tableName);
+    $dataTableOptions  = AuditDataLayer::getTableOptions($this->config->getManString('database.data_schema'), $tableName);
+    $auditTableOptions = AuditDataLayer::getTableOptions($this->config->getManString('database.audit_schema'), $tableName);
 
     $dataTable  = new TableMetadata($dataTableOptions, $dataTableColumns);
     $auditTable = new TableMetadata($auditTableOptions, $auditTableColumns);
@@ -165,7 +166,7 @@ class Diff
   private function getTableLists(): array
   {
     $tables1 = [];
-    foreach ($this->config['tables'] as $tableName => $config)
+    foreach ($this->config->getManArray('tables') as $tableName => $config)
     {
       if ($config['audit'])
       {
@@ -173,14 +174,14 @@ class Diff
       }
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config['database']['data_schema']);
+    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
     $tables2 = [];
     foreach ($tables as $table)
     {
       $tables2[] = $table['table_name'];
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config['database']['audit_schema']);
+    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
     $tables3 = [];
     foreach ($tables as $table)
     {

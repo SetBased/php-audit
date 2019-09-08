@@ -6,8 +6,6 @@
         "data_schema": "test_data",
         "audit_schema": "test_audit"
     },
-    "audit_columns": [],
-    "additional_sql": [],
     "tables": {
         "TABLE1": {
             "audit": true,

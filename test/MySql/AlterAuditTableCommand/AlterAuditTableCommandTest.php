@@ -112,7 +112,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $application = new Application();
     $application->add(new AlterAuditTableCommand());
 
-    /** @var \SetBased\Audit\Command\AlterAuditTableCommand $command */
+    /** @var AlterAuditTableCommand $command */
     $command = $application->find('alter-audit-table');
     $command->setRewriteConfigFile($rewriteConfigFile);
     $commandTester = new CommandTester($command);
@@ -135,7 +135,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $application = new Application();
     $application->add(new AuditCommand());
 
-    /** @var \SetBased\Audit\Command\AuditCommand $command */
+    /** @var AuditCommand $command */
     $command = $application->find('audit');
     $command->setRewriteConfigFile(true);
     $commandTester = new CommandTester($command);

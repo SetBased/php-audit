@@ -42,7 +42,7 @@ class AuditCommand extends BaseCommand
     $this->readConfigFile();
 
     // Create database connection with params from config file
-    $this->connect($this->config);
+    $this->connect();
 
     $audit = new Audit($this->config, $this->io);
     $audit->main();

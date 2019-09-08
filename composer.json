@@ -16,6 +16,7 @@
     "setbased/php-affirm": "^0.2.0",
     "setbased/php-stratum-middle": "^4.0.0",
     "setbased/php-stratum-mysql": "^4.0.0",
+    "setbased/typed-config": "dev-master",
     "symfony/console": "^3.0.0 || ^4.0.0"
   },
   "require-dev": {
