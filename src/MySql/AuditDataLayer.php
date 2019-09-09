@@ -441,22 +441,6 @@ order by EVENT_OBJECT_TABLE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Drop table.
-   *
-   * @param string $schemaName The name of the table schema.
-   * @param string $tableName  The name of the table.
-   *
-   * @return array[]
-   */
-  public static function showColumns(string $schemaName, string $tableName): array
-  {
-    $sql = sprintf('SHOW COLUMNS FROM `%s`.`%s`', $schemaName, $tableName);
-
-    return static::executeRows($sql);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Releases all table locks.
    */
   public static function unlockTables(): void
