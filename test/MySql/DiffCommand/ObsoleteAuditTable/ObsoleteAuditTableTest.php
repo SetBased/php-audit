@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnDataTable;
+namespace SetBased\Audit\Test\MySql\DiffCommand\ObsoleteAuditTable;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
- * Tests new column in data table.
+ * Tests missing audit table.
  */
-class NewColumnDataTableTest extends DiffCommandTestCase
+class ObsoleteAuditTableTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -28,14 +28,27 @@ class NewColumnDataTableTest extends DiffCommandTestCase
    */
   public function test01(): void
   {
+    copy(__DIR__.'/config/audit.org.json', __DIR__.'/config/audit.json');
+
     $this->runAudit();
 
-    // Create new column.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_column.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_data_table.sql'));
 
-    $output = preg_replace('/ +/', ' ', $this->runDiff());
+    $this->runAudit(0, true);
 
-    self::assertStringContainsString('| c3 | | mediumint(9) |', $output, 'acquire');
+    // Run diff command without --full option.
+    $output = $this->runDiff();
+    self::assertSame('', trim($output));
+
+    // Run diff command with --full option.
+    $output   = $this->runDiff(true);
+    $expected = <<< EOT
+Obsolete Audit Tables
+=====================
+
+ * TABLE2
+EOT;
+    self::assertStringContainsString(trim($expected), $output);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

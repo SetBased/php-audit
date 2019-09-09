@@ -1,0 +1,21 @@
+{
+    "database": {
+        "host": "localhost",
+        "user": "test",
+        "password": "test",
+        "data_schema": "test_data",
+        "audit_schema": "test_audit"
+    },
+    "tables": {
+        "TABLE1": {
+            "audit": true,
+            "alias": "t1",
+            "skip": null
+        },
+        "TABLE2": {
+            "audit": true,
+            "alias": "t2",
+            "skip": null
+        }
+    }
+}

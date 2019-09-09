@@ -19,7 +19,7 @@ class MinimalConfigTest extends AuditTestCase
     $application = new Application();
     $application->add(new AuditCommand());
 
-    /** @var \SetBased\Audit\Command\AuditCommand $command */
+    /** @var AuditCommand $command */
     $command = $application->find('audit');
     $command->setRewriteConfigFile(false);
     $commandTester = new CommandTester($command);

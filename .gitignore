@@ -3,7 +3,11 @@
 /bin/phing
 /bin/phpunit
 /composer.lock
-/test/report
-/test/coverage.xml
 /test/MySql/AlterAuditTableCommand/config/alter.sql
+/test/MySql/AuditCommand/DroppedTable/config/audit.json
+/test/MySql/AuditCommand/NewTable/config/audit.json
+/test/MySql/AuditCommand/ObsoleteTable/config/audit.json
+/test/MySql/DiffCommand/ObsoleteAuditTable/config/audit.json
+/test/coverage.xml
+/test/report
 /vendor/

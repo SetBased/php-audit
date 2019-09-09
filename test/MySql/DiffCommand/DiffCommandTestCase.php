@@ -40,18 +40,23 @@ class DiffCommandTestCase extends AuditTestCase
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Runs the audit command, i.e. creates the audit table.
+   *
+   * @param int  $statusCode        The expected status code of the command.
+   * @param bool $rewriteConfigFile If true the config file will be rewritten.
    */
-  protected function runAudit(): void
+  protected function runAudit(int $statusCode = 0, bool $rewriteConfigFile = false): void
   {
     $application = new Application();
     $application->add(new AuditCommand());
 
     /** @var AuditCommand $command */
     $command = $application->find('audit');
-    $command->setRewriteConfigFile(true);
+    $command->setRewriteConfigFile($rewriteConfigFile);
     $commandTester = new CommandTester($command);
     $commandTester->execute(['command'     => $command->getName(),
                              'config file' => self::$dir.'/config/audit.json']);
+
+    self::assertSame($statusCode, $commandTester->getStatusCode(), 'status_code');
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
     StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
@@ -61,9 +66,11 @@ class DiffCommandTestCase extends AuditTestCase
   /**
    * Runs the diff command and returns the output of the diff command.
    *
+   * @param bool $full If true the --full option will be set.
+   *
    * @return string
    */
-  protected function runDiff(): string
+  protected function runDiff(bool $full = false): string
   {
     $application = new Application();
     $application->add(new DiffCommand());
@@ -73,6 +80,7 @@ class DiffCommandTestCase extends AuditTestCase
     $command->setRewriteConfigFile(false);
     $commandTester = new CommandTester($command);
     $commandTester->execute(['command'     => $command->getName(),
+                             '--full'      => $full,
                              'config file' => self::$dir.'/config/audit.json']);
 
     return $commandTester->getDisplay();

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Audit\Test\MySql\AuditCommand\ObsoleteTable;
+namespace SetBased\Audit\Test\MySql\AuditCommand\DroppedTable;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
@@ -9,9 +9,9 @@ use SetBased\Stratum\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
- * Tests for running audit with an obsolete table (i.e. table is not longer been audited).
+ * Tests for running audit with a dropped table.
  */
-class ObsoleteTableTest extends AuditCommandTestCase
+class DroppedTableTest extends AuditCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -48,10 +48,8 @@ class ObsoleteTableTest extends AuditCommandTestCase
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_delete'));
 
-    // Set audit to false for TABLE2.
-    $config = json_decode(file_get_contents(__DIR__.'/config/audit.json'), true);
-    $config['tables']['TABLE2']['audit'] = false;
-    file_put_contents(__DIR__.'/config/audit.json', json_encode($config, JSON_PRETTY_PRINT));
+    // Drop obsolete table TABLE2.
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
 
     $this->runAudit(0, true);
 
@@ -66,14 +64,10 @@ class ObsoleteTableTest extends AuditCommandTestCase
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
-    // TABLE2 must not have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
-    self::assertCount(0, $triggers);
-
-    // TABLE2 MUST be in audit.json.
+    // TABLE2 MUST not be in audit.json.
     $config = file_get_contents(__DIR__.'/config/audit.json');
     self::assertStringContainsString('TABLE1', $config);
-    self::assertStringContainsString('TABLE2', $config);
+    self::assertStringNotContainsString('TABLE2', $config);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

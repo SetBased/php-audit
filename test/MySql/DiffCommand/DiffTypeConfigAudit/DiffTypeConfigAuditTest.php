@@ -33,7 +33,7 @@ class DiffTypeConfigAuditTest extends DiffCommandTestCase
     // Change type of column c4.
     StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/change_column_type.sql'));
 
-    $output = preg_replace('/\ +/', ' ', $this->runDiff());
+    $output = preg_replace('/ +/', ' ', $this->runDiff());
 
     self::assertStringContainsString('| c4 | int(11) | varchar(20) |', $output);
     self::assertStringContainsString('| | | [utf8] [utf8_general_ci] |', $output);

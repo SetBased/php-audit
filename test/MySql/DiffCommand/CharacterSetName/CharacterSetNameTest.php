@@ -33,7 +33,7 @@ class CharacterSetNameTest extends DiffCommandTestCase
     // Change character set of column c4.
     StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/change_charset.sql'));
 
-    $output = preg_replace('/\ +/', ' ', $this->runDiff());
+    $output = preg_replace('/ +/', ' ', $this->runDiff());
 
     self::assertStringContainsString('| c4 | varchar(20) | varchar(20) |', $output);
     self::assertStringContainsString('| | [utf8] [utf8_general_ci] | [ascii] [ascii_general_ci] |', $output);

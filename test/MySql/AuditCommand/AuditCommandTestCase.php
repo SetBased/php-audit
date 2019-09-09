@@ -42,13 +42,15 @@ class AuditCommandTestCase extends AuditTestCase
    *
    * @param int  $statusCode        The expected status code of the command.
    * @param bool $rewriteConfigFile If true the config file will be rewritten.
+   *
+   * @return string The output of the Audit command.
    */
-  protected function runAudit(int $statusCode = 0, bool $rewriteConfigFile = false): void
+  protected function runAudit(int $statusCode = 0, bool $rewriteConfigFile = false): string
   {
     $application = new Application();
     $application->add(new AuditCommand());
 
-    /** @var \SetBased\Audit\Command\AuditCommand $command */
+    /** @var AuditCommand $command */
     $command = $application->find('audit');
     $command->setRewriteConfigFile($rewriteConfigFile);
     $commandTester = new CommandTester($command);
@@ -59,6 +61,8 @@ class AuditCommandTestCase extends AuditTestCase
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
     StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+
+    return $commandTester->getDisplay();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

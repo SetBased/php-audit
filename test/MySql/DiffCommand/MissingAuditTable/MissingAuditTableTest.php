@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Audit\Test\MySql\DiffCommand\NewColumnDataTable;
+namespace SetBased\Audit\Test\MySql\DiffCommand\CharacterSetName;
 
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
- * Tests new column in data table.
+ * Tests missing audit table.
  */
-class NewColumnDataTableTest extends DiffCommandTestCase
+class MissingAuditTableTest extends DiffCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -30,12 +30,18 @@ class NewColumnDataTableTest extends DiffCommandTestCase
   {
     $this->runAudit();
 
-    // Create new column.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_column.sql'));
+    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_audit_table.sql'));
 
-    $output = preg_replace('/ +/', ' ', $this->runDiff());
+    $output = $this->runDiff();
 
-    self::assertStringContainsString('| c3 | | mediumint(9) |', $output, 'acquire');
+    $expected = <<< EOT
+Missing Audit Tables
+====================
+
+ * TABLE2
+EOT;
+
+    self::assertSame(trim($expected), trim($output));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

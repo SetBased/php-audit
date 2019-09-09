@@ -1,0 +1,28 @@
+{
+  "database": {
+    "host": "localhost",
+    "user": "test",
+    "password": "test",
+    "data_schema": "test_data",
+    "audit_schema": "test_audit"
+  },
+  "audit_columns": [
+    {
+      "column_name": "audit_statement",
+      "column_type": "enum('INSERT','DELETE','UPDATE') not null",
+      "value_type": "ACTION"
+    },
+    {
+      "column_name": "audit_type",
+      "column_type": "enum('OLD','NEW') not null",
+      "value_type": "STATE"
+    }
+  ],
+  "tables": {
+    "TABLE1": {
+      "audit": true,
+      "skip": null,
+      "alias": "t1"
+    }
+  }
+}
