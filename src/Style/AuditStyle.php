@@ -39,18 +39,11 @@ class AuditStyle extends SymfonyStyle
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function logDebug()
-  {
-    if ($this->getVerbosity()>=OutputInterface::VERBOSITY_DEBUG)
-    {
-      $args   = func_get_args();
-      $format = array_shift($args);
-
-      $this->writeln(vsprintf('<info>'.$format.'</info>', $args));
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Logs a message if verbosity is OutputInterface::VERBOSITY_NORMAL or higher.
+   *
+   * This method takes arguments like sprintf.
+   */
   public function logInfo()
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_NORMAL)
@@ -63,18 +56,11 @@ class AuditStyle extends SymfonyStyle
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function logNote()
-  {
-    if ($this->getVerbosity()>=OutputInterface::VERBOSITY_NORMAL)
-    {
-      $args   = func_get_args();
-      $format = array_shift($args);
-
-      $this->writeln('<note> ! [NOTE] '.vsprintf($format, $args).'</note>');
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Logs a message if verbosity is OutputInterface::VERBOSITY_VERBOSE or higher.
+   *
+   * This method takes arguments like sprintf.
+   */
   public function logVerbose()
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_VERBOSE)
@@ -87,6 +73,11 @@ class AuditStyle extends SymfonyStyle
   }
 
   //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Logs a message if verbosity is OutputInterface::VERBOSITY_VERY_VERBOSE or higher.
+   *
+   * This method takes arguments like sprintf.
+   */
   public function logVeryVerbose()
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_VERY_VERBOSE)
