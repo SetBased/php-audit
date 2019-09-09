@@ -134,8 +134,7 @@ class Audit
           {
             if ($this->config->getOptString('tables.'.$table['table_name'].'.alias')===null)
             {
-              $config                                          = $this->config->getConfig();
-              $config['tables'][$table['table_name']]['alias'] = AuditTable::getRandomAlias();
+              $this->config->getConfig()->set('tables.'.$table['table_name'].'.alias', AuditTable::getRandomAlias());
             }
           }
         }
@@ -157,7 +156,8 @@ class Audit
   {
     foreach ($this->dataSchemaTables as $table)
     {
-      if ($this->config->getManBool('tables.'.$table['table_name'].'.audit'))
+      $audit = $this->config->getOptBool('tables.'.$table['table_name'].'.audit');
+      if ($audit===true)
       {
         $currentTable = new AuditTable($this->io,
                                        $this->config->getManString('database.data_schema'),
@@ -176,11 +176,15 @@ class Audit
         // Drop and create audit triggers and add new columns to the audit table.
         $currentTable->main($this->config->getManArray('additional_sql'));
       }
-      else
+      elseif ($audit===false)
       {
         AuditTable::dropAuditTriggers($this->io,
                                       $this->config->getManString('database.data_schema'),
                                       $table['table_name']);
+      }
+      else /* $audit===null */
+      {
+        $this->io->logVerbose('Ignoring table <dbo>%s</dbo>', $table['table_name']);
       }
     }
   }
