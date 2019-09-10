@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="PHP Audit" default="build"  basedir=".">
+    <taskdef name="readSemanticVersion" classname="vendor.setbased.phing-extensions.src.Task.ReadSemanticVersionTask"/>
+    <property name="VERSION" value="0.0.0"/>
+
     <target name="build"/>
 
     <!-- Run composer update and executes various other updates -->
     <target name="update">
         <exec command="composer update" checkreturn="true" passthru="true"/>
+    </target>
+
+    <!-- Creates a new version/release. -->
+    <target name="version">
+        <readSemanticVersion file=".version"
+                             versionProperty="VERSION"
+                             haltOnError="true"/>
+        <!-- Set version of application -->
+        <reflexive>
+            <fileset dir=".">
+                <include name="src/Application/AuditApplication.php"/>
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="parent::__construct\('audit', .*"
+                            replace="parent::__construct('audit', '${VERSION}');"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <gitcommit repository="." message="Release: ${VERSION}" allFiles="true"/>
+        <gitpush repository="."/>
+        <gittag repository="." name="${VERSION}"/>
+        <gitpush repository="." refspec="${VERSION}" quiet="false"/>
     </target>
 
     <!-- Runs all unit tests -->
