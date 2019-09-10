@@ -11,9 +11,9 @@
   "require": {
     "php": ">=7.1.0",
     "ext-json": "*",
+    "setbased/error-handler": "^1.0.0",
     "setbased/exception": "^1.0.0",
     "setbased/helper-code-store-mysql": "^2.0.0",
-    "setbased/php-affirm": "^0.2.0",
     "setbased/php-stratum-middle": "^4.0.0",
     "setbased/php-stratum-mysql": "^4.0.0",
     "setbased/typed-config": "dev-master",

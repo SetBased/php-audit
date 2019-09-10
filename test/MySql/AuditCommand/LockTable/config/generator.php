@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);
 
-
-use SetBased\Affirm\ErrorHandler;
+use SetBased\ErrorHandler\ErrorHandler;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -34,9 +34,8 @@ $GLOBALS['exit'] = false;
 
 pcntl_signal(SIGUSR1, "signalHandler");
 
-// Set error handler.
 $handler = new ErrorHandler();
-$handler->register();
+$handler->registerErrorHandler();
 
 StaticDataLayer::connect('localhost', 'test', 'test', 'test_data');
 
