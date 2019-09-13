@@ -3,9 +3,9 @@
 The Audit Config File
 =====================
 
-In this chapter is the specification of the audit config file.
+This chapter is the specification of the audit config file.
 
-For most projects the audit config file must added to the VCS and distributed to the production environment of your project (unless you have some other mechanism for maintaining audit tables and triggers in place).
+For most projects the audit config file must added to the VCS and distributed to the production environment of your project (unless you have some other mechanism for maintaining audit tables and triggers).
 
 The audit config file is a JSON file and consist out of four sections which we discuss in detail in the following sections.
 
@@ -26,7 +26,7 @@ The Database Section
 The ``database`` section holds the variables described below:
 
 * ``credentials`` (optional)
-  The filename relative to the path of the audit config file of a supplementary configuration file. Any configuration setting in the supplementary configuration file will override the setting in ``database`` section of the audit config file. You can choose your favorite configuration format for the credentials file: ini, json, xml, or yml. You can only the password in the supplementary configuration file or all database settings.
+  The filename relative to the path of the audit config file of a supplementary configuration file. Any configuration setting in the supplementary configuration file will override the setting in ``database`` section of the audit config file. You can choose your favorite configuration format for the credentials file: ini, json, xml, or yml. You can only store the password in the supplementary configuration file or all database settings.
 * ``host`` (mandatory)
   The host were the MySQL server is running
 * ``user``  (mandatory)
@@ -39,7 +39,7 @@ The ``database`` section holds the variables described below:
   The schema (database) for the audit tables.
   The ``data schema`` and the ``audit schema`` must be two different schemata (databases).
 * ``port`` (optional)
-  The port number for connection to the MySQL server. Defaults value is 3306.
+  The port number for connecting to the MySQL server. Defaults value is 3306.
 
 Convention
 ``````````
@@ -216,7 +216,7 @@ Examples
 
 In this section we provide several useful examples for additional columns.
 
-Additional columns are optional, however, in practice additional columns given in examples 1, 2, and 3 are at least required to record an useful audit trail.
+Additional columns are optional, however, in practice additional columns given in examples 1, 2, and 3 are at least required to record a useful audit trail.
 
 Examples 4 and 5 for recording all data changes made in a database session and the order in which they are made.
 
@@ -431,7 +431,7 @@ No audit trail will be recorded for table ``TMP_IMPORT``.
       }
   }
 
-Example 1: Audit trail
+Example 2: Audit trail
 ::::::::::::::::::::::
 
 An audit trail will be recorded for table ``FOO_USER``.
