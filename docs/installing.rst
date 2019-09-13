@@ -47,7 +47,7 @@ Before you uninstall PhpStratum you must delete all audit triggers from the tabl
   ./vendor/bin/audit drop-triggers etc/config.json
 
 
-Remove the code of PhpStratum with composer_:
+Remove PhpStratum from your project with composer_:
 
 .. code:: sh
 
