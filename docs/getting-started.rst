@@ -21,21 +21,7 @@ You can run PhpAudit from the command line:
 
   ./vendor/bin/audit
 
-If you have set ``bin-dir`` in the ``config`` section in ``composer.json`` you must use a different path. For example:
-
-.. code:: json
-
-  "config": {
-    "bin-dir": "bin/"
-  }
-
-then you can run PhpAudit from the command line:
-
-.. code:: sh
-
-  ./bin/audit
-
-Throughout this manual we assume that PhpAudit is installed under ``bin/audit``.
+If you have set ``bin-dir`` in the ``config`` section in ``composer.json`` you must use a different path. 
 
 Twin Schemata
 -------------
@@ -51,7 +37,7 @@ PhpAudit will create an audit table in the ``audit schema`` for recording the au
 The Audit Configuration File
 ----------------------------
 
-The audit configuration file specification is described in detail in chapter xxx. In this section we provide an example audit configuration file.
+The audit configuration file specification is described in detail in :ref:`audit-config-file`. In this section we provide an example audit configuration file.
 
 .. code:: json
 
@@ -100,24 +86,25 @@ The audit configuration file specification is described in detail in chapter xxx
 
 The audit configuration file consists out of 3 sections:
 
-* The ``database`` section, we will discuss this section below and in detail in section xxx.
-* The ``audit_columns`` section. See section xxx for a detailed explanation.
-* The ``additional_sql`` section. See section xxx for a detailed explanation.
+* The ``database`` section, we will discuss this section below and in detail in :ref:`database-section`.
+* The ``audit_columns`` section. See :ref:`audit-columns-section` for a detailed explanation.
+* The ``additional_sql`` section. See :ref:`additional-sql-section` for a detailed explanation.
 
-The `` database`` section holds the variables described in the table below:
+The ``database`` section holds the variables described below:
 
-================ =======================================================================================
-Name             Description
----------------- ---------------------------------------------------------------------------------------
-``host``         The host were the MySQL server is running
-``user``         The user that is the `owner` of the tables in the ``data schema`` and ``audit schema``.
-                 See section xxx for an exact description of required grants.
-``password``     The password of the `owner`. In section xxx we describe how to store the password
-                 outside the audit configuration file.
-``data_schema``  The schema (database) with your application tables.
-``audit_schema`` The schema (database) for the audit tables. The ``data schema`` and the
-                 ``audit schema`` must be two different schemata (databases).
-================ =======================================================================================
+* ``host``
+  The host were the MySQL server is running
+* ``user``
+  The user that is the `owner` of the tables in the ``data schema`` and ``audit schema``.
+  See :ref:`database-section` for an exact description of required grants.
+* ``password``
+  The password of the `owner`.
+  In :ref:`database-section` we describe how to store the password outside the audit configuration file.
+* ``data_schema``
+  The schema (database) with your application tables.
+* ``audit_schema``
+  The schema (database) for the audit tables.
+  The ``data schema`` and the ``audit schema`` must be two different schemata (databases).
 
 Throughout this manual we assume that the audit configuration file is stored in ``etc/audit.json``. You are free to choose your preferred path.
 
@@ -125,7 +112,7 @@ Run PhpStratum with the ``audit`` command:
 
 .. code:: sh
 
-  ./bin/audit audit etc/audit.json
+  ./vendor/bin/audit audit etc/audit.json
 
 Output:
 
@@ -134,7 +121,7 @@ Output:
   Found new table FOO_EMPLOYEE
    Wrote etc/audit.json
 
-The first time you run the audit command PhpAudit will only report the tables found in the ``data schema`` and add the tables in de ``tables`` section in the audit configuration file. Suppose you application has a table ``FOO_EMPLOYEE``, the ``tables`` section will look like:
+The first time you run the audit command PhpAudit will only report the tables found in the ``data schema`` and add the tables in the ``tables`` section in the audit configuration file. Suppose you application has a table ``FOO_EMPLOYEE``, the ``tables`` section will look like:
 
 .. code:: json
 
@@ -172,7 +159,7 @@ and rerun PhpStratum with the ``audit`` command:
 
 .. code:: sh
 
-  ./bin/audit audit etc/audit.json
+  ./vendor/bin/audit audit etc/audit.json
 
 Output:
 
@@ -190,7 +177,7 @@ In verbose mode (``-v``) the ``audit`` command will show triggers dropped and cr
 
 .. code:: sh
 
-  ./bin/audit -v audit etc/audit.json
+  ./vendor/bin/audit -v audit etc/audit.json
 
 Output:
 

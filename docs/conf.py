@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u'PhpAudit'
-copyright = u'2019, P.R. Water'
+#copyright = u'2019, P.R. Water'
 author = u'P.R. Water'
 
 # The short X.Y version
