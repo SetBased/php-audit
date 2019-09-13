@@ -39,7 +39,7 @@ The ``database`` section holds the variables described below:
   The schema (database) for the audit tables.
   The ``data schema`` and the ``audit schema`` must be two different schemata (databases).
 * ``port`` (optional)
-  The port number for connecting to the MySQL server. Defaults value is 3306.
+  The port number for connecting to the MySQL server. Default value is 3306.
 
 Convention
 ``````````
@@ -212,9 +212,9 @@ Both flavors have the fields ``column_name`` and ``column_type`` in common.
 Convention
 ``````````
 
-You free to choose any column name for an addition table column as long the column name does not collide with a column name in a data table.
+You free to choose any column name for an additional table column as long the column name does not collide with a column name in a data table.
 
-You are encouraged to follow this naming convention for the addition table column: the name of an additional table column has prefix ``audit_``.
+You are encouraged to follow this naming convention for the additional table column: the name of an additional table column has prefix ``audit_``.
 
 Examples
 ````````
@@ -373,8 +373,8 @@ When retrieving the session and when signing in you must set the variable MySQL 
 
 .. _additional-sql-section:
 
-The Addition SQL Section
-------------------------
+The Additional SQL Section
+--------------------------
 
 The additional SQL section specifies additional SQL statements that are placed at the beginning of the body of each created audit trigger.
 
@@ -404,7 +404,7 @@ The tables sections holds an entry for each table in the ``data schema``. New ta
 
 Foreach table in the table section there are three fields:
 
-* ``audit`` A boolean indication auditing is enable or not.
+* ``audit`` The audit flag. A boolean indication auditing is enabled or disabled.
 
    * ``true`` Recording of an audit trail for this table is enabled.
    * ``false`` Recording of an audit trail for this table is disabled.
