@@ -13,3 +13,4 @@ Table of Contents
    audit-config-file
    schema-changes
    limitations
+   license

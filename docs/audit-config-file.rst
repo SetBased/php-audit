@@ -169,7 +169,8 @@ The additional column specification become in two flavors:
 * value is either the action (i.e. ``insert``, ``update``, or ``delete``) or the state of the row (i.e. ``NEW`` or ``OLD``),
 * value is a valid SQL expression that can be used in an insert statement in a trigger.
 
-Example:
+Example
+```````
 
 .. code:: json
 
