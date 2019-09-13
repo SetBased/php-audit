@@ -51,7 +51,8 @@ Both schema (databases) names start with the name or abbreviation of your projec
 Examples
 ````````
 
-Example 1:
+Example 1
+:::::::::
 
 A basic example.
 
@@ -69,7 +70,8 @@ A basic example.
     }
   }
 
-Example 2:
+Example 2
+:::::::::
 
 In this example the password stored in ``credentials.ini`` will be used.
 
@@ -95,7 +97,8 @@ In this example the password stored in ``credentials.ini`` will be used.
   [database]
   password =  s3cr3t
 
-Example 3:
+Example 3
+:::::::::
 
 In this example the user name and password stored in ``credentials.xml`` will be used.
 
@@ -124,7 +127,8 @@ In this example the user name and password stored in ``credentials.xml`` will be
       </database>
   </config>
 
-Example 4:
+Example 4
+:::::::::
 
 In this example only settings stored in ``credentials.json`` will be used.
 
