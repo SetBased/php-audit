@@ -126,6 +126,42 @@ When you rename a table column of a table in the ``data schema`` there is no rel
 Changed Column Type
 ```````````````````
 
+We consider two types of column type changes:
+
+* Changing the column type to a more comprehensive column type. For example:
+
+  * ``varchar(10) charset utf8 collation utf8_general_ci`` => ``varchar(20) charset utf8 collation utf8_general_ci``
+  * ``varchar(80) charset ascii collation ascii_general_ci`` => ``varchar(80) charset utf8 collation utf8_general_ci``
+  * ``smallint(4)`` => ``int(6)``
+
+* Changing the column type to a less comprehensive or incompatible column type: For example:
+
+  * ``varchar(10) charset utf8 collation utf8_general_ci`` => ``int(10)``
+  * ``varchar(80) charset utf8 collation utf8_general_ci`` => ``varchar(80) charset latin1 collation latin1_general_ci``
+  * ``longblob`` => ``medium text``
+
+Currently, automatically modification of columns of tables in the ``audit schema`` is not implemented and planned for a future release.
+
+
+We consider three kinds of less comprehensive or incompatible column types:
+
+* The audit trail does not contain any data that cannot be converted to the new column type. For example:
+
+  * A ``varchar(10)`` that holds only integers (as strings) in both the data and audit table can be modified to an ``int(10)`` without any issues.
+  * A ``varchar(80) charset utf8 collation utf8_general_ci`` that holds only latin1 characters in both the data and audit table can be modified to an ``varchar(80) charset latin1 collation latin1_general_ci`` without any issues.
+
+* The audit trail does contain data that cannot be converted to the new column type however a more comprehensive column type (for the actual data in both columns in the ``data schema`` and ``audit schema``) is available. For example:
+
+  * A ``varchar(10) charset utf8 collation utf8_general_ci`` (that must be modified to ``varchar(30) charset latin1 collation latin1_general_ci``) that holds only latin1 characters in the data table, but the audit table holds data outside the latin1 character set. In this case the column in the ``data schema`` can be converted to ``varchar(30) charset latin1 collation latin1_general_ci`` and the column in the ``audit schema`` can be converted to ``varchar(30) charset utf8 collation utf8_general_ci``.
+
+* The audit trail does contain data that cannot be converted to the new column type however a more comprehensive column type is not available. For example:
+
+  * A ``varbinary(10)`` (that must be modified to ``int(10)``) table column holding binary in the audit trail but not any more in the data table.
+
+  In this case to only solution is to rename the column in the audit table. The ``audit`` command of PhpAudit will create a new column in the audit table with the new column type.
+
+
+
 
 Deployment
 ----------
