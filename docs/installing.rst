@@ -4,7 +4,7 @@ Installing & Uninstalling PhpAudit
 Installing PhpAudit
 -------------------
 
-The preferred way to install PhpStratum is using composer_:
+The preferred way to install PhpAudit is using composer_:
 
 .. code:: sh
 
@@ -40,14 +40,14 @@ then you can run PhpAudit from the command line:
 Uninstalling PhpAudit
 ---------------------
 
-Before you uninstall PhpStratum you must delete all audit triggers from the tables in the ``data schema``. This can be done with the ``drop-triggers`` command:
+Before you uninstall PhpAudit you must delete all audit triggers from the tables in the ``data schema``. This can be done with the ``drop-triggers`` command:
 
 .. code:: sh
 
   ./vendor/bin/audit drop-triggers etc/config.json
 
 
-Remove PhpStratum from your project with composer_:
+Remove PhpAudit from your project with composer_:
 
 .. code:: sh
 

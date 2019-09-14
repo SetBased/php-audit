@@ -400,17 +400,19 @@ This example show how to set the variables ``@audit_uuid`` and ``@audit_rownum``
 The Tables Section
 ------------------
 
-The tables sections holds an entry for each table in the ``data schema``. New tables are automatically added to the tables section and obsolete tables are automatically removed from the tables section when your run PhpStratum with the ``audit`` command.
+The tables sections holds an entry for each table in the ``data schema``. New tables are automatically added to the tables section and obsolete tables are automatically removed from the tables section when your run PhpAudit with the ``audit`` command.
 
 Foreach table in the table section there are three fields:
+
+.. _audit-flag:
 
 * ``audit`` The audit flag. A boolean indication auditing is enabled or disabled.
 
    * ``true`` Recording of an audit trail for this table is enabled.
    * ``false`` Recording of an audit trail for this table is disabled.
-   * ``null`` Recording of an audit trail for this table is not specified. Each time  your run PhpStratum with the ``audit`` command PhpStratum will report that a new table has been found.
+   * ``null`` Recording of an audit trail for this table is not specified. Each time  your run PhpAudit with the ``audit`` command PhpAudit will report that a new table has been found.
 
-* ``alias`` An alias for the table. This alias must be unique and will be used in the names of the audit trigger for this table. If you don't specify a value PhpStratum will generate automatically an alias when auditing is enabled.
+* ``alias`` An alias for the table. This alias must be unique and will be used in the names of the audit trigger for this table. If you don't specify a value PhpAudit will generate automatically an alias when auditing is enabled.
 
 * ``skip`` An optional variable name. When the value of this variable is not null the audit trigger will skip recording data changes.
 

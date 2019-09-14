@@ -1,12 +1,12 @@
 Getting Started
 ===============
 
-In this chapter you will learn how to install PhpStratum and start creating audit trails on your application data.
+In this chapter you will learn how to install PhpAudit and start creating audit trails on your application data.
 
 Installing PhpAudit
 -------------------
 
-The preferred way to install PhpStratum is using composer_:
+The preferred way to install PhpAudit is using composer_:
 
 .. code:: sh
 
@@ -108,7 +108,7 @@ The ``database`` section holds the variables described below:
 
 Throughout this manual we assume that the audit configuration file is stored in ``etc/audit.json``. You are free to choose your preferred path.
 
-Run PhpStratum with the ``audit`` command:
+Run PhpAudit with the ``audit`` command:
 
 .. code:: sh
 
@@ -155,7 +155,7 @@ For all tables for which you want an audit trail you must set the audit flag to 
     }
   }
 
-and rerun PhpStratum with the ``audit`` command:
+and rerun PhpAudit with the ``audit`` command:
 
 .. code:: sh
 
