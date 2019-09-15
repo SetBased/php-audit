@@ -119,7 +119,7 @@ Output:
 .. code:: text
 
   Found new table FOO_EMPLOYEE
-   Wrote etc/audit.json
+  Wrote etc/audit.json
 
 The first time you run the audit command PhpAudit will only report the tables found in the ``data schema`` and add the tables in the ``tables`` section in the audit configuration file. Suppose you application has a table ``FOO_EMPLOYEE``, the ``tables`` section will look like:
 

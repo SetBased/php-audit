@@ -14,6 +14,11 @@ During the life time of your application there will schema changes:
 
 In this chapter we discuss how to handle all these types of changes. Also, we discuss how to deploy schema changes on the production environment.
 
+PhpAudit becomes with two commands that helps you to compare the ``data schema`` with the ``audit schema``:
+
+* The ``diff`` command, see :ref:`diff-command`.
+* The ``alter-audit-table`` command, see :ref:`alter-audit-table-command`.
+
 Schema Changes
 --------------
 
@@ -90,38 +95,40 @@ Running the ``audit`` command of PhpAudit will not affect the table options of a
 
 See XXX for a discussing about transactional and non transaction storage engines.
 
-New Table Column
-````````````````
+New Column
+``````````
 
 * Run the `DDL`_ statements for adding the new column to the table ``data schema``.
 * Run the ``audit`` command of PhpAudit.
 
-  * The new table column will be added to the corresponding table in the ``audit schema`` and added to the queries in the audit triggers.
+  * The new column will be added to the corresponding table in the ``audit schema`` and added to the queries in the audit triggers.
 
 
-Obsolete Table Column
-`````````````````````
+Obsolete Column
+```````````````
 
 * Run the `DDL`_ statements for dropping the obsolete column from the table ``data schema``.
 * Run the ``audit`` command of PhpAudit.
 
-  * The obsolete table column will be removed from the queries in the audit triggers.
-  * The obsolete table column in the corresponding table in the ``audit schema`` is still a part of your application's audit trail and will not be dropped.
+  * The obsolete column will be removed from the queries in the audit triggers.
+  * The obsolete column in the corresponding table in the ``audit schema`` is still a part of your application's audit trail and will not be dropped.
 
-If you decide now or later that the obsolete table column in the corresponding table in the ``audit schema`` is not longer required you must drop the obsolete table column in the corresponding table in the ``audit schema`` your self. This does not affect PhpAudit at all nor requires any action by PhpAudit.
+If you decide now or later that the obsolete column in the corresponding table in the ``audit schema`` is not longer required you must drop the obsolete column in the corresponding table in the ``audit schema`` your self. This does not affect PhpAudit at all nor requires any action by PhpAudit.
 
 Renamed Column
 ``````````````
 
-When you rename a table column of a table in the ``data schema`` there is no reliable way for PhpAudit to detect a table column has been renamed. PhpAudit will see an obsolete and a new table column.
+When you rename a column of a table in the ``data schema`` there is no reliable way for PhpAudit to detect a  column has been renamed. PhpAudit will see an obsolete and a new column.
 
-* Run the `DDL`_ statements for renaming the table column of the table in the ``data schema``.
-* Run similar `DDL`_ statements for renaming the table column of the corresponding table in the ``audit schema``.
+* Run the `DDL`_ statements for renaming the column of the table in the ``data schema``.
+* Run similar `DDL`_ statements for renaming the column of the corresponding table in the ``audit schema``.
 
   * At this moment the audit triggers on the table in ``data schema`` are still using the old column name.
 * Run the ``audit`` command of PhpAudit.
 
   * The audit triggers on the table in the ``data schema`` are using the new column name now.
+
+.. _changed-column-type:
 
 Changed Column Type
 ```````````````````
@@ -155,15 +162,72 @@ We consider three kinds of less comprehensive or incompatible column types:
 
 * The audit trail does contain data that cannot be converted to the new column type and a more comprehensive column type is not available. For example:
 
-  * A ``varbinary(10)`` (that must be modified to ``int(10)``) table column holding binary in the audit trail but not any more in the data table.
+  * A ``varbinary(10)`` (that must be modified to ``int(10)``) column holding binary in the audit trail but not any more in the data table.
 
   In this case to only solution is to rename the column in the audit table. The ``audit`` command of PhpAudit will create a new column in the audit table with the new column type.
 
 Deployment
 ----------
 
+In the above section we discuss all possible schema changes one by one. of course you can combine all schema changes in one go. The basic rules are simple:
 
+* Renaming tables:
+
+  * Rename the tables in the ``data schema``.
+  * Rename the corresponding tables in the ``audit schema``.
+  * Rename the tables in the audit config file.
+
+* Renaming columns:
+
+  * Rename the columns in the ``data schema``.
+  * Rename the columns in the corresponding tables in the ``audit schema``.
+
+* Changing column types:
+
+  * Change the column types in the ``data schema``.
+  * Change the column types  in the corresponding tables in the ``audit schema``.
+  * See :ref:`changed-column-type` for incompatible column type changes.
+
+* Run the ``audit`` command of PhpStratum.
+
+Simple Deployment
+``````````````````
+
+If your deployment script has only `DDL`_ statements (affecting tables that require auditing), followed by only (or none) `DML`_ statements (affecting tables that require auditing), it is called a simple deployment. You must your deployment as scripts as follows:
+
+* Run the `DDL`_ statements.
+* Run the ``audit`` command of PhpAudit.
+
+  * Use the latest version of your audit config file.
+  * All audit tables and triggers are in a proper state to capture the data changes caused by the following `DML`_ statements.
+
+* Run the `DML`_ statements.
+
+Complex Deployment
+``````````````````
+
+If your deployment script has only `DDL`_ statements (affecting tables that require auditing), followed by only (or none) `DML`_ statements (affecting tables that require auditing), followed by only `DDL`_ statements (affecting tables that require auditing), followed by only (or none) `DML`_ statements (affecting tables that require auditing) and so on, it is called a complex deployment. You must your deployment as scripts as follows:
+
+* Run `DDL`_ statements.
+* Run the ``audit`` command of PhpAudit (with the latest version of you audit config file).
+
+  * Use the latest version of your audit config file.
+  * Make sure that the `audit flags`_ for are still correct.
+  * All audit tables and triggers are in a proper state to capture the data changes caused by the following `DML`_ statements.
+
+* Run `DML`_ statements.
+* Run `DDL`_ statements.
+* Run the ``audit`` command of PhpAudit (with the latest version of you audit config file).
+
+  * Use the latest version of your audit config file.
+  * Make sure that the `audit flags`_ for are still correct.
+  * All audit tables and triggers are in a proper state to capture the data changes caused by the following `DML`_ statements.
+
+* Run `DML`_ statements.
+* and so on
 
 .. _audit flag: audit-config-file.html#audit-flag
+.. _audit flags: audit-config-file.html#audit-flag
 .. _tables section: audit-config-file.html#tables-section
 .. _DDL: https://en.wikipedia.org/wiki/Data_definition_language
+.. _DML: https://en.wikipedia.org/wiki/Data_manipulation_language
