@@ -5,6 +5,7 @@
 <tr>
 <th>Social</th>
 <th>Legal</th>
+<th>Docs</th>
 <th>Release</th>
 <th>Tests</th>
 <th>Code</th>
@@ -17,6 +18,9 @@
 </td>
 <td>
 <a href="https://packagist.org/packages/setbased/php-audit"><img src="https://poser.pugx.org/setbased/php-audit/license" alt="License"/></a>
+</td>
+<td>
+<a href='https://php-audit.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/php-audit/badge/?version=latest' alt='Documentation Status'/></a>
 </td>
 <td>
 <a href="https://packagist.org/packages/setbased/php-audit"><img src="https://poser.pugx.org/setbased/php-audit/v/stable" alt="Latest Stable Version"/></a><br/>
