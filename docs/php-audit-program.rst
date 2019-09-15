@@ -8,7 +8,7 @@ The PhpAudit program is a `Symphony console application`_  with four additional 
  * ``diff``
  * ``drop-triggers``
 
-We discuss the additional commands in the section below.
+We discuss the additional commands in the sections below.
 
 Some commands provide additional output when in verbose mode (``-v``). All commands show the queries been executed in very verbose mode (``-vv``).
 
