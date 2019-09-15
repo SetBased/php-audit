@@ -1,5 +1,16 @@
+Miscellaneous
+=============
+
+.. _required-grants:
+
+Required Grants
+---------------
+
+Indexes
+-------
+
 Limitations
-===========
+-----------
 
 PhpAudit has the following limitations:
 

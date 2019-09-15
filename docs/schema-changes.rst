@@ -24,7 +24,7 @@ New Table
 
 When adding a new table to the database of your application you must decide whether auditing is required for this table.
 
-* Run the DDL statements for creating the new table.
+* Run the `DDL`_ statements for creating the new table.
 * Run the ``audit`` command of PhpAudit. PhpAudit will report that it has found a new table.
 
   * Auditing is not required for the new table:
@@ -43,7 +43,7 @@ When adding a new table to the database of your application you must decide whet
 Obsolete Table
 ``````````````
 
-* Run the DDL statements for dropping the obsolete table.
+* Run the `DDL`_ statements for dropping the obsolete table.
 * Run the ``audit`` command of PhpAudit. PhpAudit will report that it has found an obsolete table.
 
   * PhpAudit will remove the obsolete table from the `tables section`_.
@@ -59,8 +59,8 @@ Renamed Table
 
 When you rename a table in the ``data schema`` there is no reliable way for PhpAudit to detect a table has been renamed. PhpAudit will see an obsolete and a new table.
 
-* Run the DDL statements for renaming the table in the ``data schema``.
-* Run similar DDL statements for renaming the corresponding table in the ``audit schema``.
+* Run the `DDL`_ statements for renaming the table in the ``data schema``.
+* Run similar `DDL`_ statements for renaming the corresponding table in the ``audit schema``.
 * Rename the table in the `tables section`_ of the audit config file.
 
   * At this moment the audit triggers on the table in ``data schema`` are still using the old table name in the ``audit schema``.
@@ -77,8 +77,8 @@ If you omit renaming the corresponding table in the ``audit schema``, PhpAudit w
 Table Options
 `````````````
 
-* Run the DDL statements for altering the table options of the table in the ``data schema``.
-* Run similar DDL  statements for altering the table options of the corresponding table in the ``audit schema``.
+* Run the `DDL`_ statements for altering the table options of the table in the ``data schema``.
+* Run similar `DDL`_  statements for altering the table options of the corresponding table in the ``audit schema``.
 
 PhpAudit is unaware of most table options. It only considers the following table options:
 
@@ -93,7 +93,7 @@ See XXX for a discussing about transactional and non transaction storage engines
 New Table Column
 ````````````````
 
-* Run the DDL statements for adding the new column to the table ``data schema``.
+* Run the `DDL`_ statements for adding the new column to the table ``data schema``.
 * Run the ``audit`` command of PhpAudit.
 
   * The new table column will be added to the corresponding table in the ``audit schema`` and added to the queries in the audit triggers.
@@ -102,7 +102,7 @@ New Table Column
 Obsolete Table Column
 `````````````````````
 
-* Run the DDL statements for dropping the obsolete column from the table ``data schema``.
+* Run the `DDL`_ statements for dropping the obsolete column from the table ``data schema``.
 * Run the ``audit`` command of PhpAudit.
 
   * The obsolete table column will be removed from the queries in the audit triggers.
@@ -115,8 +115,8 @@ Renamed Column
 
 When you rename a table column of a table in the ``data schema`` there is no reliable way for PhpAudit to detect a table column has been renamed. PhpAudit will see an obsolete and a new table column.
 
-* Run the DDL statements for renaming the table column of the table in the ``data schema``.
-* Run similar DDL statements for renaming the table column of the corresponding table in the ``audit schema``.
+* Run the `DDL`_ statements for renaming the table column of the table in the ``data schema``.
+* Run similar `DDL`_ statements for renaming the table column of the corresponding table in the ``audit schema``.
 
   * At this moment the audit triggers on the table in ``data schema`` are still using the old column name.
 * Run the ``audit`` command of PhpAudit.
@@ -142,7 +142,6 @@ We consider two types of column type changes:
 
 Currently, automatically modification of columns of tables in the ``audit schema`` is not implemented and planned for a future release.
 
-
 We consider three kinds of less comprehensive or incompatible column types:
 
 * The audit trail does not contain any data that cannot be converted to the new column type. For example:
@@ -154,18 +153,17 @@ We consider three kinds of less comprehensive or incompatible column types:
 
   * A ``varchar(10) charset utf8 collation utf8_general_ci`` (that must be modified to ``varchar(30) charset latin1 collation latin1_general_ci``) that holds only latin1 characters in the data table, but the audit table holds data outside the latin1 character set. In this case the column in the ``data schema`` can be converted to ``varchar(30) charset latin1 collation latin1_general_ci`` and the column in the ``audit schema`` can be converted to ``varchar(30) charset utf8 collation utf8_general_ci``.
 
-* The audit trail does contain data that cannot be converted to the new column type however a more comprehensive column type is not available. For example:
+* The audit trail does contain data that cannot be converted to the new column type and a more comprehensive column type is not available. For example:
 
   * A ``varbinary(10)`` (that must be modified to ``int(10)``) table column holding binary in the audit trail but not any more in the data table.
 
   In this case to only solution is to rename the column in the audit table. The ``audit`` command of PhpAudit will create a new column in the audit table with the new column type.
 
-
-
-
 Deployment
 ----------
 
 
+
 .. _audit flag: audit-config-file.html#audit-flag
 .. _tables section: audit-config-file.html#tables-section
+.. _DDL: https://en.wikipedia.org/wiki/Data_definition_language

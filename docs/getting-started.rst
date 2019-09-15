@@ -96,7 +96,7 @@ The ``database`` section holds the variables described below:
   The host were the MySQL server is running
 * ``user``
   The user that is the `owner` of the tables in the ``data schema`` and ``audit schema``.
-  See :ref:`database-section` for an exact description of required grants.
+  See :ref:`required-grants` for an exact specification of required grants.
 * ``password``
   The password of the `owner`.
   In :ref:`database-section` we describe how to store the password outside the audit configuration file.
