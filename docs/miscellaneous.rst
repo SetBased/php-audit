@@ -25,7 +25,7 @@ The (MySQL) user under which PhpAudit is connecting to the database instance req
 
 For example:
 
-.. code:: sql
+.. code-block:: sql
 
   create user `foo_audit`@`localhost`;
   grant lock tables, select, trigger on `foo_data`.* to `foo_audit`@`localhost`;

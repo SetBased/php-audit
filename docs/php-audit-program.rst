@@ -22,13 +22,13 @@ The ``alter-audit-table`` command
 
 The ``alter-audit-table`` command generates SQL statements to align the tables in the ``audit schema`` with the tables in the ``data schema`` and the additional columns section in the audit config file, see :ref:`audit-columns-section`.
 
-.. code:: sh
+.. code-block:: sh
 
   ./vendor/bin/audit alter-audit-table etc/audit.json
 
 Output:
 
-.. code:: sql
+.. code-block:: sql
 
   alter table `test_audit`.`FOO_EMPLOYEE`
   change column `emp_name` `emp_name` varchar(80) character set utf8 collate utf8_general_ci null

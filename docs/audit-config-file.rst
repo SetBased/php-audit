@@ -9,13 +9,13 @@ For most projects the audit config file must added to the VCS and distributed to
 
 The audit config file is a JSON file and consist out of four sections which we discuss in detail in the following sections.
 
-.. code:: json
+.. code-block:: json
 
   {
-    "database": {...},
-    "audit_columns": [...],
-    "additional_sql": [...],
-    "tables": {...}
+    "database": {},
+    "audit_columns": [],
+    "additional_sql": [],
+    "tables": {}
   }
 
 .. _database-section:
@@ -58,7 +58,7 @@ A basic example.
 
 ``audit.json``:
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -77,7 +77,7 @@ In this example the password stored in ``credentials.ini`` will be used.
 
 ``audit.json``:
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -92,7 +92,7 @@ In this example the password stored in ``credentials.ini`` will be used.
 
 ``credentials.ini``:
 
-.. code:: ini
+.. code-block:: ini
 
   [database]
   password =  s3cr3t
@@ -104,7 +104,7 @@ In this example the user name and password stored in ``credentials.xml`` will be
 
 ``audit.json``:
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -117,7 +117,7 @@ In this example the user name and password stored in ``credentials.xml`` will be
 
 ``credentials.xml``:
 
-.. code:: xml
+.. code-block:: xml
 
   <?xml version="1.0" encoding="UTF-8"?>
   <config>
@@ -134,7 +134,7 @@ In this example only settings stored in ``credentials.json`` will be used.
 
 ``audit.json``:
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -144,7 +144,7 @@ In this example only settings stored in ``credentials.json`` will be used.
 
 ``credentials.json``:
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -172,7 +172,7 @@ The additional column specification become in two flavors:
 Example
 ```````
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -230,7 +230,7 @@ Example 1: Timestamp
 
 Recording the time of the data change.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -247,7 +247,7 @@ Example 2: Statement Type
 
 Recording the statement type of the query.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -264,7 +264,7 @@ Example 3: Row State
 
 Recording the state of the row.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -283,7 +283,7 @@ Example 4: Database Session
 
 Recording the database session (a single connection by a client). See :ref:`additional-sql-section` for setting the variable ``@audit_uuid``.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -302,7 +302,7 @@ Example 5: Order
 
 Recording the order of the data changes. See :ref:`additional-sql-section` for setting the variable ``@audit_rownum``.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -319,7 +319,7 @@ Example 6: Database User
 
 Recording the database user connection to the server. This example is useful when different database user can connect to your database. For example you have an application with a HTML frontend connecting to the database with user ``web_user``, a REST API connecting to the database with user ``api_user``, and some background process connecting to the database with user ``mail_user``.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -338,7 +338,7 @@ Example 7: Application Session
 
 Recording the session ID. This example is useful tracking data changes made in multiple page request in a single session of a web application.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -357,7 +357,7 @@ Example 8: End User
 
 Recording the user ID. This example is useful recording the end user who has modified the data in your (web) application.
 
-.. code:: json
+.. code-block:: json
 
   {
     "audit_columns": [
@@ -383,7 +383,7 @@ Example
 
 This example show how to set the variables ``@audit_uuid`` and ``@audit_rownum`` mentioned in :ref:`example_database_session` and :ref:`example_order`.
 
-.. code:: json
+.. code-block:: json
 
   {
      "additional_sql": [
@@ -426,7 +426,7 @@ Example 1: No audit trail
 
 No audit trail will be recorded for table ``TMP_IMPORT``.
 
-.. code:: json
+.. code-block:: json
 
   {
     "tables": {
@@ -443,7 +443,7 @@ Example 2: Audit trail
 
 An audit trail will be recorded for table ``FOO_USER``.
 
-.. code:: json
+.. code-block:: json
 
   {
     "tables": {
@@ -457,7 +457,7 @@ An audit trail will be recorded for table ``FOO_USER``.
 
 When MySQL variable ``@g_skip_foo_user`` no audit triggers will record a data change. In the SQL code below updating column ``usr_last_login`` will not be recorded.
 
-.. code:: sql
+.. code-block:: sql
 
   set @g_skip_foo_user = 1;
 

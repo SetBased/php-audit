@@ -10,7 +10,7 @@ Installing PhpAudit
 
 The preferred way to install PhpAudit is using composer_:
 
-.. code:: sh
+.. code-block:: sh
 
   composer require setbased/php-audit
 
@@ -19,7 +19,7 @@ Running PhpAudit
 
 You can run PhpAudit from the command line:
 
-.. code:: sh
+.. code-block:: sh
 
   ./vendor/bin/audit
 
@@ -41,7 +41,7 @@ The Audit Configuration File
 
 The audit configuration file specification is described in detail in :ref:`audit-config-file`. In this section we provide an example audit configuration file.
 
-.. code:: json
+.. code-block:: json
 
   {
     "database": {
@@ -112,25 +112,25 @@ Throughout this manual we assume that the audit configuration file is stored in 
 
 Run PhpAudit with the ``audit`` command:
 
-.. code:: sh
+.. code-block:: sh
 
   ./vendor/bin/audit audit etc/audit.json
 
 Output:
 
-.. code:: text
+.. code-block:: text
 
   Found new table FOO_EMPLOYEE
   Wrote etc/audit.json
 
 The first time you run the audit command PhpAudit will only report the tables found in the ``data schema`` and add the tables in the ``tables`` section in the audit configuration file. Suppose you application has a table ``FOO_EMPLOYEE``, the ``tables`` section will look like:
 
-.. code:: json
+.. code-block:: json
 
   {
-    "database": {...},
-    "audit_columns": [...],
-    "additional_sql": [...],
+    "database": {},
+    "audit_columns": [],
+    "additional_sql": [],
     "tables": {
       "FOO_EMPLOYEE": {
         "audit": null,
@@ -142,12 +142,12 @@ The first time you run the audit command PhpAudit will only report the tables fo
 
 For all tables for which you want an audit trail you must set the audit flag to true. In our example:
 
-.. code:: json
+.. code-block:: json
 
   {
-    "database": {...},
-    "audit_columns": [...],
-    "additional_sql": [...],
+    "database": {},
+    "audit_columns": [],
+    "additional_sql": [],
     "tables": {
       "FOO_EMPLOYEE": {
         "audit": true,
@@ -159,13 +159,13 @@ For all tables for which you want an audit trail you must set the audit flag to 
 
 and rerun PhpAudit with the ``audit`` command:
 
-.. code:: sh
+.. code-block:: sh
 
   ./vendor/bin/audit audit etc/audit.json
 
 Output:
 
-.. code:: text
+.. code-block:: text
 
   Creating audit table foo_audit.FOO_EMPLOYEE
   Wrote etc/audit.json
@@ -177,13 +177,13 @@ Verbosity
 
 In verbose mode (``-v``) the ``audit`` command will show triggers dropped and created:
 
-.. code:: sh
+.. code-block:: sh
 
   ./vendor/bin/audit -v audit etc/audit.json
 
 Output:
 
-.. code:: text
+.. code-block:: text
 
   Creating audit table foo_audit.FOO_EMPLOYEE
   Creating trigger foo_data.trg_audit_5d7a1d1e18ada_insert on table foo_data.FOO_EMPLOYEE
