@@ -40,7 +40,7 @@ PhpAudit does not create any indexes on tables in the ``audit schema``. Creating
 
 If your application is querying on tables in the ``audit schema`` you are free to add indexes on the tables in the ``audit schema``. PhpAudit will not drop or alter any indexes in the ``audit schema``.
 
-Be careful with unique indexes. An key of a table in the ``data schema`` will (very likely) not be a key of the corresponding table in the ``audit schema``.
+Be careful with unique indexes. A key of a table in the ``data schema`` will (very likely) not be a key of the corresponding table in the ``audit schema``.
 
 Limitations
 -----------

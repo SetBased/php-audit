@@ -1,3 +1,5 @@
+.. _schema-changes-and-deployment:
+
 Schema Changes and Deployment
 =============================
 
