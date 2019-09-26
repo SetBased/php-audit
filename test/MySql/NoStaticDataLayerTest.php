@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql;
 
+use Composer\Autoload\ClassLoader;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -38,7 +39,7 @@ class NoStaticDataLayerTest extends TestCase
   private function findPhpFiles(): array
   {
     // Get the class loader.
-    /** @var \Composer\Autoload\ClassLoader $loader */
+    /** @var ClassLoader $loader */
     $loader = spl_autoload_functions()[0][0];
 
     $audit_data_layer_path = realpath($loader->findFile('SetBased\\Audit\\MySql\\AuditDataLayer'));

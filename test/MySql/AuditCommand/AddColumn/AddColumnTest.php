@@ -5,7 +5,7 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\AddColumn;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
-use SetBased\Stratum\Helper\RowSetHelper;
+use SetBased\Stratum\Middle\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**

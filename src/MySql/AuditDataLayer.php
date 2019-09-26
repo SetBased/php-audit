@@ -9,8 +9,8 @@ use SetBased\Audit\MySql\Sql\CreateAuditTable;
 use SetBased\Audit\MySql\Sql\CreateAuditTrigger;
 use SetBased\Audit\Style\AuditStyle;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
-use SetBased\Stratum\BulkHandler;
-use SetBased\Stratum\Helper\RowSetHelper;
+use SetBased\Stratum\Middle\BulkHandler;
+use SetBased\Stratum\Middle\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**

@@ -5,8 +5,7 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\ObsoleteTable;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
-use SetBased\Stratum\Helper\RowSetHelper;
-use SetBased\Stratum\MySql\StaticDataLayer;
+use SetBased\Stratum\Middle\Helper\RowSetHelper;
 
 /**
  * Tests for running audit with an obsolete table (i.e. table is not longer been audited).

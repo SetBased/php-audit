@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SetBased\Audit\Test\MySql\AuditCommand\AbcFramework;
 
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
-use SetBased\Stratum\Helper\RowSetHelper;
+use SetBased\Stratum\Middle\Helper\RowSetHelper;
 use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**

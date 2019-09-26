@@ -8,7 +8,7 @@ use SetBased\Audit\Metadata\TableColumnsMetadata;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Style\AuditStyle;
 use SetBased\Config\TypedConfig;
-use SetBased\Stratum\Helper\RowSetHelper;
+use SetBased\Stratum\Middle\Helper\RowSetHelper;
 
 /**
  * Class for executing auditing actions for tables.
