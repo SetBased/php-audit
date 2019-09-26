@@ -52,6 +52,7 @@ class BaseCommand extends Command
   protected $rewriteConfigFile = true;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Reads configuration parameters from the configuration file.
    */

@@ -26,39 +26,6 @@ class ColumnMetadata extends BaseColumnMetadata
   /**
    * @inheritdoc
    */
-  public function getColumnDefinition(): string
-  {
-    $parts = [];
-
-    if ($this->getProperty('column_type')!==null)
-    {
-      $parts[] = $this->getProperty('column_type');
-    }
-
-    if ($this->getProperty('character_set_name')!==null)
-    {
-      $parts[] = 'character set '.$this->getProperty('character_set_name');
-    }
-
-    if ($this->getProperty('collation_name')!==null)
-    {
-      $parts[] = 'collate '.$this->getProperty('collation_name');
-    }
-
-    $parts[] = ($this->getProperty('is_nullable')=='YES') ? 'null' : 'not null';
-
-    if ($this->getProperty('column_default')!==null && $this->getProperty('column_default')!='NULL')
-    {
-      $parts[] = 'default '.$this->getProperty('column_default');
-    }
-
-    return implode(' ', $parts);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
   public function getColumnAuditDefinition(): string
   {
     $parts = [];
@@ -88,6 +55,39 @@ class ColumnMetadata extends BaseColumnMetadata
     {
       // Prevent automatic updates of timestamp columns.
       $parts[] = 'default now()';
+    }
+
+    return implode(' ', $parts);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  public function getColumnDefinition(): string
+  {
+    $parts = [];
+
+    if ($this->getProperty('column_type')!==null)
+    {
+      $parts[] = $this->getProperty('column_type');
+    }
+
+    if ($this->getProperty('character_set_name')!==null)
+    {
+      $parts[] = 'character set '.$this->getProperty('character_set_name');
+    }
+
+    if ($this->getProperty('collation_name')!==null)
+    {
+      $parts[] = 'collate '.$this->getProperty('collation_name');
+    }
+
+    $parts[] = ($this->getProperty('is_nullable')=='YES') ? 'null' : 'not null';
+
+    if ($this->getProperty('column_default')!==null && $this->getProperty('column_default')!='NULL')
+    {
+      $parts[] = 'default '.$this->getProperty('column_default');
     }
 
     return implode(' ', $parts);

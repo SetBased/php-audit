@@ -23,6 +23,21 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Object constructor.
+   *
+   * @param array[] $columns The metadata of the columns as returned by AuditDataLayer::getTableColumns().
+   * @param string  $type    The class for columns metadata.
+   */
+  public function __construct(array $columns = [], string $type = 'ColumnMetadata')
+  {
+    foreach ($columns as $columnName => $column)
+    {
+      $this->columns[$column['column_name']] = static::columnFactory($type, $column);
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Combines the metadata of two lists of table columns.
    *
    * @param TableColumnsMetadata $columns1 The first metadata of a list of table columns.
@@ -119,21 +134,6 @@ class TableColumnsMetadata
 
       default:
         throw new FallenException('type', $type);
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Object constructor.
-   *
-   * @param array[] $columns The metadata of the columns as returned by AuditDataLayer::getTableColumns().
-   * @param string  $type    The class for columns metadata.
-   */
-  public function __construct(array $columns = [], string $type = 'ColumnMetadata')
-  {
-    foreach ($columns as $columnName => $column)
-    {
-      $this->columns[$column['column_name']] = static::columnFactory($type, $column);
     }
   }
 
