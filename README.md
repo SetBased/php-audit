@@ -55,7 +55,7 @@ Even of data that has been deleted or changed back to its original state. Also, 
 
 ## Manual
 
-The manual of PhpAudit can be found at [Read the Docs](https://php-audit.readthedocs.io).
+The manual of PhpAudit is available at [Read the Docs](https://php-audit.readthedocs.io).
 
 
 ## Contributing
