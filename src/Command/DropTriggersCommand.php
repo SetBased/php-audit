@@ -38,7 +38,6 @@ class DropTriggersCommand extends AuditCommand
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();
 
-    // Create database connection with params from config file
     $this->connect();
 
     $this->dropTriggers();
@@ -46,6 +45,8 @@ class DropTriggersCommand extends AuditCommand
     AuditDataLayer::disconnect();
 
     $this->rewriteConfig();
+
+    return 0;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

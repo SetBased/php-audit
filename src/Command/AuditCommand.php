@@ -41,7 +41,6 @@ class AuditCommand extends BaseCommand
     $this->configFileName = $input->getArgument('config file');
     $this->readConfigFile();
 
-    // Create database connection with params from config file
     $this->connect();
 
     $audit = new Audit($this->config, $this->io);
@@ -50,6 +49,8 @@ class AuditCommand extends BaseCommand
     AuditDataLayer::disconnect();
 
     $this->rewriteConfig();
+
+    return 0;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

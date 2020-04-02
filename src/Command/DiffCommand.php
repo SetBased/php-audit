@@ -42,6 +42,8 @@ class DiffCommand extends AuditCommand
 
     $diff = new Diff($this->config, $this->io, $input, $output);
     $diff->main();
+
+    return 0;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

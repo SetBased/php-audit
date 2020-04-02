@@ -9,22 +9,22 @@
   "type": "tool",
   "license": "MIT",
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=7.2.0",
     "ext-json": "*",
-    "setbased/error-handler": "^1.0.0",
-    "setbased/exception": "^2.0.0",
-    "setbased/helper-code-store-mysql": "^2.0.0",
-    "setbased/php-stratum-middle": "^5.0.0",
-    "setbased/php-stratum-mysql": "^4.0.0",
-    "setbased/typed-config": "^1.0.0",
-    "symfony/console": "^4.0.0"
+    "setbased/error-handler": "^1.0",
+    "setbased/exception": "^2.0",
+    "setbased/helper-code-store-mysql": "^2.0",
+    "setbased/php-stratum-middle": "^5.0",
+    "setbased/php-stratum-mysql": "^4.0",
+    "setbased/typed-config": "^1.0",
+    "symfony/console": "^4.0 || ^5.0"
   },
   "require-dev": {
     "ext-pcntl": "*",
     "ext-posix": "*",
-    "phpunit/phpunit": "^7.0.0 || ^8.0.0",
-    "phing/phing": "^2.0.0",
-    "setbased/phing-extensions": "^2.1.0"
+    "phpunit/phpunit": "^8.0 || ^9.0",
+    "phing/phing": "^2.0",
+    "setbased/phing-extensions": "^2.1"
   },
   "autoload": {
     "psr-4": {
