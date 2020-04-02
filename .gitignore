@@ -3,6 +3,8 @@
 /bin/phing
 /bin/phpunit
 /composer.lock
+/custom.task.properties
+/custom.type.properties
 /docs/_build/
 /test/MySql/AlterAuditTableCommand/config/alter.sql
 /test/MySql/AuditCommand/DroppedTable/config/audit.json
