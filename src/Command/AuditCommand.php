@@ -46,7 +46,7 @@ class AuditCommand extends BaseCommand
     $audit = new Audit($this->config, $this->io);
     $audit->main();
 
-    AuditDataLayer::disconnect();
+    AuditDataLayer::$dl->disconnect();
 
     $this->rewriteConfig();
 

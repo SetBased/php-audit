@@ -110,7 +110,7 @@ class AuditTable
    */
   public static function dropAuditTriggers(AuditStyle $io, string $schemaName, string $tableName): void
   {
-    $triggers = AuditDataLayer::getTableTriggers($schemaName, $tableName);
+    $triggers = AuditDataLayer::$dl->getTableTriggers($schemaName, $tableName);
     foreach ($triggers as $trigger)
     {
       if (preg_match('/^trg_audit_.*_(insert|update|delete)$/', $trigger['trigger_name']))
@@ -120,7 +120,7 @@ class AuditTable
                         $schemaName,
                         $tableName);
 
-        AuditDataLayer::dropTrigger($schemaName, $trigger['trigger_name']);
+        AuditDataLayer::$dl->dropTrigger($schemaName, $trigger['trigger_name']);
       }
     }
   }
@@ -149,7 +149,7 @@ class AuditTable
     $dataTableColumnsDatabase->makeNullable();
 
     $columns = TableColumnsMetadata::combine($this->additionalAuditColumns, $dataTableColumnsDatabase);
-    AuditDataLayer::createAuditTable($this->dataSchemaName, $this->auditSchemaName, $this->tableName, $columns);
+    AuditDataLayer::$dl->createAuditTable($this->dataSchemaName, $this->auditSchemaName, $this->tableName, $columns);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ class AuditTable
 
     $alterColumns = $this->alterNewColumns($columns);
 
-    AuditDataLayer::addNewColumns($this->auditSchemaName, $this->tableName, $alterColumns);
+    AuditDataLayer::$dl->addNewColumns($this->auditSchemaName, $this->tableName, $alterColumns);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -257,15 +257,15 @@ class AuditTable
                           $this->dataSchemaName,
                           $this->tableName);
 
-    AuditDataLayer::createAuditTrigger($this->dataSchemaName,
-                                       $this->auditSchemaName,
-                                       $this->tableName,
-                                       $triggerName,
-                                       $action,
-                                       $this->additionalAuditColumns,
-                                       $this->dataTableColumnsDatabase,
-                                       $skipVariable,
-                                       $additionSql);
+    AuditDataLayer::$dl->createAuditTrigger($this->dataSchemaName,
+                                            $this->auditSchemaName,
+                                            $this->tableName,
+                                            $triggerName,
+                                            $action,
+                                            $this->additionalAuditColumns,
+                                            $this->dataTableColumnsDatabase,
+                                            $skipVariable,
+                                            $additionSql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -276,9 +276,7 @@ class AuditTable
    */
   private function getColumnsFromInformationSchema(): array
   {
-    $result = AuditDataLayer::getTableColumns($this->dataSchemaName, $this->tableName);
-
-    return $result;
+    return AuditDataLayer::$dl->getTableColumns($this->dataSchemaName, $this->tableName);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -289,7 +287,7 @@ class AuditTable
    */
   private function getTableColumnInfo(): array
   {
-    $actual = new TableColumnsMetadata(AuditDataLayer::getTableColumns($this->auditSchemaName, $this->tableName));
+    $actual = new TableColumnsMetadata(AuditDataLayer::$dl->getTableColumns($this->auditSchemaName, $this->tableName));
     $target = TableColumnsMetadata::combine($this->additionalAuditColumns, $this->dataTableColumnsDatabase);
 
     $new      = TableColumnsMetadata::notInOtherSet($target, $actual);
@@ -322,7 +320,7 @@ class AuditTable
    */
   private function lockTable(): void
   {
-    AuditDataLayer::lockTable($this->dataSchemaName, $this->tableName);
+    AuditDataLayer::$dl->lockTable($this->dataSchemaName, $this->tableName);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -366,7 +364,7 @@ class AuditTable
    */
   private function unlockTable(): void
   {
-    AuditDataLayer::unlockTables();
+    AuditDataLayer::$dl->unlockTables();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Audit\Test\MySql\DiffCommand\CharacterSetName;
+namespace SetBased\Audit\Test\MySql\DiffCommand\MissingAuditTable;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests missing audit table.
@@ -30,7 +30,7 @@ class MissingAuditTableTest extends DiffCommandTestCase
   {
     $this->runAudit();
 
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_audit_table.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/drop_audit_table.sql'));
 
     $output = $this->runDiff();
 

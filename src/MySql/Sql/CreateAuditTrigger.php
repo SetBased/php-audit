@@ -235,11 +235,11 @@ class CreateAuditTrigger
           switch ($column['value_type'])
           {
             case 'ACTION':
-              $values .= AuditDataLayer::quoteString($this->triggerAction);
+              $values .= AuditDataLayer::$dl->quoteString($this->triggerAction);
               break;
 
             case 'STATE':
-              $values .= AuditDataLayer::quoteString($rowState);
+              $values .= AuditDataLayer::$dl->quoteString($rowState);
               break;
 
             default:

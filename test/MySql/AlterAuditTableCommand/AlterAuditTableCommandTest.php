@@ -5,8 +5,8 @@ namespace SetBased\Audit\Test\MySql\AlterAuditTableCommand;
 
 use SetBased\Audit\Command\AlterAuditTableCommand;
 use SetBased\Audit\Command\AuditCommand;
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -25,7 +25,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
 
     $this->dropAllTables();
 
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/'.$this->getName().'/setup.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/'.$this->getName().'/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $this->assertSame($statusCode, $commandTester->getStatusCode(), 'status_code');
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
                              'config file' => __DIR__.'/config/audit.json']);
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
     $this->runAudit();
 
     // Alter table(s) in the data schema.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/'.$name.'/alter.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/'.$name.'/alter.sql'));
 
     $this->runAlter();
 
@@ -167,7 +167,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
                         trim(file_get_contents(__DIR__.'/config/alter.sql')));
 
     // Run the alter script.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/alter.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/alter.sql'));
 
     // Rerun the alter-audit-table command.
     $this->runAlter();

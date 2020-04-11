@@ -6,7 +6,6 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\DroppedTable;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests for running audit with a dropped table.
@@ -32,34 +31,34 @@ class DroppedTableTest extends AuditCommandTestCase
     $this->runAudit();
 
     // TABLE1 and TABLE2 MUST exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE2 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE2');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_delete'));
 
     // Drop obsolete table TABLE2.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/drop_obsolete_table.sql'));
 
     $this->runAudit(0, true);
 
     // TABLE1 and TABLE2 MUST still exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));

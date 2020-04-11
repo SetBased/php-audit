@@ -64,8 +64,8 @@ class Audit
     $this->io     = $io;
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
-                                                             $this->config->getManArray('audit_columns'));
+      AuditDataLayer::$dl->resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                                  $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -74,8 +74,8 @@ class Audit
    */
   public function listOfTables(): void
   {
-    $this->dataSchemaTables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
-    $this->auditSchemaTables = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
+    $this->dataSchemaTables  = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.data_schema'));
+    $this->auditSchemaTables = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.audit_schema'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

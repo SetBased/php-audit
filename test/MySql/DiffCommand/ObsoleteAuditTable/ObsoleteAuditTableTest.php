@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand\ObsoleteAuditTable;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests missing audit table.
@@ -32,7 +32,7 @@ class ObsoleteAuditTableTest extends DiffCommandTestCase
 
     $this->runAudit();
 
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/drop_data_table.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/drop_data_table.sql'));
 
     $this->runAudit(0, true);
 

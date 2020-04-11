@@ -5,8 +5,8 @@ namespace SetBased\Audit\Test\MySql\DiffCommand;
 
 use SetBased\Audit\Command\AuditCommand;
 use SetBased\Audit\Command\DiffCommand;
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -31,10 +31,10 @@ class DiffCommandTestCase extends AuditTestCase
   {
     parent::setUpBeforeClass();
 
-    StaticDataLayer::disconnect();
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->disconnect();
+    AuditDataLayer::$dl->connect();
 
-    StaticDataLayer::executeMulti(file_get_contents(self::$dir.'/config/setup.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(self::$dir.'/config/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ class DiffCommandTestCase extends AuditTestCase
     self::assertSame($statusCode, $commandTester->getStatusCode(), 'status_code');
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

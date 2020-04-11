@@ -7,6 +7,7 @@ use Noodlehaus\Config;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Style\AuditStyle;
 use SetBased\Config\TypedConfig;
+use SetBased\Stratum\MySql\MySqlDefaultConnector;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -52,7 +53,6 @@ class BaseCommand extends Command
   protected $rewriteConfigFile = true;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Reads configuration parameters from the configuration file.
    */
@@ -98,12 +98,13 @@ class BaseCommand extends Command
    */
   protected function connect(): void
   {
-    AuditDataLayer::setIo($this->io);
-    AuditDataLayer::connect($this->config->getManString('database.host'),
-                            $this->config->getManString('database.user'),
-                            $this->config->getManString('database.password'),
-                            $this->config->getManString('database.data_schema'),
-                            $this->config->getManInt('database.port', 3306));
+    $connector = new MySqlDefaultConnector($this->config->getManString('database.host'),
+                                           $this->config->getManString('database.user'),
+                                           $this->config->getManString('database.password'),
+                                           $this->config->getManString('database.data_schema'),
+                                           $this->config->getManInt('database.port', 3306));
+    $dl = new AuditDataLayer($connector, $this->io);
+    $dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

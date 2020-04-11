@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand\CharacterSetName;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests changed character set of a column.
@@ -31,7 +31,7 @@ class CharacterSetNameTest extends DiffCommandTestCase
     $this->runAudit();
 
     // Change character set of column c4.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/change_charset.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/change_charset.sql'));
 
     $output = preg_replace('/ +/', ' ', $this->runDiff());
 

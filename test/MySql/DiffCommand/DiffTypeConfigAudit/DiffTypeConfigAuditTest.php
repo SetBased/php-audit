@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\DiffCommand\DiffTypeConfigAudit;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\DiffCommand\DiffCommandTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests changed column type.
@@ -31,7 +31,7 @@ class DiffTypeConfigAuditTest extends DiffCommandTestCase
     $this->runAudit();
 
     // Change type of column c4.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/change_column_type.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/change_column_type.sql'));
 
     $output = preg_replace('/ +/', ' ', $this->runDiff());
 

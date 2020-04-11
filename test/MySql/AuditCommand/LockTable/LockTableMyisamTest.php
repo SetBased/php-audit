@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\LockTable;
 
-use SetBased\Stratum\MySql\StaticDataLayer;
+use SetBased\Audit\MySql\AuditDataLayer;
 
 /**
  * Tests for table locking.
@@ -19,10 +19,10 @@ class LockTableMyisamTest extends LockTableTestCase
   {
     parent::setUpBeforeClass();
 
-    StaticDataLayer::disconnect();
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->disconnect();
+    AuditDataLayer::$dl->connect();
 
-    StaticDataLayer::executeNone('alter table `test_data`.`TABLE1` engine=myisam');
+    AuditDataLayer::$dl->executeNone('alter table `test_data`.`TABLE1` engine=myisam');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

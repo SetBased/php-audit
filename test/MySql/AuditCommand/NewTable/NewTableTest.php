@@ -6,7 +6,6 @@ namespace SetBased\Audit\Test\MySql\AuditCommand\NewTable;
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests for running audit with a new table.
@@ -32,20 +31,20 @@ class NewTableTest extends AuditCommandTestCase
     $this->runAudit(0, true);
 
     // TABLE1 MUST and TABLE2 MUST not exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // Create new table TABLE2.
-    StaticDataLayer::executeMulti(file_get_contents(__DIR__.'/config/create_new_table.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/create_new_table.sql'));
 
-    $output =  $this->runAudit(0, true);
+    $output = $this->runAudit(0, true);
 
     // New table must be logged.
     self::assertStringContainsString('Found new table TABLE2', $output);
@@ -57,17 +56,17 @@ class NewTableTest extends AuditCommandTestCase
     self::assertNull($config['tables']['TABLE2']['audit']);
 
     // TABLE1 MUST and TABLE2 MUST not exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
-    $output =  $this->runAudit(0, true);
+    $output = $this->runAudit(0, true);
 
     // New table must be logged.
     self::assertStringContainsString('Audit not set for table TABLE2', $output);
@@ -79,18 +78,18 @@ class NewTableTest extends AuditCommandTestCase
     self::assertNull($config['tables']['TABLE2']['audit']);
 
     // TABLE1 MUST and TABLE2 MUST not exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // Set audit to true for TABLE2.
-    $config = json_decode(file_get_contents(__DIR__.'/config/audit.json'), true);
+    $config                              = json_decode(file_get_contents(__DIR__.'/config/audit.json'), true);
     $config['tables']['TABLE2']['audit'] = true;
     $config['tables']['TABLE2']['alias'] = 't2';
     file_put_contents(__DIR__.'/config/audit.json', json_encode($config, JSON_PRETTY_PRINT));
@@ -101,16 +100,16 @@ class NewTableTest extends AuditCommandTestCase
     self::assertStringContainsString('Creating audit table test_audit.TABLE2', $output);
 
     // TABLE1 and TABLE2 MUST exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 and TABLE2 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE2');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_delete'));

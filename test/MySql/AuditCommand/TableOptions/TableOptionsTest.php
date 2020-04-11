@@ -30,20 +30,20 @@ class TableOptionsTest extends AuditCommandTestCase
   {
     $this->runAudit();
 
-    $dataTable  = AuditDataLayer::getTableOptions('test_data', 'TABLE1');
-    $auditTable = AuditDataLayer::getTableOptions('test_audit', 'TABLE1');
+    $dataTable  = AuditDataLayer::$dl->getTableOptions('test_data', 'TABLE1');
+    $auditTable = AuditDataLayer::$dl->getTableOptions('test_audit', 'TABLE1');
     unset($dataTable['table_schema']);
     unset($auditTable['table_schema']);
     self::assertEquals($dataTable, $auditTable, 'TABLE1');
 
-    $dataTable  = AuditDataLayer::getTableOptions('test_data', 'TABLE2');
-    $auditTable = AuditDataLayer::getTableOptions('test_audit', 'TABLE2');
+    $dataTable  = AuditDataLayer::$dl->getTableOptions('test_data', 'TABLE2');
+    $auditTable = AuditDataLayer::$dl->getTableOptions('test_audit', 'TABLE2');
     unset($dataTable['table_schema']);
     unset($auditTable['table_schema']);
     self::assertEquals($dataTable, $auditTable, 'TABLE2');
 
-    $dataTable  = AuditDataLayer::getTableOptions('test_data', 'TABLE3');
-    $auditTable = AuditDataLayer::getTableOptions('test_audit', 'TABLE3');
+    $dataTable  = AuditDataLayer::$dl->getTableOptions('test_data', 'TABLE3');
+    $auditTable = AuditDataLayer::$dl->getTableOptions('test_audit', 'TABLE3');
     unset($dataTable['table_schema']);
     unset($auditTable['table_schema']);
     self::assertEquals($dataTable, $auditTable, 'TABLE3');

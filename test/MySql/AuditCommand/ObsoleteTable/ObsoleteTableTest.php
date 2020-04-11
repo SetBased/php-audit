@@ -31,42 +31,42 @@ class ObsoleteTableTest extends AuditCommandTestCase
     $this->runAudit();
 
     // TABLE1 and TABLE2 MUST exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE2 MUST have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE2');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t2_delete'));
 
     // Set audit to false for TABLE2.
-    $config = json_decode(file_get_contents(__DIR__.'/config/audit.json'), true);
+    $config                              = json_decode(file_get_contents(__DIR__.'/config/audit.json'), true);
     $config['tables']['TABLE2']['audit'] = false;
     file_put_contents(__DIR__.'/config/audit.json', json_encode($config, JSON_PRETTY_PRINT));
 
     $this->runAudit(0, true);
 
     // TABLE1 and TABLE2 MUST still exist.
-    $tables = AuditDataLayer::getTablesNames(self::$auditSchema);
+    $tables = AuditDataLayer::$dl->getTablesNames(self::$auditSchema);
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE1'));
     self::assertNotNull(RowSetHelper::searchInRowSet($tables, 'table_name', 'TABLE2'));
 
     // TABLE1 have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE1');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE1');
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_insert'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_update'));
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     // TABLE2 must not have triggers.
-    $triggers = AuditDataLayer::getTableTriggers(self::$dataSchema, 'TABLE2');
+    $triggers = AuditDataLayer::$dl->getTableTriggers(self::$dataSchema, 'TABLE2');
     self::assertCount(0, $triggers);
 
     // TABLE2 MUST be in audit.json.

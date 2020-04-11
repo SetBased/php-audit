@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 use SetBased\ErrorHandler\ErrorHandler;
-use SetBased\Stratum\MySql\StaticDataLayer;
+use SetBased\Stratum\MySql\MySqlDataLayer;
+use SetBased\Stratum\MySql\MySqlDefaultConnector;
 
 //----------------------------------------------------------------------------------------------------------------------
 $files = [__DIR__.'/../vendor/autoload.php',
@@ -21,7 +22,7 @@ foreach ($files as $file)
   }
 }
 
-declare(ticks = 1);
+declare(ticks=1);
 
 //----------------------------------------------------------------------------------------------------------------------
 function signalHandler()
@@ -37,17 +38,19 @@ pcntl_signal(SIGUSR1, "signalHandler");
 $handler = new ErrorHandler();
 $handler->registerErrorHandler();
 
-StaticDataLayer::connect('localhost', 'test', 'test', 'test_data');
+$connector = new MySqlDefaultConnector('localhost', 'test', 'test', 'test_data');
+$dl        = new MySqlDataLayer($connector);
+$dl->connect();
 
 while (true)
 {
   if ($GLOBALS['exit']) break;
 
-  StaticDataLayer::begin();
-  StaticDataLayer::executeNone('insert into TABLE1(c) values(1)');
-  StaticDataLayer::executeNone('update TABLE1 set c = 2');
-  StaticDataLayer::executeNone('delete from TABLE1 where c = 2');
-  StaticDataLayer::commit();
+  $dl->begin();
+  $dl->executeNone('insert into TABLE1(c) values(1)');
+  $dl->executeNone('update TABLE1 set c = 2');
+  $dl->executeNone('delete from TABLE1 where c = 2');
+  $dl->commit();
 }
 
-StaticDataLayer::disconnect();
+$dl->disconnect();

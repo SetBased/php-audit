@@ -11,20 +11,43 @@ use SetBased\Audit\Style\AuditStyle;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 use SetBased\Stratum\Middle\BulkHandler;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
-use SetBased\Stratum\MySql\StaticDataLayer;
+use SetBased\Stratum\MySql\MySqlConnector;
+use SetBased\Stratum\MySql\MySqlDataLayer;
 
 /**
  * Class for executing SQL statements and retrieving metadata from MySQL.
  */
-class AuditDataLayer extends StaticDataLayer
+class AuditDataLayer extends MySqlDataLayer
 {
   //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * The singleton of this class.
+   *
+   * @var AuditDataLayer
+   */
+  public static $dl;
+
   /**
    * The Output decorator.
    *
    * @var AuditStyle
    */
-  private static $io;
+  private $io;
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * AuditDataLayer constructor.
+   *
+   * @param MySqlConnector $connector The object for connecting to the MySql instance.
+   * @param AuditStyle     $io        The Output decorator.
+   */
+  public function __construct(MySqlConnector $connector, AuditStyle $io)
+  {
+    parent::__construct($connector);
+
+    $this->io = $io;
+    self::$dl = $this;
+  }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -34,12 +57,12 @@ class AuditDataLayer extends StaticDataLayer
    * @param string               $tableName       The name of the table.
    * @param TableColumnsMetadata $columns         The metadata of the new columns.
    */
-  public static function addNewColumns(string $auditSchemaName, string $tableName, TableColumnsMetadata $columns): void
+  public function addNewColumns(string $auditSchemaName, string $tableName, TableColumnsMetadata $columns): void
   {
     $helper = new AlterAuditTableAddColumns($auditSchemaName, $tableName, $columns);
     $sql    = $helper->buildStatement();
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -52,15 +75,15 @@ class AuditDataLayer extends StaticDataLayer
    * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
-  public static function createAuditTable(string $dataSchemaName,
-                                          string $auditSchemaName,
-                                          string $tableName,
-                                          TableColumnsMetadata $columns): void
+  public function createAuditTable(string $dataSchemaName,
+                                   string $auditSchemaName,
+                                   string $tableName,
+                                   TableColumnsMetadata $columns): void
   {
     $helper = new CreateAuditTable($dataSchemaName, $auditSchemaName, $tableName, $columns);
     $sql    = $helper->buildStatement();
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -77,15 +100,15 @@ class AuditDataLayer extends StaticDataLayer
    * @param string|null          $skipVariable           The skip variable.
    * @param string[]             $additionSql            Additional SQL statements.
    */
-  public static function createAuditTrigger(string $dataSchemaName,
-                                            string $auditSchemaName,
-                                            string $tableName,
-                                            string $triggerName,
-                                            string $triggerAction,
-                                            TableColumnsMetadata $additionalAuditColumns,
-                                            TableColumnsMetadata $tableColumns,
-                                            ?string $skipVariable,
-                                            array $additionSql): void
+  public function createAuditTrigger(string $dataSchemaName,
+                                     string $auditSchemaName,
+                                     string $tableName,
+                                     string $triggerName,
+                                     string $triggerAction,
+                                     TableColumnsMetadata $additionalAuditColumns,
+                                     TableColumnsMetadata $tableColumns,
+                                     ?string $skipVariable,
+                                     array $additionSql): void
   {
     $helper = new CreateAuditTrigger($dataSchemaName,
                                      $auditSchemaName,
@@ -98,7 +121,7 @@ class AuditDataLayer extends StaticDataLayer
                                      $additionSql);
     $sql    = $helper->buildStatement();
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -109,7 +132,7 @@ class AuditDataLayer extends StaticDataLayer
    * @param string  $tableName    The table name.
    * @param array[] $auditColumns Audit columns from config file.
    */
-  public static function createTemporaryTable(string $schemaName, string $tableName, array $auditColumns): void
+  public function createTemporaryTable(string $schemaName, string $tableName, array $auditColumns): void
   {
     $sql = new MySqlCompoundSyntaxCodeStore();
     $sql->append(sprintf('create table `%s`.`%s` (', $schemaName, $tableName));
@@ -123,7 +146,7 @@ class AuditDataLayer extends StaticDataLayer
     }
     $sql->append(')');
 
-    static::executeNone($sql->getCode());
+    $this->executeNone($sql->getCode());
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -133,11 +156,11 @@ class AuditDataLayer extends StaticDataLayer
    * @param string $schemaName The name of the table schema.
    * @param string $tableName  The name of the table.
    */
-  public static function dropTemporaryTable(string $schemaName, string $tableName): void
+  public function dropTemporaryTable(string $schemaName, string $tableName): void
   {
     $sql = sprintf('drop table `%s`.`%s`', $schemaName, $tableName);
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -147,20 +170,20 @@ class AuditDataLayer extends StaticDataLayer
    * @param string $triggerSchema The name of the trigger schema.
    * @param string $triggerName   The mame of trigger.
    */
-  public static function dropTrigger(string $triggerSchema, string $triggerName): void
+  public function dropTrigger(string $triggerSchema, string $triggerName): void
   {
     $sql = sprintf('drop trigger `%s`.`%s`', $triggerSchema, $triggerName);
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * @inheritdoc
    */
-  public static function executeBulk(BulkHandler $bulkHandler, string $query): void
+  public function executeBulk(BulkHandler $bulkHandler, string $query): void
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     parent::executeBulk($bulkHandler, $query);
   }
@@ -169,9 +192,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeMulti(string $queries): array
+  public function executeMulti(string $queries): array
   {
-    static::logQuery($queries);
+    $this->logQuery($queries);
 
     return parent::executeMulti($queries);
   }
@@ -180,9 +203,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeNone(string $query): int
+  public function executeNone(string $query): int
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeNone($query);
   }
@@ -191,9 +214,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeRow0(string $query): ?array
+  public function executeRow0(string $query): ?array
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeRow0($query);
   }
@@ -202,9 +225,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeRow1(string $query): array
+  public function executeRow1(string $query): array
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeRow1($query);
   }
@@ -213,9 +236,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeRows(string $query): array
+  public function executeRows(string $query): array
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeRows($query);
   }
@@ -224,9 +247,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeSingleton0(string $query)
+  public function executeSingleton0(string $query)
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeSingleton0($query);
   }
@@ -235,9 +258,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeSingleton1(string $query)
+  public function executeSingleton1(string $query)
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeSingleton1($query);
   }
@@ -246,9 +269,9 @@ class AuditDataLayer extends StaticDataLayer
   /**
    * @inheritdoc
    */
-  public static function executeTable(string $query): int
+  public function executeTable(string $query): int
   {
-    static::logQuery($query);
+    $this->logQuery($query);
 
     return parent::executeTable($query);
   }
@@ -262,7 +285,7 @@ class AuditDataLayer extends StaticDataLayer
    *
    * @return array[]
    */
-  public static function getTableColumns(string $schemaName, string $tableName): array
+  public function getTableColumns(string $schemaName, string $tableName): array
   {
     // When a column has no default prior to MariaDB 10.2.7 column_default is null from MariaDB 10.2.7
     // column_default = 'NULL' (string(4)).
@@ -277,10 +300,10 @@ from   information_schema.COLUMNS
 where  TABLE_SCHEMA = %s
 and    TABLE_NAME   = %s
 order by ORDINAL_POSITION",
-                   static::quoteString($schemaName),
-                   static::quoteString($tableName));
+                   $this->quoteString($schemaName),
+                   $this->quoteString($tableName));
 
-    return static::executeRows($sql);
+    return $this->executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -292,7 +315,7 @@ order by ORDINAL_POSITION",
    *
    * @return array
    */
-  public static function getTableOptions(string $schemaName, string $tableName): array
+  public function getTableOptions(string $schemaName, string $tableName): array
   {
     $sql = sprintf('
 select t1.TABLE_SCHEMA       as table_schema
@@ -304,10 +327,10 @@ from       information_schema.TABLES                                t1
 inner join information_schema.COLLATION_CHARACTER_SET_APPLICABILITY t2  on  t2.COLLATION_NAME = t1.TABLE_COLLATION
 where t1.TABLE_SCHEMA = %s
 and   t1.TABLE_NAME   = %s',
-                   static::quoteString($schemaName),
-                   static::quoteString($tableName));
+                   $this->quoteString($schemaName),
+                   $this->quoteString($tableName));
 
-    return static::executeRow1($sql);
+    return $this->executeRow1($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -319,7 +342,7 @@ and   t1.TABLE_NAME   = %s',
    *
    * @return array[]
    */
-  public static function getTableTriggers(string $schemaName, string $tableName): array
+  public function getTableTriggers(string $schemaName, string $tableName): array
   {
     $sql = sprintf('
 select TRIGGER_NAME as trigger_name
@@ -327,10 +350,10 @@ from   information_schema.TRIGGERS
 where  TRIGGER_SCHEMA     = %s
 and    EVENT_OBJECT_TABLE = %s
 order by Trigger_Name',
-                   static::quoteString($schemaName),
-                   static::quoteString($tableName));
+                   $this->quoteString($schemaName),
+                   $this->quoteString($tableName));
 
-    return static::executeRows($sql);
+    return $this->executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -341,16 +364,16 @@ order by Trigger_Name',
    *
    * @return array[]
    */
-  public static function getTablesNames(string $schemaName): array
+  public function getTablesNames(string $schemaName): array
   {
     $sql = sprintf("
 select TABLE_NAME as table_name
 from   information_schema.TABLES
 where  TABLE_SCHEMA = %s
 and    TABLE_TYPE   = 'BASE TABLE'
-order by TABLE_NAME", static::quoteString($schemaName));
+order by TABLE_NAME", $this->quoteString($schemaName));
 
-    return static::executeRows($sql);
+    return $this->executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -361,7 +384,7 @@ order by TABLE_NAME", static::quoteString($schemaName));
    *
    * @return array[]
    */
-  public static function getTriggers(string $schemaName): array
+  public function getTriggers(string $schemaName): array
   {
     $sql = sprintf('
 select EVENT_OBJECT_TABLE as table_name
@@ -370,9 +393,9 @@ from   information_schema.TRIGGERS
 where  TRIGGER_SCHEMA     = %s
 order by EVENT_OBJECT_TABLE
 ,        TRIGGER_NAME',
-                   static::quoteString($schemaName));
+                   $this->quoteString($schemaName));
 
-    return static::executeRows($sql);
+    return $this->executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -382,11 +405,11 @@ order by EVENT_OBJECT_TABLE
    * @param string $schemaName The schema of the table.
    * @param string $tableName  The table name.
    */
-  public static function lockTable(string $schemaName, string $tableName): void
+  public function lockTable(string $schemaName, string $tableName): void
   {
     $sql = sprintf('lock tables `%s`.`%s` write', $schemaName, $tableName);
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -398,8 +421,8 @@ order by EVENT_OBJECT_TABLE
    *
    * @return TableColumnsMetadata
    */
-  public static function resolveCanonicalAdditionalAuditColumns(string $auditSchema,
-                                                                array $additionalAuditColumns): TableColumnsMetadata
+  public function resolveCanonicalAdditionalAuditColumns(string $auditSchema,
+                                                         array $additionalAuditColumns): TableColumnsMetadata
   {
     if (empty($additionalAuditColumns))
     {
@@ -407,9 +430,9 @@ order by EVENT_OBJECT_TABLE
     }
 
     $tableName = '_TMP_'.uniqid();
-    static::createTemporaryTable($auditSchema, $tableName, $additionalAuditColumns);
-    $columns = AuditDataLayer::getTableColumns($auditSchema, $tableName);
-    static::dropTemporaryTable($auditSchema, $tableName);
+    $this->createTemporaryTable($auditSchema, $tableName, $additionalAuditColumns);
+    $columns = AuditDataLayer::$dl->getTableColumns($auditSchema, $tableName);
+    $this->dropTemporaryTable($auditSchema, $tableName);
 
     foreach ($additionalAuditColumns as $column)
     {
@@ -430,24 +453,13 @@ order by EVENT_OBJECT_TABLE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Sets the Output decorator.
-   *
-   * @param AuditStyle $io The Output decorator.
-   */
-  public static function setIo(AuditStyle $io)
-  {
-    self::$io = $io;
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Releases all table locks.
    */
-  public static function unlockTables(): void
+  public function unlockTables(): void
   {
     $sql = 'unlock tables';
 
-    static::executeNone($sql);
+    $this->executeNone($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -456,20 +468,20 @@ order by EVENT_OBJECT_TABLE
    *
    * @param string $query The query.
    */
-  private static function logQuery(string $query): void
+  private function logQuery(string $query): void
   {
     $query = trim($query);
 
     if (strpos($query, "\n")!==false)
     {
       // Query is a multi line query.
-      self::$io->logVeryVerbose('Executing query:');
-      self::$io->logVeryVerbose('<sql>%s</sql>', $query);
+      $this->io->logVeryVerbose('Executing query:');
+      $this->io->logVeryVerbose('<sql>%s</sql>', $query);
     }
     else
     {
       // Query is a single line query.
-      self::$io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
+      $this->io->logVeryVerbose('Executing query: <sql>%s</sql>', $query);
     }
   }
 

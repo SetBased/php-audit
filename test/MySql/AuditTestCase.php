@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace SetBased\Audit\Test\MySql;
 
 use PHPUnit\Framework\TestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
+use SetBased\Audit\MySql\AuditDataLayer;
+use SetBased\Audit\Style\AuditStyle;
+use SetBased\Stratum\MySql\MySqlDefaultConnector;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Parent class for the Audit test classes.
@@ -34,7 +38,10 @@ class AuditTestCase extends TestCase
   {
     parent::setUpBeforeClass();
 
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    $connector = new MySqlDefaultConnector('localhost', 'test', 'test', self::$dataSchema);
+    $io        = new AuditStyle(new ArgvInput(), new ConsoleOutput());
+    $dl        = new AuditDataLayer($connector, $io);
+    $dl->connect();
 
     self::dropAllTables();
   }
@@ -52,17 +59,17 @@ from   information_schema.TABLES
 where TABLE_SCHEMA in (%s,%s)";
 
     $sql = sprintf($sql,
-                   StaticDataLayer::quoteString(self::$dataSchema),
-                   StaticDataLayer::quoteString(self::$auditSchema));
+                   AuditDataLayer::$dl->quoteString(self::$dataSchema),
+                   AuditDataLayer::$dl->quoteString(self::$auditSchema));
 
-    $tables = StaticDataLayer::executeRows($sql);
+    $tables = AuditDataLayer::$dl->executeRows($sql);
 
     foreach ($tables as $table)
     {
       $sql = "drop table `%s`.`%s`";
       $sql = sprintf($sql, $table['table_schema'], $table['table_name']);
 
-      StaticDataLayer::executeNone($sql);
+      AuditDataLayer::$dl->executeNone($sql);
     }
   }
 
@@ -72,8 +79,8 @@ where TABLE_SCHEMA in (%s,%s)";
    */
   protected function setUp(): void
   {
-    StaticDataLayer::disconnect();
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->disconnect();
+    AuditDataLayer::$dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -82,7 +89,8 @@ where TABLE_SCHEMA in (%s,%s)";
    */
   protected function tearDown(): void
   {
-    StaticDataLayer::disconnect();
+    AuditDataLayer::$dl->disconnect();
+    AuditDataLayer::$dl->connect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

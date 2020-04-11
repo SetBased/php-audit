@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace SetBased\Audit\Test\MySql\AuditCommand\AbcFramework;
 
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
-use SetBased\Stratum\MySql\StaticDataLayer;
 
 /**
  * Tests for/with typical config for ABC Framework.
@@ -32,7 +32,7 @@ class AbcFrameworkTest extends AuditCommandTestCase
     $this->runAudit();
 
     // Reconnect to DB.
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->connect();
 
     $sql = sprintf("
 select COLUMN_NAME                    as column_name
@@ -45,10 +45,10 @@ from   information_schema.COLUMNS
 where  TABLE_SCHEMA = %s
 and    TABLE_NAME   = %s
 order by ORDINAL_POSITION",
-                   StaticDataLayer::quoteString(self::$auditSchema),
-                   StaticDataLayer::quoteString('ABC_AUTH_COMPANY'));
+                   AuditDataLayer::$dl->quoteString(self::$auditSchema),
+                   AuditDataLayer::$dl->quoteString('ABC_AUTH_COMPANY'));
 
-    $rows = StaticDataLayer::executeRows($sql);
+    $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // MariaDB 10.2.x uses 'current_timestamp()' older versions use 'CURRENT_TIMESTAMP'.
     foreach ($rows as &$row)
@@ -135,10 +135,10 @@ insert into `ABC_AUTH_COMPANY`(`cmp_abbr`
 ,                              `cmp_label`)
 values( %s
 ,       %s )',
-                   StaticDataLayer::quoteString('SYS'),
-                   StaticDataLayer::quoteString('SYS'));
+                   AuditDataLayer::$dl->quoteString('SYS'),
+                   AuditDataLayer::$dl->quoteString('SYS'));
 
-    StaticDataLayer::executeNone($sql);
+    AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
     $sql = sprintf("
@@ -146,8 +146,8 @@ select *
 from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'INSERT'");
 
-    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
-    $rows = StaticDataLayer::executeRows($sql);
+    AuditDataLayer::$dl->executeNone("SET time_zone = 'Europe/Amsterdam'");
+    $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 1 row.
     self::assertEquals(1, count($rows));
@@ -175,18 +175,18 @@ where  `audit_statement` = 'INSERT'");
   public function test02b(): void
   {
     // Set session and user ID.
-    StaticDataLayer::executeNone('set @abc_g_ses_id=12345');  // The combination of my suitcase.
-    StaticDataLayer::executeNone('set @abc_g_usr_id=7011');
+    AuditDataLayer::$dl->executeNone('set @abc_g_ses_id=12345');  // The combination of my suitcase.
+    AuditDataLayer::$dl->executeNone('set @abc_g_usr_id=7011');
 
     // Update a row into ABC_AUTH_COMPANY.
     $sql = sprintf('
 update `ABC_AUTH_COMPANY`
 set   `cmp_label` = %s
 where `cmp_abbr` = %s',
-                   StaticDataLayer::quoteString('CMP_ID_SYS'),
-                   StaticDataLayer::quoteString('SYS'));
+                   AuditDataLayer::$dl->quoteString('CMP_ID_SYS'),
+                   AuditDataLayer::$dl->quoteString('SYS'));
 
-    StaticDataLayer::executeNone($sql);
+    AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
     $sql = sprintf("
@@ -194,8 +194,8 @@ select *
 from   `test_audit`.`ABC_AUTH_COMPANY`
 where  `audit_statement` = 'UPDATE'");
 
-    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
-    $rows = StaticDataLayer::executeRows($sql);
+    AuditDataLayer::$dl->executeNone("SET time_zone = 'Europe/Amsterdam'");
+    $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 2 rows.
     self::assertEquals(2, count($rows), 'row count');
@@ -237,15 +237,15 @@ where  `audit_statement` = 'UPDATE'");
    */
   public function test02c(): void
   {
-    StaticDataLayer::executeNone("SET time_zone = 'Europe/Amsterdam'");
+    AuditDataLayer::$dl->executeNone("SET time_zone = 'Europe/Amsterdam'");
 
     // Delete a row from ABC_AUTH_COMPANY.
     $sql = sprintf('
 delete from `ABC_AUTH_COMPANY`
 where `cmp_abbr` = %s',
-                   StaticDataLayer::quoteString('SYS'));
+                   AuditDataLayer::$dl->quoteString('SYS'));
 
-    StaticDataLayer::executeNone($sql);
+    AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
     $sql = sprintf("
@@ -253,7 +253,7 @@ select *
 from   `test_audit`.`ABC_AUTH_COMPANY`
 where  audit_statement = 'DELETE'");
 
-    $rows = StaticDataLayer::executeRows($sql);
+    $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 1 row.
     self::assertEquals(1, count($rows));
@@ -285,7 +285,7 @@ where  audit_statement = 'DELETE'");
 select * 
 from   `test_audit`.`ABC_AUTH_COMPANY`");
 
-    $rows = StaticDataLayer::executeRows($sql);
+    $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 4 rows: 1 insert, 2 update, and 1 delete.
     self::assertEquals(4, count($rows));

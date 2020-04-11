@@ -79,7 +79,7 @@ class CreateAuditTable
     $code->append($this->getColumnDefinitions());
 
     // Create SQL for table options.
-    $tableOptions = AuditDataLayer::getTableOptions($this->dataSchemaName, $this->tableName);
+    $tableOptions = AuditDataLayer::$dl->getTableOptions($this->dataSchemaName, $this->tableName);
     $code->append(sprintf(') engine=%s character set=%s collate=%s',
                           $tableOptions['engine'],
                           $tableOptions['character_set_name'],

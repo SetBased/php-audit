@@ -49,8 +49,8 @@ class AlterAuditTable
     $this->codeStore = new AlterTableCodeStore();
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
-                                                             $this->config->getManArray('audit_columns'));
+      AuditDataLayer::$dl->resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                                  $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -191,14 +191,14 @@ class AlterAuditTable
       }
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
+    $tables  = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.data_schema'));
     $tables2 = [];
     foreach ($tables as $table)
     {
       $tables2[] = $table['table_name'];
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
+    $tables  = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.audit_schema'));
     $tables3 = [];
     foreach ($tables as $table)
     {
@@ -219,8 +219,8 @@ class AlterAuditTable
    */
   private function getTableMetadata(string $schemaName, string $tableName): TableMetadata
   {
-    $table   = AuditDataLayer::getTableOptions($schemaName, $tableName);
-    $columns = AuditDataLayer::getTableColumns($schemaName, $tableName);
+    $table   = AuditDataLayer::$dl->getTableOptions($schemaName, $tableName);
+    $columns = AuditDataLayer::$dl->getTableColumns($schemaName, $tableName);
 
     return new TableMetadata($table, new TableColumnsMetadata($columns));
   }

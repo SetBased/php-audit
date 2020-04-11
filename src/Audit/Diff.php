@@ -71,8 +71,8 @@ class Diff
     $this->output = $output;
 
     $this->additionalAuditColumns =
-      AuditDataLayer::resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
-                                                             $this->config->getManArray('audit_columns'));
+      AuditDataLayer::$dl->resolveCanonicalAdditionalAuditColumns($this->config->getManString('database.audit_schema'),
+                                                                  $this->config->getManArray('audit_columns'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -114,9 +114,11 @@ class Diff
    */
   private function currentAuditTable(string $tableName): void
   {
-    $columns           = AuditDataLayer::getTableColumns($this->config->getManString('database.data_schema'), $tableName);
+    $columns           = AuditDataLayer::$dl->getTableColumns($this->config->getManString('database.data_schema'),
+                                                              $tableName);
     $dataTableColumns  = new TableColumnsMetadata($columns);
-    $columns           = AuditDataLayer::getTableColumns($this->config->getManString('database.audit_schema'), $tableName);
+    $columns           = AuditDataLayer::$dl->getTableColumns($this->config->getManString('database.audit_schema'),
+                                                              $tableName);
     $auditTableColumns = new TableColumnsMetadata($columns, 'AuditColumnMetadata');
 
     // In the audit table columns coming from the data table are always nullable.
@@ -133,8 +135,10 @@ class Diff
       }
     }
 
-    $dataTableOptions  = AuditDataLayer::getTableOptions($this->config->getManString('database.data_schema'), $tableName);
-    $auditTableOptions = AuditDataLayer::getTableOptions($this->config->getManString('database.audit_schema'), $tableName);
+    $dataTableOptions  = AuditDataLayer::$dl->getTableOptions($this->config->getManString('database.data_schema'),
+                                                              $tableName);
+    $auditTableOptions = AuditDataLayer::$dl->getTableOptions($this->config->getManString('database.audit_schema'),
+                                                              $tableName);
 
     $dataTable  = new TableMetadata($dataTableOptions, $dataTableColumns);
     $auditTable = new TableMetadata($auditTableOptions, $auditTableColumns);
@@ -174,14 +178,14 @@ class Diff
       }
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.data_schema'));
+    $tables  = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.data_schema'));
     $tables2 = [];
     foreach ($tables as $table)
     {
       $tables2[] = $table['table_name'];
     }
 
-    $tables  = AuditDataLayer::getTablesNames($this->config->getManString('database.audit_schema'));
+    $tables  = AuditDataLayer::$dl->getTablesNames($this->config->getManString('database.audit_schema'));
     $tables3 = [];
     foreach ($tables as $table)
     {

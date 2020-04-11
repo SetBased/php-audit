@@ -109,13 +109,13 @@ class TriggerCodeTest extends TestCase
     $sql = $helper->buildStatement();
 
     // Code must have one EOL at the end.
-    self::assertRegExp('/\r?\n$/', $sql, sprintf('Single EOL: %s', $triggerAction));
+    self::assertMatchesRegularExpression('/\r?\n$/', $sql, sprintf('Single EOL: %s', $triggerAction));
 
     // Code must have one and only EOL at the end.
-    self::assertNotRegExp('/\r?\n\r?\n$/', $sql, sprintf('Double EOL: %s', $triggerAction));
+    self::assertDoesNotMatchRegularExpression('/\r?\n\r?\n$/', $sql, sprintf('Double EOL: %s', $triggerAction));
 
     // Code must not have a semicolon at the end.
-    self::assertNotRegExp('/;$/', trim($sql), sprintf('Semicolon: %s', $triggerAction));
+    self::assertDoesNotMatchRegularExpression('/;$/', trim($sql), sprintf('Semicolon: %s', $triggerAction));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

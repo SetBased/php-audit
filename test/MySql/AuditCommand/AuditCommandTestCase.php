@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SetBased\Audit\Test\MySql\AuditCommand;
 
 use SetBased\Audit\Command\AuditCommand;
+use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditTestCase;
-use SetBased\Stratum\MySql\StaticDataLayer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -30,10 +30,10 @@ class AuditCommandTestCase extends AuditTestCase
   {
     parent::setUpBeforeClass();
 
-    StaticDataLayer::disconnect();
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->disconnect();
+    AuditDataLayer::$dl->connect();
 
-    StaticDataLayer::executeMulti(file_get_contents(self::$dir.'/config/setup.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(self::$dir.'/config/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ class AuditCommandTestCase extends AuditTestCase
     self::assertSame($statusCode, $commandTester->getStatusCode(), 'status_code');
 
     // Reconnects to the MySQL instance (because the audit command always disconnects from the MySQL instance).
-    StaticDataLayer::connect('localhost', 'test', 'test', self::$dataSchema);
+    AuditDataLayer::$dl->connect();
 
     return $commandTester->getDisplay();
   }
