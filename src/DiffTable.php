@@ -81,7 +81,7 @@ class DiffTable
    *
    * @param bool $full If false and only if only differences are shown.
    *
-   * @return array[]
+   * @return array
    */
   private function getRows(bool $full): array
   {
