@@ -21,7 +21,7 @@ class AuditApplication extends Application
    */
   public function __construct()
   {
-    parent::__construct('audit', '1.5.1');
+    parent::__construct('audit', '1.5.2');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
