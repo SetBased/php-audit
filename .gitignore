@@ -7,6 +7,7 @@
 /custom.type.properties
 /docs/_build/
 /test/MySql/AlterAuditTableCommand/config/alter.sql
+/test/MySql/AuditCommand/AddAuditColumn/config/audit.json
 /test/MySql/AuditCommand/DroppedTable/config/audit.json
 /test/MySql/AuditCommand/NewTable/config/audit.json
 /test/MySql/AuditCommand/ObsoleteTable/config/audit.json

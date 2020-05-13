@@ -230,9 +230,7 @@ class AuditTable
     $alterNewColumns = new TableColumnsMetadata();
     foreach ($newColumns->getColumns() as $newColumn)
     {
-      $properties          = $newColumn->getProperties();
-      $properties['after'] = $this->dataTableColumnsDatabase->getPreviousColumn($properties['column_name']);
-
+      $properties = $newColumn->getProperties();
       $alterNewColumns->appendTableColumn(new AlterColumnMetadata($properties));
     }
 
@@ -289,6 +287,7 @@ class AuditTable
   {
     $actual = new TableColumnsMetadata(AuditDataLayer::$dl->getTableColumns($this->auditSchemaName, $this->tableName));
     $target = TableColumnsMetadata::combine($this->additionalAuditColumns, $this->dataTableColumnsDatabase);
+    $target->enhanceAfter();
 
     $new      = TableColumnsMetadata::notInOtherSet($target, $actual);
     $obsolete = TableColumnsMetadata::notInOtherSet($actual, $target);

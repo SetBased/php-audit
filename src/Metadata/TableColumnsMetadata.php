@@ -22,6 +22,7 @@ class TableColumnsMetadata
   private $columns = [];
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -164,6 +165,20 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Enhances all columns with field 'after'.
+   */
+  public function enhanceAfter(): void
+  {
+    $previous = null;
+    foreach ($this->columns as $column)
+    {
+      $column->setAfter($previous);
+      $previous = $column->getName();
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Returns a column given the column name.
    *
    * @param string $columnName The name of the column.
@@ -223,27 +238,6 @@ class TableColumnsMetadata
   public function getNumberOfColumns(): int
   {
     return count($this->columns);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Returns previous column of a columns. Returns null if the column name is not found in this TableColumnsMetadata.
-   *
-   * @param string $columnName The column name.
-   *
-   * @return string|null
-   */
-  public function getPreviousColumn(string $columnName): ?string
-  {
-    $columns = array_keys($this->columns);
-    $key     = array_search($columnName, $columns);
-
-    if ($key>=1)
-    {
-      return $columns[$key - 1];
-    }
-
-    return null;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

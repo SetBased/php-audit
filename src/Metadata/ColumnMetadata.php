@@ -28,6 +28,7 @@ abstract class ColumnMetadata
   private $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -120,12 +121,7 @@ abstract class ColumnMetadata
    */
   public function getProperty(string $name): ?string
   {
-    if (isset($this->properties[$name]))
-    {
-      return $this->properties[$name];
-    }
-
-    return null;
+    return $this->properties[$name] ?? null;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -151,6 +147,17 @@ abstract class ColumnMetadata
   public function makeNullable(): void
   {
     $this->properties['is_nullable'] = 'YES';
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Sets property 'after'.
+   *
+   * @param string|null $after
+   */
+  public function setAfter(?string $after): void
+  {
+    $this->properties['after'] = $after;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

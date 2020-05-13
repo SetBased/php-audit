@@ -1,0 +1,29 @@
+{
+  "database": {
+    "credentials": "credentials.ini"
+  },
+  "audit_columns": [
+    {
+      "column_name": "audit_column1",
+      "column_type": "varchar(21)",
+      "expression": "'col1'"
+    },
+    {
+      "column_name": "audit_column2",
+      "column_type": "varchar(22)",
+      "expression": "'col2'"
+    },
+    {
+      "column_name": "audit_column3",
+      "column_type": "varchar(23)",
+      "expression": "'col3'"
+    }
+  ],
+  "tables": {
+    "TABLE1": {
+      "audit": true,
+      "skip": null,
+      "alias": "t1"
+    }
+  }
+}
