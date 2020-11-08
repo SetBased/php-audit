@@ -14,7 +14,7 @@
     "setbased/exception": "^2.0",
     "setbased/helper-code-store-mysql": "^2.0",
     "setbased/php-stratum-middle": "^5.0",
-    "setbased/php-stratum-mysql": "^5.0",
+    "setbased/php-stratum-mysql": "^6.0",
     "setbased/typed-config": "^1.0",
     "symfony/console": "^5.0"
   },
