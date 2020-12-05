@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Audit\Test\MySql\AuditCommand\AbcFramework;
+namespace SetBased\Audit\Test\MySql\AuditCommand\PhpPlaisio;
 
 use SetBased\Audit\MySql\AuditDataLayer;
 use SetBased\Audit\Test\MySql\AuditCommand\AuditCommandTestCase;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
 
 /**
- * Tests for/with typical config for ABC Framework.
+ * Tests for/with typical config for PhpPlaisio Framework.
  */
-class AbcFrameworkTest extends AuditCommandTestCase
+class PhpPlaisioTest extends AuditCommandTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -53,7 +53,7 @@ order by ORDINAL_POSITION",
     // MariaDB 10.2.x uses 'current_timestamp()' older versions use 'CURRENT_TIMESTAMP'.
     foreach ($rows as &$row)
     {
-      if ($row['column_default']=='CURRENT_TIMESTAMP')
+      if ($row['column_default']==='CURRENT_TIMESTAMP')
       {
         $row['column_default'] = 'current_timestamp()';
       }
@@ -150,7 +150,7 @@ where  `audit_statement` = 'INSERT'");
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 1 row.
-    self::assertEquals(1, count($rows));
+    self::assertCount(1, $rows);
     $row = $rows[0];
 
     // Tests on fields.
@@ -175,8 +175,8 @@ where  `audit_statement` = 'INSERT'");
   public function test02b(): void
   {
     // Set session and user ID.
-    AuditDataLayer::$dl->executeNone('set @abc_g_ses_id=12345');  // The combination of my suitcase.
-    AuditDataLayer::$dl->executeNone('set @abc_g_usr_id=7011');
+    AuditDataLayer::$dl->executeNone('set @audit_ses_id=12345');  // The combination of my suitcase.
+    AuditDataLayer::$dl->executeNone('set @audit_usr_id=7011');
 
     // Update a row into ABC_AUTH_COMPANY.
     $sql = sprintf('
@@ -198,7 +198,7 @@ where  `audit_statement` = 'UPDATE'");
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 2 rows.
-    self::assertEquals(2, count($rows), 'row count');
+    self::assertCount(2, $rows, 'row count');
 
     // Tests on 'OLD' fields.
     $row  = $rows[RowSetHelper::searchInRowSet($rows, 'audit_type', 'OLD')];
@@ -256,7 +256,7 @@ where  audit_statement = 'DELETE'");
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 1 row.
-    self::assertEquals(1, count($rows));
+    self::assertCount(1, $rows);
     $row = $rows[0];
 
     // Tests on fields.
@@ -288,7 +288,7 @@ from   `test_audit`.`ABC_AUTH_COMPANY`");
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
     // We expect 4 rows: 1 insert, 2 update, and 1 delete.
-    self::assertEquals(4, count($rows));
+    self::assertCount(4, $rows);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

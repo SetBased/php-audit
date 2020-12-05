@@ -35,12 +35,12 @@
     {
       "column_name": "audit_ses_id",
       "column_type": "int(10) unsigned",
-      "expression": "@abc_g_ses_id"
+      "expression": "@audit_ses_id"
     },
     {
       "column_name": "audit_usr_id",
       "column_type": "int(10) unsigned",
-      "expression": "@abc_g_usr_id"
+      "expression": "@audit_usr_id"
     }
   ],
   "additional_sql": [
