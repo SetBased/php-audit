@@ -281,7 +281,7 @@ Recording the state of the row.
 Example 4: Database Session
 :::::::::::::::::::::::::::
 
-Recording the database session (a single connection by a client). See :ref:`additional-sql-section` for setting the variable ``@audit_uuid``.
+Recording the database session (a single connection from your PHP application to the MySQL instance). See :ref:`additional-sql-section` for setting the `user defined variable <https://mariadb.com/kb/en/user-defined-variables/>`_ ``@audit_uuid`` in MySQL.
 
 .. code-block:: json
 
@@ -292,6 +292,11 @@ Recording the database session (a single connection by a client). See :ref:`addi
         "column_type": "bigint(20) unsigned not null",
         "expression": "@audit_uuid"
       }
+    ],
+    "additional_sql": [
+      "if (@audit_uuid is null) then",
+      "  set @audit_uuid = uuid_short();",
+      "end if;",
     ]
   }
 
@@ -300,7 +305,7 @@ Recording the database session (a single connection by a client). See :ref:`addi
 Example 5: Order
 ::::::::::::::::
 
-Recording the order of the data changes. See :ref:`additional-sql-section` for setting the variable ``@audit_rownum``.
+Recording the order of the data changes. See :ref:`additional-sql-section` for setting the `user defined variable <https://mariadb.com/kb/en/user-defined-variables/>`_ ``@audit_rownum`` in MySQL.
 
 .. code-block:: json
 
@@ -311,6 +316,9 @@ Recording the order of the data changes. See :ref:`additional-sql-section` for s
         "column_type": "int(10) unsigned not null",
         "expression": "@audit_rownum"
       }
+    ],
+    "additional_sql": [
+      "set @audit_rownum = ifnull(@audit_rownum, 0) + 1;"
     ]
   }
 
@@ -345,17 +353,17 @@ Recording the session ID. This example is useful tracking data changes made in m
       {
         "column_name": "audit_ses_id",
         "column_type": "int(10) unsigned",
-        "expression": "@abc_g_ses_id"
+        "expression": "@audit_ses_id"
       }
     ]
   }
 
-When retrieving the session you must set the variable MySQL ``@abc_g_ses_id`` in your web application.
+When retrieving the session you must set the `user defined variable <https://mariadb.com/kb/en/user-defined-variables/>`_ ``@audit_ses_id`` in MySQL from your PHP application. See :ref:`setting-user-defined-variables-in-mysql` for examples of setting `user defined variables <https://mariadb.com/kb/en/user-defined-variables/>`_ in MySQL.
 
 Example 8: End User
 :::::::::::::::::::
 
-Recording the user ID. This example is useful recording the end user who has modified the data in your (web) application.
+Recording the user ID. This example is useful for recording the end user who has modified the data using your PHP application.
 
 .. code-block:: json
 
@@ -364,12 +372,12 @@ Recording the user ID. This example is useful recording the end user who has mod
       {
         "column_name": "audit_usr_id",
         "column_type": "int(10) unsigned",
-        "expression": "@abc_g_usr_id"
+        "expression": "@audit_usr_id"
       }
     ]
   }
 
-When retrieving the session and when signing in you must set the variable MySQL ``@abc_g_usr_id`` in your (web) application.
+When retrieving the session and when signing in or off you must set the `user defined variable <https://mariadb.com/kb/en/user-defined-variables/>`_ ``@audit_usr_id`` in MySQL from your PHP application. See :ref:`setting-user-defined-variables-in-mysql` for examples of setting `user defined variables <https://mariadb.com/kb/en/user-defined-variables/>`_ in MySQL.
 
 .. _additional-sql-section:
 
@@ -381,7 +389,7 @@ The additional SQL section specifies additional SQL statements that are placed a
 Example
 ```````
 
-This example show how to set the variables ``@audit_uuid`` and ``@audit_rownum`` mentioned in :ref:`example_database_session` and :ref:`example_order`.
+This example show how to set the variables ``@audit_uuid`` and ``@audit_rownum`` mentioned in sections :ref:`example_database_session` and :ref:`example_order`.
 
 .. code-block:: json
 
@@ -450,21 +458,20 @@ An audit trail will be recorded for table ``FOO_USER``.
         "FOO_USER": {
           "audit": true,
           "alias": "usr",
-          "skip": "@g_skip_foo_user"
+          "skip": "@audit_skip_foo_user"
         }
       }
   }
 
-When MySQL variable ``@g_skip_foo_user`` no audit triggers will record a data change. In the SQL code below updating column ``usr_last_login`` will not be recorded.
+When `user defined variable <https://mariadb.com/kb/en/user-defined-variables/>`_ ``@audit_skip_foo_user`` in MySQL is set no audit triggers will record data changes. In the SQL code below updating column ``usr_last_login`` will not be recorded.
 
 .. code-block:: sql
 
-  set @g_skip_foo_user = 1;
+  set @audit_skip_foo_user = 1;
 
   update FOO_USER
   set    usr_last_login = now()
   where  usr_id = p_usr_id
   ;
 
-  set @g_skip_foo_user = null;
-
+  set @audit_skip_foo_user = null;

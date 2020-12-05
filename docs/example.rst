@@ -64,9 +64,9 @@ Below is the code for the update statement (the code for the other triggers look
     end if;
     set @audit_rownum = ifnull(@audit_rownum, 0) + 1;
     insert into `nahouw_audit`.`NAH_TOURNAMENT`(audit_timestamp,audit_type,audit_state,audit_uuid,rownum,audit_ses_id,audit_usr_id,trn_id,trn_name)
-    values(now(),'UPDATE','OLD',@audit_uuid,@audit_rownum,@abc_g_ses_id,@abc_g_usr_id,OLD.`trn_id`,OLD.`trn_name`);
+    values(now(),'UPDATE','OLD',@audit_uuid,@audit_rownum,@audit_ses_id,@audit_usr_id,OLD.`trn_id`,OLD.`trn_name`);
     insert into `nahouw_audit`.`NAH_TOURNAMENT`(audit_timestamp,audit_type,audit_state,audit_uuid,rownum,audit_ses_id,audit_usr_id,trn_id,trn_name)
-    values(now(),'UPDATE','NEW',@audit_uuid,@audit_rownum,@abc_g_ses_id,@abc_g_usr_id,NEW.`trn_id`,NEW.`trn_name`);
+    values(now(),'UPDATE','NEW',@audit_uuid,@audit_rownum,@audit_ses_id,@audit_usr_id,NEW.`trn_id`,NEW.`trn_name`);
   end
 
 .. _Nahouw: https://www.nahouw.net

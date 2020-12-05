@@ -42,6 +42,38 @@ If your application is querying on tables in the ``audit schema`` you are free t
 
 Be careful with unique indexes. A key of a table in the ``data schema`` will (very likely) not be a key of the corresponding table in the ``audit schema``.
 
+.. _setting-user-defined-variables-in-mysql:
+
+Setting User Defined Variables in MySQL
+---------------------------------------
+
+There are several ways for setting user defined variables in MySQL from your PHP application. In this section we discuss two methods. More information about user defined variables in MySQL can be found at `https://mariadb.com/kb/en/user-defined-variables/ <https://mariadb.com/kb/en/user-defined-variables/>`_ and `https://dev.mysql.com/doc/refman/8.0/en/user-variables.html <https://dev.mysql.com/doc/refman/8.0/en/user-variables.html>`_
+
+Explicit Query From PHP
+```````````````````````
+
+The PHP snippet below is an example of setting a user defined variable in MySQL from a PHP application.
+
+.. code-block:: PHP
+
+  // User has signed in and variable $usrId holds the ID of the user and
+  // $mysql is the connection to MySQL.
+  $mysql->real_query(sprintf('set @audit_usr_id = %s', $usrId ?? 'null'));
+
+Implicit in SQL Query
+`````````````````````
+
+The SQL statement below is an example of setting user defined variables in MySQL in a SQL statement (in this example session data is stored in table `FOO_SESSION`).
+
+.. code-block:: php
+
+  select @audit_ses_id := ses_id
+  ,      @audit_usr_id := usr_id
+  ,      ses_data
+  from   FOO_SESSION
+  where  ses_token = 'the-long-token-stored-in-the-session-cookie-of-the-user-agent'
+  ;
+
 Limitations
 -----------
 
