@@ -10,6 +10,11 @@
         <exec command="composer update" checkreturn="true" passthru="true"/>
     </target>
 
+    <!-- Generates the documentation -->
+    <target name="docs">
+        <exec command="make html" dir="docs" passthru="true" checkreturn="true"/>
+    </target>
+
     <!-- Creates a new version/release. -->
     <target name="version">
         <readSemanticVersion file=".version"
