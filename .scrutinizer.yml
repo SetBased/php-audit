@@ -1,3 +1,9 @@
+filter:
+  dependency_paths:
+    - "vendor/"
+  excluded_paths:
+    - 'test/'
+
 build:
   nodes:
     analysis:

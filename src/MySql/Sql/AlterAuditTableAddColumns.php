@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace SetBased\Audit\MySql\Sql;
 
 use SetBased\Audit\Metadata\TableColumnsMetadata;
-use SetBased\Audit\MySql\Metadata\ColumnMetadata;
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 
 /**
@@ -18,21 +17,21 @@ class AlterAuditTableAddColumns
    *
    * @var string
    */
-  private $auditSchemaName;
+  private string $auditSchemaName;
 
   /**
    * The array of new columns for adding to table.
    *
    * @var TableColumnsMetadata
    */
-  private $columns;
+  private TableColumnsMetadata $columns;
 
   /**
    * The name of the audit table.
    *
    * @var string
    */
-  private $tableName;
+  private string $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -61,7 +60,6 @@ class AlterAuditTableAddColumns
     $code = new MySqlCompoundSyntaxCodeStore();
 
     $code->append(sprintf('alter table `%s`.`%s`', $this->auditSchemaName, $this->tableName));
-    /** @var ColumnMetadata $column */
     foreach ($this->columns->getColumns() as $column)
     {
       $code->append(sprintf('  add `%s` %s', $column->getName(), $column->getProperty('column_type')), false);

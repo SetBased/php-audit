@@ -20,70 +20,70 @@ class CreateAuditTrigger
    *
    * @var TableColumnsMetadata
    */
-  private $additionalAuditColumns;
+  private TableColumnsMetadata $additionalAuditColumns;
 
   /**
    * Additional SQL statements.
    *
    * @var string[]|null
    */
-  private $additionalSql;
+  private ?array $additionalSql;
 
   /**
    * The name of the audit schema.
    *
    * @var string
    */
-  private $auditSchemaName;
+  private string $auditSchemaName;
 
   /**
    * The generated code.
    *
    * @var MySqlCompoundSyntaxCodeStore
    */
-  private $code;
+  private MySqlCompoundSyntaxCodeStore $code;
 
   /**
    * The name of the data schema.
    *
    * @var string
    */
-  private $dataSchemaName;
+  private string $dataSchemaName;
 
   /**
    * The skip variable.
    *
    * @var string|null
    */
-  private $skipVariable;
+  private ?string $skipVariable;
 
   /**
    * Audit columns from metadata.
    *
    * @var TableColumnsMetadata
    */
-  private $tableColumns;
+  private TableColumnsMetadata $tableColumns;
 
   /**
    * The name of the data table.
    *
    * @var string
    */
-  private $tableName;
+  private string $tableName;
 
   /**
    * The trigger action (i.e. INSERT, UPDATE, or DELETE).
    *
    * @var string
    */
-  private $triggerAction;
+  private string $triggerAction;
 
   /**
    * The name of the trigger.
    *
    * @var string
    */
-  private $triggerName;
+  private string $triggerName;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

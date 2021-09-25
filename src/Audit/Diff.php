@@ -24,21 +24,21 @@ class Diff
    *
    * @var TableColumnsMetadata
    */
-  private $additionalAuditColumns;
+  private TableColumnsMetadata $additionalAuditColumns;
 
   /**
    * The strong typed configuration reader and writer.
    *
    * @var TypedConfig
    */
-  private $config;
+  private TypedConfig $config;
 
   /**
    * The Input interface.
    *
    * @var InputInterface
    */
-  private $input;
+  private InputInterface $input;
 
   /**
    * The Output decorator.

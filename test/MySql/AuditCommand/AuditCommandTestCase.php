@@ -20,7 +20,7 @@ class AuditCommandTestCase extends AuditTestCase
    *
    * @var string
    */
-  protected static $dir;
+  protected static string $dir;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

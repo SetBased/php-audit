@@ -18,28 +18,28 @@ class CreateAuditTable
    *
    * @var string
    */
-  private $auditSchemaName;
+  private string $auditSchemaName;
 
   /**
    * The name of the table.
    *
    * @var TableColumnsMetadata
    */
-  private $columns;
+  private TableColumnsMetadata $columns;
 
   /**
    * The name of the data schema.
    *
    * @var string
    */
-  private $dataSchemaName;
+  private string $dataSchemaName;
 
   /**
    * The name of the table.
    *
    * @var string
    */
-  private $tableName;
+  private string $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

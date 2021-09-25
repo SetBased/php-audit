@@ -21,35 +21,35 @@ class Audit
    *
    * @var TableColumnsMetadata
    */
-  private $additionalAuditColumns;
+  private TableColumnsMetadata $additionalAuditColumns;
 
   /**
    * The names of all tables in audit schema.
    *
    * @var array
    */
-  private $auditSchemaTables;
+  private array $auditSchemaTables;
 
   /**
    * The strong typed configuration reader and writer.
    *
    * @var TypedConfig
    */
-  private $config;
+  private TypedConfig $config;
 
   /**
    * The names of all tables in data schema.
    *
    * @var array
    */
-  private $dataSchemaTables;
+  private array $dataSchemaTables;
 
   /**
    * The Output decorator.
    *
    * @var AuditStyle
    */
-  private $io;
+  private AuditStyle $io;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

@@ -19,7 +19,7 @@ class TableColumnsMetadata
    *
    * @var ColumnMetadata[]
    */
-  private $columns = [];
+  private array $columns = [];
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ class TableColumnsMetadata
    */
   public function __construct(array $columns = [], string $type = 'ColumnMetadata')
   {
-    foreach ($columns as $columnName => $column)
+    foreach ($columns as $column)
     {
       $this->columns[$column['column_name']] = static::columnFactory($type, $column);
     }

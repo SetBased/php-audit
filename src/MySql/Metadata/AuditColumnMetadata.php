@@ -14,14 +14,14 @@ class AuditColumnMetadata extends ColumnMetadata
    *
    * var string[]
    */
-  protected static $fields = ['column_name',
-                              'column_type',
-                              'column_default',
-                              'is_nullable',
-                              'character_set_name',
-                              'collation_name',
-                              'expression',
-                              'value_type'];
+  protected static array $fields = ['column_name',
+                                    'column_type',
+                                    'column_default',
+                                    'is_nullable',
+                                    'character_set_name',
+                                    'collation_name',
+                                    'expression',
+                                    'value_type'];
 
   //--------------------------------------------------------------------------------------------------------------------
 }

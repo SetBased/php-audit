@@ -20,21 +20,21 @@ class DiffTable
    *
    * @var TableMetadata
    */
-  private $auditTable;
+  private TableMetadata $auditTable;
 
   /**
    * The data table.
    *
    * @var TableMetadata
    */
-  private $dataTable;
+  private TableMetadata $dataTable;
 
   /**
    * The join column names of the audit and data table.
    *
    * @var array[]
    */
-  private $rows = [];
+  private array $rows = [];
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -118,7 +118,7 @@ class DiffTable
    */
   private function hasDifferences(): bool
   {
-    foreach ($this->rows as &$row)
+    foreach ($this->rows as $row)
     {
       if ($row['diff']) return true;
     }

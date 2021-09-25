@@ -21,21 +21,21 @@ class AlterAuditTable
    *
    * @var TableColumnsMetadata
    */
-  private $additionalAuditColumns;
+  private TableColumnsMetadata $additionalAuditColumns;
 
   /**
    * Code store for alter table statement.
    *
    * @var AlterTableCodeStore
    */
-  private $codeStore;
+  private AlterTableCodeStore $codeStore;
 
   /**
    * The strong typed configuration reader and writer.
    *
    * @var TypedConfig
    */
-  private $config;
+  private TypedConfig $config;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

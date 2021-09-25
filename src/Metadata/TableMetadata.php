@@ -14,21 +14,21 @@ class TableMetadata
    *
    * var string[]
    */
-  protected static $fields = [];
+  protected static array $fields = [];
 
   /**
    * The metadata of the columns of this table.
    *
    * @var TableColumnsMetadata
    */
-  private $columns;
+  private TableColumnsMetadata $columns;
 
   /**
    * The the properties of this table column.
    *
    * @var array
    */
-  private $properties = [];
+  private array $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

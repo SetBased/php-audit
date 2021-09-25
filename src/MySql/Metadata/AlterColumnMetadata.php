@@ -14,12 +14,12 @@ class AlterColumnMetadata extends ColumnMetadata
    *
    * var string[]
    */
-  protected static $fields = ['column_name',
-                              'column_type',
-                              'is_nullable',
-                              'character_set_name',
-                              'collation_name',
-                              'after'];
+  protected static array $fields = ['column_name',
+                                    'column_type',
+                                    'is_nullable',
+                                    'character_set_name',
+                                    'collation_name',
+                                    'after'];
 
   //--------------------------------------------------------------------------------------------------------------------
 }

@@ -25,14 +25,14 @@ class AuditDataLayer extends MySqlDataLayer
    *
    * @var AuditDataLayer
    */
-  public static $dl;
+  public static AuditDataLayer $dl;
 
   /**
    * The Output decorator.
    *
    * @var AuditStyle
    */
-  private $io;
+  private AuditStyle $io;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

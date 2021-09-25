@@ -22,35 +22,35 @@ class BaseCommand extends Command
    *
    * @var array
    */
-  private static $sections = ['database', 'audit_columns', 'additional_sql', 'tables'];
+  private static array $sections = ['database', 'audit_columns', 'additional_sql', 'tables'];
 
   /**
    * The strong typed configuration reader and writer.
    *
    * @var TypedConfig
    */
-  protected $config;
+  protected TypedConfig $config;
 
   /**
    * The name of the configuration file.
    *
    * @var string
    */
-  protected $configFileName = '';
+  protected string $configFileName = '';
 
   /**
    * The Output decorator.
    *
    * @var AuditStyle
    */
-  protected $io;
+  protected AuditStyle $io;
 
   /**
    * If set (the default) the config file must be rewritten. Set to false for testing only.
    *
    * @var bool
    */
-  protected $rewriteConfigFile = true;
+  protected bool $rewriteConfigFile = true;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

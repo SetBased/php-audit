@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="PHP Audit" default="build"  basedir=".">
-    <taskdef name="readSemanticVersion" classname="vendor.setbased.phing-extensions.src.Task.ReadSemanticVersionTask"/>
+    <taskdef name="ReadSemanticVersion" classname="\SetBased\Phing\Task\ReadSemanticVersionTask"/>
     <property name="VERSION" value="0.0.0"/>
 
     <target name="build"/>
 
     <!-- Run composer update and executes various other updates -->
     <target name="update">
-        <exec command="composer update" checkreturn="true" passthru="true"/>
+        <exec executable="composer" checkreturn="true" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="update"/>
+        </exec>
+
+        <!-- Show outdated packages -->
+        <exec executable="composer" checkreturn="true" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="outdated"/>
+            <arg value="--direct"/>
+        </exec>
     </target>
 
     <!-- Generates the documentation -->

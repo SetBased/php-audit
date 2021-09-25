@@ -14,18 +14,18 @@ abstract class ColumnMetadata
    *
    * var string[]
    */
-  protected static $fields = ['column_name',
-                              'column_type',
-                              'is_nullable',
-                              'character_set_name',
-                              'collation_name'];
+  protected static array $fields = ['column_name',
+                                    'column_type',
+                                    'is_nullable',
+                                    'character_set_name',
+                                    'collation_name'];
 
   /**
    * The the properties of this table column.
    *
    * @var array
    */
-  private $properties = [];
+  private array $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
 

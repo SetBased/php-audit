@@ -19,56 +19,56 @@ class AuditTable
    *
    * @var TableColumnsMetadata
    */
-  private $additionalAuditColumns;
+  private TableColumnsMetadata $additionalAuditColumns;
 
   /**
    * The unique alias for this data table.
    *
    * @var string|null
    */
-  private $alias;
+  private ?string $alias;
 
   /**
    * The name of the schema with the audit tables.
    *
    * @var string
    */
-  private $auditSchemaName;
+  private string $auditSchemaName;
 
   /**
    * The name of the schema with the data tables.
    *
    * @var string
    */
-  private $dataSchemaName;
+  protected $dataSchemaName;
 
   /**
    * The metadata of the columns of the data table retrieved from information_schema.
    *
    * @var TableColumnsMetadata
    */
-  private $dataTableColumnsDatabase;
+  private TableColumnsMetadata $dataTableColumnsDatabase;
 
   /**
    * The output decorator
    *
    * @var AuditStyle
    */
-  private $io;
+  private AuditStyle $io;
 
   /**
    * The skip variable for triggers.
    *
    * @var string|null
    */
-  private $skipVariable;
+  private ?string $skipVariable;
 
   /**
    * The name of the data and audit table.
    *
    * @var string
    */
-  private $tableName;
+  private string $tableName;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

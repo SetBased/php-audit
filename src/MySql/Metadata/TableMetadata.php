@@ -16,11 +16,11 @@ class TableMetadata extends BaseTableMetadata
    *
    * var string[]
    */
-  protected static $fields = ['table_schema',
-                              'table_name',
-                              'engine',
-                              'character_set_name',
-                              'table_collation'];
+  protected static array $fields = ['table_schema',
+                                    'table_name',
+                                    'engine',
+                                    'character_set_name',
+                                    'table_collation'];
 
   //--------------------------------------------------------------------------------------------------------------------
 }
