@@ -47,14 +47,14 @@ class ColumnMetadata extends BaseColumnMetadata
 
     $parts[] = ($this->getProperty('is_nullable')=='YES') ? 'null' : 'not null';
 
-    if ($this->getProperty('column_default')!==null && $this->getProperty('column_default')!='NULL')
+    if ($this->getProperty('column_default')!==null && mb_strtoupper($this->getProperty('column_default'))!=='NULL')
     {
       $parts[] = 'default '.$this->getProperty('column_default');
     }
-    elseif ($this->getProperty('column_type')=='timestamp')
+    elseif ($this->getProperty('column_type')==='timestamp')
     {
       // Prevent automatic updates of timestamp columns.
-      $parts[] = 'default now()';
+      $parts[] = 'default null';
     }
 
     return implode(' ', $parts);
