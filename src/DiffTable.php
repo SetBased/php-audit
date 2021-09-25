@@ -90,7 +90,7 @@ class DiffTable
     foreach ($this->rows as $row)
     {
       // Add separator between columns and options.
-      if ($options===false && $row['type']=='option')
+      if ($options===false && $row['type']==='option')
       {
         if (!empty($ret)) $ret[] = new TableSeparator();
         $options = true;
@@ -100,7 +100,7 @@ class DiffTable
       {
         $ret[] = [$row['name'], $row['audit1'], $row['data1']];
 
-        if ($row['rowspan']==2)
+        if ($row['rowspan']===2)
         {
           $ret[] = ['', $row['audit2'], $row['data2']];
         }
@@ -134,7 +134,7 @@ class DiffTable
   {
     foreach ($this->rows as &$row)
     {
-      if ($row['type']=='column')
+      if ($row['type']==='column')
       {
         if ($row['data']!==null)
         {
@@ -175,11 +175,11 @@ class DiffTable
       {
         case 'column':
           $row['diff'] = (isset($row['audit'])!==isset($row['data']) ||
-            $row['audit']->getColumnDefinition()!=$row['data']->getColumnDefinition());
+            $row['audit']->getColumnDefinition()!==$row['data']->getColumnDefinition());
           break;
 
         case 'option':
-          $row['diff'] = ($row['audit1']!=$row['data1']);
+          $row['diff'] = ($row['audit1']!==$row['data1']);
           break;
 
         default:
@@ -201,13 +201,13 @@ class DiffTable
         $row['name'] = sprintf('<mm_column>%s</mm_column>', $row['name']);
       }
 
-      if ($row['audit1']!=$row['data1'])
+      if ($row['audit1']!==$row['data1'])
       {
         $row['audit1'] = sprintf('<mm_type>%s</mm_type>', $row['audit1']);
         $row['data1']  = sprintf('<mm_type>%s</mm_type>', $row['data1']);
       }
 
-      if ($row['rowspan']==2 && ($row['audit2']!=$row['data2']))
+      if ($row['rowspan']===2 && ($row['audit2']!==$row['data2']))
       {
         $row['audit2'] = sprintf('<mm_type>%s</mm_type>', $row['audit2']);
         $row['data2']  = sprintf('<mm_type>%s</mm_type>', $row['data2']);

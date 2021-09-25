@@ -63,7 +63,7 @@ abstract class ColumnMetadata
     {
       if (!in_array($field, $ignore))
       {
-        if ($column1->getProperty($field)!=$column2->getProperty($field))
+        if ($column1->getProperty($field)!==$column2->getProperty($field))
         {
           $equal = false;
         }

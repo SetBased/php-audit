@@ -154,7 +154,7 @@ class BaseCommand extends Command
     if (file_exists($filename))
     {
       $old_data = file_get_contents($filename);
-      if ($data==$old_data) $write_flag = false;
+      if ($data===$old_data) $write_flag = false;
     }
 
     if ($write_flag)

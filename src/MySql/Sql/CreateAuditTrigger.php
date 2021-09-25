@@ -165,7 +165,7 @@ class CreateAuditTrigger
     $this->code->append($this->additionalSql);
 
     $this->createInsertStatement($rowState[0]);
-    if (count($rowState)==2)
+    if (count($rowState)===2)
     {
       $this->createInsertStatement($rowState[1]);
     }

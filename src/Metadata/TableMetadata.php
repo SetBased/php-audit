@@ -67,7 +67,7 @@ class TableMetadata
     {
       if (!in_array($field, ['table_schema', 'table_name']))
       {
-        if ($table1->getProperty($field)!=$table2->getProperty($field))
+        if ($table1->getProperty($field)!==$table2->getProperty($field))
         {
           $diff[] = $field;
         }

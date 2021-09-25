@@ -20,12 +20,12 @@ class AlterTableCodeStore extends CodeStore
 
     $line = trim($line);
 
-    if (substr($line, 0, 11)=='alter table' && substr($line, -1)<>';')
+    if (substr($line, 0, 11)==='alter table' && substr($line, -1)<>';')
     {
       $mode |= self::C_INDENT_INCREMENT_AFTER;
     }
 
-    if (substr($line, 0, 1)==';')
+    if (substr($line, 0, 1)===';')
     {
       $mode |= self::C_INDENT_DECREMENT_BEFORE;
     }

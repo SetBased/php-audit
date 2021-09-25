@@ -1,8 +1,16 @@
 /.idea/
 /.phpunit.result.cache
+/bin/jp.php
+/bin/pdepend
 /bin/phing
 /bin/php-parse
+/bin/phpcpd
+/bin/phploc
+/bin/phpmd
+/bin/phpstan
+/bin/phpstan.phar
 /bin/phpunit
+/bin/yaml-lint
 /composer.lock
 /custom.task.properties
 /custom.type.properties
