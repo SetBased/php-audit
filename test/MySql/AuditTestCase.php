@@ -21,14 +21,14 @@ class AuditTestCase extends TestCase
    *
    * @var string
    */
-  protected static $auditSchema = 'test_audit';
+  protected static string $auditSchema = 'test_audit';
 
   /**
    * The schema name with the data (or application's) tables.
    *
    * @var string
    */
-  protected static $dataSchema = 'test_data';
+  protected static string $dataSchema = 'test_data';
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

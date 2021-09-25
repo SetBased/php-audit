@@ -39,7 +39,7 @@ class RenameColumnTest extends AuditCommandTestCase
     AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/rename_column.sql'));
 
     // We expect exit status 0.
-    $this->runAudit(0);
+    $this->runAudit();
 
     $columns = AuditDataLayer::$dl->getTableColumns(self::$auditSchema, 'TABLE1');
 

@@ -141,10 +141,10 @@ values( %s
     AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
-    $sql = sprintf("
+    $sql = "
 select * 
 from   `test_audit`.`ABC_AUTH_COMPANY`
-where  `audit_statement` = 'INSERT'");
+where  `audit_statement` = 'INSERT'";
 
     AuditDataLayer::$dl->executeNone("SET time_zone = 'Europe/Amsterdam'");
     $rows = AuditDataLayer::$dl->executeRows($sql);
@@ -189,10 +189,10 @@ where `cmp_abbr` = %s',
     AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
-    $sql = sprintf("
+    $sql = "
 select * 
 from   `test_audit`.`ABC_AUTH_COMPANY`
-where  `audit_statement` = 'UPDATE'");
+where  `audit_statement` = 'UPDATE'";
 
     AuditDataLayer::$dl->executeNone("SET time_zone = 'Europe/Amsterdam'");
     $rows = AuditDataLayer::$dl->executeRows($sql);
@@ -248,10 +248,10 @@ where `cmp_abbr` = %s',
     AuditDataLayer::$dl->executeNone($sql);
 
     // Get audit rows.
-    $sql = sprintf("
+    $sql = "
 select * 
 from   `test_audit`.`ABC_AUTH_COMPANY`
-where  audit_statement = 'DELETE'");
+where  audit_statement = 'DELETE'";
 
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
@@ -281,9 +281,9 @@ where  audit_statement = 'DELETE'");
   public function test02d(): void
   {
     // Get all audit rows.
-    $sql = sprintf("
+    $sql = "
 select * 
-from   `test_audit`.`ABC_AUTH_COMPANY`");
+from   `test_audit`.`ABC_AUTH_COMPANY`";
 
     $rows = AuditDataLayer::$dl->executeRows($sql);
 
