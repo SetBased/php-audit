@@ -26,7 +26,7 @@
 <a href="https://packagist.org/packages/setbased/php-audit"><img src="https://poser.pugx.org/setbased/php-audit/v/stable" alt="Latest Stable Version"/></a><br/>
 </td>
 <td>
-<a href="https://travis-ci.org/SetBased/php-audit"><img src="https://travis-ci.org/SetBased/php-audit.svg?branch=master" alt="Build Status"/></a><br/>
+<a href="https://travis-ci.com/SetBased/php-audit"><img src="https://travis-ci.com/SetBased/php-audit.svg?branch=master" alt="Build Status"/></a><br/>
 <a href="https://scrutinizer-ci.com/g/SetBased/php-audit/?branch=master"><img src="https://scrutinizer-ci.com/g/SetBased/php-audit/badges/coverage.png?b=master" alt="Code Coverage"/></a>
 </td>
 <td>
