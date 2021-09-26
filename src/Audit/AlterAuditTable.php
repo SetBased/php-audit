@@ -114,7 +114,10 @@ class AlterAuditTable
         $name   = $column->getName();
         $filler = str_repeat(' ', $maxLength - mb_strlen($name) + 1);
 
-        if (!$first) $this->codeStore->appendToLastLine(',');
+        if (!$first)
+        {
+          $this->codeStore->appendToLastLine(',');
+        }
 
         $this->codeStore->append(sprintf('change column `%s`%s`%s`%s%s',
                                          $name,

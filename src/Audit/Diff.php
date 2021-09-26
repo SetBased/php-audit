@@ -45,14 +45,14 @@ class Diff
    *
    * @var AuditStyle
    */
-  private $io;
+  private AuditStyle $io;
 
   /**
    * The Output interface.
    *
    * @var OutputInterface
    */
-  private $output;
+  private OutputInterface $output;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**

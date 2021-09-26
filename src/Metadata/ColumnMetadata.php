@@ -166,7 +166,10 @@ abstract class ColumnMetadata
    */
   public function unsetDefault(): void
   {
-    if (isset($this->properties['column_default'])) $this->properties['column_default'] = 'NULL';
+    if (isset($this->properties['column_default']))
+    {
+      $this->properties['column_default'] = 'NULL';
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------

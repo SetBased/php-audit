@@ -160,7 +160,10 @@ class CreateAuditTrigger
     $this->code->append('for each row');
     $this->code->append('begin');
 
-    if ($this->skipVariable!==null) $this->code->append(sprintf('if (%s is null) then', $this->skipVariable));
+    if ($this->skipVariable!==null)
+    {
+      $this->code->append(sprintf('if (%s is null) then', $this->skipVariable));
+    }
 
     $this->code->append($this->additionalSql);
 
@@ -170,7 +173,10 @@ class CreateAuditTrigger
       $this->createInsertStatement($rowState[1]);
     }
 
-    if ($this->skipVariable!==null) $this->code->append('end if;');
+    if ($this->skipVariable!==null)
+    {
+      $this->code->append('end if;');
+    }
     $this->code->append('end');
 
     return $this->code->getCode();
@@ -199,14 +205,20 @@ class CreateAuditTrigger
     // First the audit columns.
     foreach ($this->additionalAuditColumns->getColumns() as $column)
     {
-      if ($columnNames) $columnNames .= ',';
+      if ($columnNames!=='')
+      {
+        $columnNames .= ',';
+      }
       $columnNames .= sprintf('`%s`', $column->getName());
     }
 
     // Second the audit columns.
     foreach ($this->tableColumns->getColumns() as $column)
     {
-      if ($columnNames) $columnNames .= ',';
+      if ($columnNames!=='')
+      {
+        $columnNames .= ',';
+      }
       $columnNames .= sprintf('`%s`', $column->getName());
     }
 
@@ -227,7 +239,10 @@ class CreateAuditTrigger
     foreach ($this->additionalAuditColumns->getColumns() as $column)
     {
       $column = $column->getProperties();
-      if ($values) $values .= ',';
+      if ($values!=='')
+      {
+        $values .= ',';
+      }
 
       switch (true)
       {
@@ -259,7 +274,10 @@ class CreateAuditTrigger
     // Second the values for the audit columns.
     foreach ($this->tableColumns->getColumns() as $column)
     {
-      if ($values) $values .= ',';
+      if ($values!=='')
+      {
+        $values .= ',';
+      }
       $values .= sprintf('%s.`%s`', $rowState, $column->getName());
     }
 
