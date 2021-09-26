@@ -62,7 +62,7 @@ class AlterAuditTableAddColumns
     $code->append(sprintf('alter table `%s`.`%s`', $this->auditSchemaName, $this->tableName));
     foreach ($this->columns->getColumns() as $column)
     {
-      $code->append(sprintf('  add `%s` %s', $column->getName(), $column->getProperty('column_type')), false);
+      $code->append(sprintf('  add `%s` %s', $column->getName(), $column->getColumnAuditDefinition()), false);
       $after = $column->getProperty('after');
       if (isset($after))
       {

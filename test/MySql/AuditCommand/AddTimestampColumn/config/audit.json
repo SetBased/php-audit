@@ -1,0 +1,29 @@
+{
+  "database": {
+    "credentials": "credentials.ini"
+  },
+  "audit_columns": [
+    {
+      "column_name": "audit_timestamp",
+      "column_type": "timestamp not null default now()",
+      "expression": "now()"
+    },
+    {
+      "column_name": "audit_statement",
+      "column_type": "enum('INSERT','DELETE','UPDATE') character set ascii collate ascii_general_ci not null",
+      "value_type": "ACTION"
+    },
+    {
+      "column_name": "audit_type",
+      "column_type": "enum('OLD','NEW') character set ascii collate ascii_general_ci not null",
+      "value_type": "STATE"
+    }
+  ],
+  "tables": {
+    "TABLE1": {
+      "audit": true,
+      "skip": null,
+      "alias": "t1"
+    }
+  }
+}

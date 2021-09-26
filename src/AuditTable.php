@@ -98,6 +98,8 @@ class AuditTable
     $this->additionalAuditColumns   = $additionalAuditColumns;
     $this->alias                    = $alias;
     $this->skipVariable             = $skipVariable;
+
+    $this->dataTableColumnsDatabase->makeNullable();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
