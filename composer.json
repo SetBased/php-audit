@@ -16,7 +16,7 @@
     "setbased/php-stratum-middle": "^5.10.0",
     "setbased/php-stratum-mysql": "^6.5.0",
     "setbased/typed-config": "^1.2.0",
-    "symfony/console": "^5.4.16"
+    "symfony/console": "^5.4.16 || ^6.2.2"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

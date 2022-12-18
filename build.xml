@@ -22,10 +22,6 @@
             <arg value="outdated"/>
             <arg value="--direct"/>
         </exec>
-        <exec executable="npm" checkreturn="false" passthru="true">
-            <arg value="--ansi"/>
-            <arg value="outdated"/>
-        </exec>
     </target>
 
     <!-- Generates the documentation -->

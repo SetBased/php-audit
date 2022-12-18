@@ -30,7 +30,7 @@ class AuditApplication extends Application
    *
    * @return Command[]
    */
-  protected function getDefaultCommands()
+  protected function getDefaultCommands(): array
   {
     $commands = parent::getDefaultCommands();
 
