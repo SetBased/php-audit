@@ -1,0 +1,6 @@
+#!/bin/bash -e -x
+
+cat test/MySql/ddl/0010_create_database.sql | mysql -v -u root
+cat test/MySql/ddl/0020_create_user.sql     | mysql -v -u root
+./bin/phpunit
+

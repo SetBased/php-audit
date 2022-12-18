@@ -13,17 +13,17 @@
     "setbased/error-handler": "^1.2.0",
     "setbased/exception": "^2.2.0",
     "setbased/helper-code-store-mysql": "^2.1.1",
-    "setbased/php-stratum-middle": "^5.9.0",
-    "setbased/php-stratum-mysql": "^6.4.0",
-    "setbased/typed-config": "^1.1.0",
-    "symfony/console": "^5.3.7"
+    "setbased/php-stratum-middle": "^5.10.0",
+    "setbased/php-stratum-mysql": "^6.5.0",
+    "setbased/typed-config": "^1.2.0",
+    "symfony/console": "^5.4.16"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require-dev": {
     "ext-pcntl": "*",
     "ext-posix": "*",
-    "phpunit/phpunit": "^9.5.0",
+    "phpunit/phpunit": "^9.5.27",
     "phing/phing": "^3.0.0-RC3",
     "setbased/phing-extensions": "^3.0.1"
   },
@@ -42,6 +42,9 @@
   ],
   "config": {
     "bin-dir": "bin/",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "phing/phing-composer-configurator": true
+    }
   }
 }
