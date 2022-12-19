@@ -1,19 +1,21 @@
-<phpunit bootstrap="test/MySql/bootstrap.php">
-    <testsuites>
-        <testsuite name="Tests">
-            <directory>test</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-            <exclude>
-                <directory suffix=".php">vendor/setbased</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html" target="test/report"/>
-        <log type="coverage-clover" target="test/coverage.xml"/>
-    </logging>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="test/MySql/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">vendor/setbased</directory>
+    </exclude>
+    <report>
+      <clover outputFile="test/coverage.xml"/>
+      <html outputDirectory="test/report"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="Tests">
+      <directory>test</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
 </phpunit>
