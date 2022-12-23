@@ -1,0 +1,67 @@
+on:
+  - "pull_request"
+  - "push"
+
+name: "unit"
+
+permissions:
+  contents: "read"
+
+jobs:
+  tests:
+    name:    "Tests"
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        mysql-version:
+          - "mysql-5.7"
+          - "mysql-8.0"
+          - "mariadb-10.2"
+          - "mariadb-10.3"
+          - "mariadb-10.4"
+          - "mariadb-10.5"
+          - "mariadb-10.6"
+          - "mariadb-10.7"
+          - "mariadb-10.8"
+          - "mariadb-10.9"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Install PHP with extensions"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions:  "xdebug"
+
+      - name: "Cache dependencies installed with Composer"
+        uses: "actions/cache@v3"
+        with:
+          path:         "~/.composer/cache"
+          key:          "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-"
+
+      - name: "Install dependencies with Composer"
+        run:  "composer update --no-ansi --no-interaction --no-progress"
+
+      - name: "Install MySQL or MariaDB"
+        uses: "shogo82148/actions-setup-mysql@v1"
+        with:
+          mysql-version: "${{ matrix.mysql-version }}"
+
+      - name: "Install timezone info"
+        run:  "mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -h 127.0.0.1 mysql"
+
+      - name: "Trust function creators (for MySQL 8.x)"
+        run:  "mysql -u root -h 127.0.0.1 -e 'SET GLOBAL log_bin_trust_function_creators = 1'"
+
+      - name: "Run tests with PHPUnit"
+        run:  "bin/phing unit"
