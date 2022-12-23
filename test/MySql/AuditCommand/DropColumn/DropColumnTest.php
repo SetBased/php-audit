@@ -26,6 +26,11 @@ class DropColumnTest extends AuditCommandTestCase
   //--------------------------------------------------------------------------------------------------------------------
   public function test01(): void
   {
+    $replace = ['mediumint' => 'mediumint(9)',
+                'smallint'  => 'smallint(6)',
+                'tinyint'   => 'tinyint(4)',
+                'int'       => 'int(11)'];
+
     // Run audit.
     $this->runAudit();
 
@@ -41,31 +46,42 @@ class DropColumnTest extends AuditCommandTestCase
 
     $actual = AuditDataLayer::$dl->getTableColumns(self::$auditSchema, 'TABLE1');
 
-    $expected   = [];
-    $expected[] = ['column_name'        => 'c1',
-                   'column_type'        => 'tinyint(4)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c2',
-                   'column_type'        => 'smallint(6)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c3',
-                   'column_type'        => 'mediumint(9)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c4',
-                   'column_type'        => 'int(11)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
+    foreach ($actual as $key => $row)
+    {
+      // Fix for MySQL 8.x.
+      foreach ($replace as $from => $to)
+      {
+        if ($row['column_type']===$from)
+        {
+          $actual[$key]['column_type'] = $to;
+        }
+      }
+    }
+
+    $expected = [['column_name'        => 'c1',
+                  'column_type'        => 'tinyint(4)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c2',
+                  'column_type'        => 'smallint(6)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c3',
+                  'column_type'        => 'mediumint(9)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c4',
+                  'column_type'        => 'int(11)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null]];
 
     self::assertSame($expected, $actual);
 
@@ -96,31 +112,42 @@ class DropColumnTest extends AuditCommandTestCase
     // TABLE1 must have column c3.
     $actual = AuditDataLayer::$dl->getTableColumns(self::$auditSchema, 'TABLE1');
 
-    $expected   = [];
-    $expected[] = ['column_name'        => 'c1',
-                   'column_type'        => 'tinyint(4)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c2',
-                   'column_type'        => 'smallint(6)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c3',
-                   'column_type'        => 'mediumint(9)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
-    $expected[] = ['column_name'        => 'c4',
-                   'column_type'        => 'int(11)',
-                   'column_default'     => 'NULL',
-                   'is_nullable'        => 'YES',
-                   'character_set_name' => null,
-                   'collation_name'     => null];
+    foreach ($actual as $key => $row)
+    {
+      // Fix for MySQL 8.x.
+      foreach ($replace as $from => $to)
+      {
+        if ($row['column_type']===$from)
+        {
+          $actual[$key]['column_type'] = $to;
+        }
+      }
+    }
+
+    $expected = [['column_name'        => 'c1',
+                  'column_type'        => 'tinyint(4)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c2',
+                  'column_type'        => 'smallint(6)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c3',
+                  'column_type'        => 'mediumint(9)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null],
+                 ['column_name'        => 'c4',
+                  'column_type'        => 'int(11)',
+                  'column_default'     => 'NULL',
+                  'is_nullable'        => 'YES',
+                  'character_set_name' => null,
+                  'collation_name'     => null]];
 
     self::assertSame($expected, $actual);
 

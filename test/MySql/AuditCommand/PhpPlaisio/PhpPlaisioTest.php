@@ -48,14 +48,36 @@ order by ORDINAL_POSITION",
                    AuditDataLayer::$dl->quoteString(self::$auditSchema),
                    AuditDataLayer::$dl->quoteString('ABC_AUTH_COMPANY'));
 
-    $rows = AuditDataLayer::$dl->executeRows($sql);
+    $actual = AuditDataLayer::$dl->executeRows($sql);
 
-    // MariaDB 10.2.x uses 'current_timestamp()' older versions use 'CURRENT_TIMESTAMP'.
-    foreach ($rows as &$row)
+    $replace = ['bigint unsigned'   => 'bigint(20) unsigned',
+                'int unsigned'      => 'int(10) unsigned',
+                'smallint unsigned' => 'smallint(5) unsigned'];
+
+    foreach ($actual as $key => $row)
     {
-      if ($row['column_default']==='CURRENT_TIMESTAMP')
+      // Fix for MySQL 5.x.
+      $actual[$key]['column_default'] = str_replace('CURRENT_TIMESTAMP', 'current_timestamp()', $row['column_default']);
+
+      // Fix for MariaDB 10.6+.
+      if ($row['character_set_name']!==null)
       {
-        $row['column_default'] = 'current_timestamp()';
+        $actual[$key]['character_set_name'] = str_replace('utf8mb3', 'utf8', $row['character_set_name']);
+      }
+
+      // Fix for MariaDB 10.6+.
+      if ($row['collation_name']!==null)
+      {
+        $actual[$key]['collation_name'] = str_replace('utf8mb3', 'utf8', $row['collation_name']);
+      }
+
+      // Fix for MySQL 8.x.
+      foreach ($replace as $from => $to)
+      {
+        if ($row['column_type']===$from)
+        {
+          $actual[$key]['column_type'] = $to;
+        }
       }
     }
 
@@ -120,7 +142,7 @@ order by ORDINAL_POSITION",
                   'character_set_name' => 'ascii',
                   'collation_name'     => 'ascii_general_ci']];
 
-    self::assertEquals($expected, $rows);
+    self::assertEquals($expected, $actual);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

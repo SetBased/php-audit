@@ -35,6 +35,9 @@ class NewColumnDataTableTest extends DiffCommandTestCase
 
     $output = preg_replace('/ +/', ' ', $this->runDiff());
 
+    // Fix for MySQL 8.x.
+    $output = str_replace('mediumint ', 'mediumint(9) ', $output);
+
     self::assertStringContainsString('| c3 | | mediumint(9) |', $output, 'acquire');
   }
 

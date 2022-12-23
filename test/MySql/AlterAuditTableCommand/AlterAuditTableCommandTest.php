@@ -162,9 +162,16 @@ class AlterAuditTableCommandTest extends AuditTestCase
 
     $this->runAlter();
 
+    $alter = trim(file_get_contents(__DIR__.'/config/alter.sql'));
+
+    // Fix for MariaDB 10.6+
+    $alter = str_replace('utf8mb3', 'utf8', $alter);
+
+    // Fix for MySQL 8.x.
+    $alter = str_replace('bigint ', 'bigint(20) ', $alter);
+
     // Compare the generated and expected SQL.
-    $this->assertEquals(trim(file_get_contents(__DIR__.'/'.$name.'/expected.sql')),
-                        trim(file_get_contents(__DIR__.'/config/alter.sql')));
+    $this->assertEquals(trim(file_get_contents(__DIR__.'/'.$name.'/expected.sql')), $alter);
 
     // Run the alter script.
     AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/config/alter.sql'));

@@ -38,7 +38,7 @@ pcntl_signal(SIGUSR1, "signalHandler");
 $handler = new ErrorHandler();
 $handler->registerErrorHandler();
 
-$connector = new MySqlDefaultConnector('localhost', 'test', 'test', 'test_data');
+$connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test_data');
 $dl        = new MySqlDataLayer($connector);
 $dl->connect();
 

@@ -35,6 +35,12 @@ class DiffTypeConfigAuditTest extends DiffCommandTestCase
 
     $output = preg_replace('/ +/', ' ', $this->runDiff());
 
+    // Fix for MariaDB 10.6+.
+    $output = str_replace('utf8mb3', 'utf8', $output);
+
+    // Fix for MySQL 8.x.
+    $output = str_replace('int ', 'int(11) ', $output);
+
     self::assertStringContainsString('| c4 | int(11) | varchar(20) |', $output);
     self::assertStringContainsString('| | | [utf8] [utf8_general_ci] |', $output);
   }

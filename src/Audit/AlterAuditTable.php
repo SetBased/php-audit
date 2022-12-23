@@ -72,7 +72,7 @@ class AlterAuditTable
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Compares a table in the data schema and its counter part in the audit schema.
+   * Compares a table in the data schema and its counterpart in the audit schema.
    *
    * @param string $tableName The name of the table.
    */

@@ -38,7 +38,7 @@ class AuditTestCase extends TestCase
   {
     parent::setUpBeforeClass();
 
-    $connector = new MySqlDefaultConnector('localhost', 'test', 'test', self::$dataSchema);
+    $connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', self::$dataSchema);
     $io        = new AuditStyle(new ArgvInput(), new ConsoleOutput());
     $dl        = new AuditDataLayer($connector, $io);
     $dl->connect();

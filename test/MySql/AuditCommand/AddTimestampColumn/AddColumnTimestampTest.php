@@ -26,6 +26,10 @@ class AddColumnTimestampTest extends AuditCommandTestCase
   //--------------------------------------------------------------------------------------------------------------------
   public function test01(): void
   {
+    $replace = ['smallint'  => 'smallint(6)',
+                'tinyint'   => 'tinyint(4)',
+                'int'       => 'int(11)'];
+
     // Run audit.
     $this->runAudit();
 
@@ -40,6 +44,21 @@ class AddColumnTimestampTest extends AuditCommandTestCase
     self::assertNotNull(RowSetHelper::searchInRowSet($triggers, 'trigger_name', 'trg_audit_t1_delete'));
 
     $actual = AuditDataLayer::$dl->getTableColumns(self::$auditSchema, 'TABLE1');
+
+    foreach ($actual as $key => $row)
+    {
+      // Fix for MySQL 5.x.
+      $actual[$key]['column_default'] = str_replace('CURRENT_TIMESTAMP', 'current_timestamp()', $row['column_default']);
+
+      // Fix for MySQL 8.x.
+      foreach ($replace as $from => $to)
+      {
+        if ($row['column_type']===$from)
+        {
+          $actual[$key]['column_type'] = $to;
+        }
+      }
+    }
 
     $expected = [['column_name'        => 'audit_timestamp',
                   'column_type'        => 'timestamp',
@@ -97,6 +116,21 @@ class AddColumnTimestampTest extends AuditCommandTestCase
 
     // TABLE1 must have column c3.
     $actual = AuditDataLayer::$dl->getTableColumns(self::$auditSchema, 'TABLE1');
+
+    foreach ($actual as $key => $row)
+    {
+      // Fix for MySQL 5.x.
+      $actual[$key]['column_default'] = str_replace('CURRENT_TIMESTAMP', 'current_timestamp()', $row['column_default']);
+
+      // Fix for MySQL 8.x.
+      foreach ($replace as $from => $to)
+      {
+        if ($row['column_type']===$from)
+        {
+          $actual[$key]['column_type'] = $to;
+        }
+      }
+    }
 
     $expected = [['column_name'        => 'audit_timestamp',
                   'column_type'        => 'timestamp',

@@ -51,7 +51,7 @@ class ColumnMetadata extends BaseColumnMetadata
     {
       $parts[] = 'default '.$this->getProperty('column_default');
     }
-    elseif ($this->getProperty('column_type')==='timestamp')
+    elseif ($this->getProperty('column_type')==='timestamp' && $this->getProperty('is_nullable')==='YES')
     {
       // Prevent automatic updates of timestamp columns.
       $parts[] = 'default null';
