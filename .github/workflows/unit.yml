@@ -65,3 +65,9 @@ jobs:
 
       - name: "Run tests with PHPUnit"
         run:  "bin/phing unit"
+
+      - name: "Upload to Codecov"
+        uses: "codecov/codecov-action@v2"
+        with:
+          files:   "test/coverage.xml"
+          verbose: true
