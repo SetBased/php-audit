@@ -1,4 +1,5 @@
 /.gitattributes   export-ignore
+/.github/         export-ignore
 /.gitignore       export-ignore
 /.unit-test       export-ignore
 /.version         export-ignore
