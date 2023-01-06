@@ -51,7 +51,8 @@ class CreateAuditTrigger
   private string $dataSchemaName;
 
   /**
-   * The skip variable.
+   * The name of the MySQL user defined variable for skipping triggers. When the value of this variable is not null the
+   * audit trigger will (effectively) be sipped.
    *
    * @var string|null
    */
@@ -96,18 +97,19 @@ class CreateAuditTrigger
    * @param string               $triggerName            The name of the trigger.
    * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
    * @param TableColumnsMetadata $tableColumns           The metadata of the data table columns.
-   * @param string|null          $skipVariable           The skip variable.
+   * @param string|null          $skipVariable           The name of the MySQL user defined variable for skipping
+   *                                                     triggers.
    * @param string[]|null        $additionalSql          Additional SQL statements.
    */
-  public function __construct(string $dataSchemaName,
-                              string $auditSchemaName,
-                              string $tableName,
-                              string $triggerName,
-                              string $triggerAction,
+  public function __construct(string               $dataSchemaName,
+                              string               $auditSchemaName,
+                              string               $tableName,
+                              string               $triggerName,
+                              string               $triggerAction,
                               TableColumnsMetadata $additionalAuditColumns,
                               TableColumnsMetadata $tableColumns,
-                              ?string $skipVariable,
-                              ?array $additionalSql)
+                              ?string              $skipVariable,
+                              ?array               $additionalSql)
   {
     $this->dataSchemaName         = $dataSchemaName;
     $this->auditSchemaName        = $auditSchemaName;

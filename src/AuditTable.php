@@ -40,7 +40,7 @@ class AuditTable
    *
    * @var string
    */
-  protected $dataSchemaName;
+  private string $dataSchemaName;
 
   /**
    * The metadata of the columns of the data table retrieved from information_schema.
@@ -57,7 +57,8 @@ class AuditTable
   private AuditStyle $io;
 
   /**
-   * The skip variable for triggers.
+   * The name of the MySQL user defined variable for skipping triggers. When the value of this variable is not null the
+   * audit trigger will (effectively) be sipped.
    *
    * @var string|null
    */
@@ -79,16 +80,17 @@ class AuditTable
    * @param string               $auditSchemaName        The name of the schema with audit tables.
    * @param string               $tableName              The name of the data and audit table.
    * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
-   * @param string|null          $alias                  An unique alias for this table.
-   * @param string|null          $skipVariable           The skip variable
+   * @param string|null          $alias                  A unique alias for this table.
+   * @param string|null          $skipVariable           The name of the MySQL user defined variable for skipping
+   *                                                     triggers.
    */
-  public function __construct(AuditStyle $io,
-                              string $dataSchemaName,
-                              string $auditSchemaName,
-                              string $tableName,
+  public function __construct(AuditStyle           $io,
+                              string               $dataSchemaName,
+                              string               $auditSchemaName,
+                              string               $tableName,
                               TableColumnsMetadata $additionalAuditColumns,
-                              ?string $alias,
-                              ?string $skipVariable)
+                              ?string              $alias,
+                              ?string              $skipVariable)
   {
     $this->io                       = $io;
     $this->dataSchemaName           = $dataSchemaName;
@@ -158,7 +160,7 @@ class AuditTable
   /**
    * Creates audit triggers on this table.
    *
-   * @param string[] $additionalSql Additional SQL statements to be include in triggers.
+   * @param string[] $additionalSql Additional SQL statements to be included in triggers.
    */
   public function createTriggers(array $additionalSql): void
   {
@@ -192,7 +194,7 @@ class AuditTable
   /**
    * Main function for work with table.
    *
-   * @param string[] $additionalSql Additional SQL statements to be include in triggers.
+   * @param string[] $additionalSql Additional SQL statements to be included in triggers.
    */
   public function main(array $additionalSql): void
   {
@@ -221,7 +223,7 @@ class AuditTable
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns metadata of new table columns that can be used in a 'alter table .. add column' statement.
+   * Returns metadata of new table columns that can be used in a 'alter table ... add column' statement.
    *
    * @param TableColumnsMetadata $newColumns The metadata new table columns.
    *
@@ -243,9 +245,9 @@ class AuditTable
   /**
    * Creates a triggers for this table.
    *
-   * @param string      $action      The trigger action (INSERT, DELETE, or UPDATE).
-   * @param string|null $skipVariable
-   * @param string[]    $additionSql The additional SQL statements to be included in triggers.
+   * @param string      $action       The trigger action (INSERT, DELETE, or UPDATE).
+   * @param string|null $skipVariable The name of the MySQL user defined variable for skipping triggers.
+   * @param string[]    $additionSql  The additional SQL statements to be included in triggers.
    */
   private function createTableTrigger(string $action, ?string $skipVariable, array $additionSql): void
   {
@@ -306,7 +308,7 @@ class AuditTable
   /**
    * Returns the trigger name for a trigger action.
    *
-   * @param string $action Trigger on action (Insert, Update, Delete)
+   * @param string $action Trigger on action (Insert, Update, Delete).
    *
    * @return string
    */

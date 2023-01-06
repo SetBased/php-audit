@@ -71,11 +71,11 @@ class TableColumnsMetadata
                                               array $ignore = []): TableColumnsMetadata
   {
     $diff = new TableColumnsMetadata();
-    foreach ($columns1->columns as $column_name => $column1)
+    foreach ($columns1->columns as $columnName => $column1)
     {
-      if (isset($columns2->columns[$column_name]))
+      if (isset($columns2->columns[$columnName]))
       {
-        if (!ColumnMetadata::compare($column1, $columns2->columns[$column_name], $ignore))
+        if (!ColumnMetadata::compare($column1, $columns2->columns[$columnName], $ignore))
         {
           $diff->appendTableColumn($column1);
         }
@@ -99,9 +99,9 @@ class TableColumnsMetadata
                                        TableColumnsMetadata $columns2): TableColumnsMetadata
   {
     $diff = new TableColumnsMetadata();
-    foreach ($columns1->columns as $column_name => $column1)
+    foreach ($columns1->columns as $columnName => $column1)
     {
-      if (!isset($columns2->columns[$column_name]))
+      if (!isset($columns2->columns[$columnName]))
       {
         $diff->appendTableColumn($column1);
       }

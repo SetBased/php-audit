@@ -75,9 +75,9 @@ class AuditDataLayer extends MySqlDataLayer
    * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
-  public function createAuditTable(string $dataSchemaName,
-                                   string $auditSchemaName,
-                                   string $tableName,
+  public function createAuditTable(string               $dataSchemaName,
+                                   string               $auditSchemaName,
+                                   string               $tableName,
                                    TableColumnsMetadata $columns): void
   {
     $helper = new CreateAuditTable($dataSchemaName, $auditSchemaName, $tableName, $columns);
@@ -97,18 +97,19 @@ class AuditDataLayer extends MySqlDataLayer
    * @param string               $triggerName            The name of the trigger.
    * @param TableColumnsMetadata $additionalAuditColumns The metadata of the additional audit columns.
    * @param TableColumnsMetadata $tableColumns           The metadata of the data table columns.
-   * @param string|null          $skipVariable           The skip variable.
+   * @param string|null          $skipVariable           The name of the MySQL user defined variable for skipping
+   *                                                     triggers.
    * @param string[]             $additionSql            Additional SQL statements.
    */
-  public function createAuditTrigger(string $dataSchemaName,
-                                     string $auditSchemaName,
-                                     string $tableName,
-                                     string $triggerName,
-                                     string $triggerAction,
+  public function createAuditTrigger(string               $dataSchemaName,
+                                     string               $auditSchemaName,
+                                     string               $tableName,
+                                     string               $triggerName,
+                                     string               $triggerAction,
                                      TableColumnsMetadata $additionalAuditColumns,
                                      TableColumnsMetadata $tableColumns,
-                                     ?string $skipVariable,
-                                     array $additionSql): void
+                                     ?string              $skipVariable,
+                                     array                $additionSql): void
   {
     $helper = new CreateAuditTrigger($dataSchemaName,
                                      $auditSchemaName,
@@ -422,7 +423,7 @@ order by EVENT_OBJECT_TABLE
    * @return TableColumnsMetadata
    */
   public function resolveCanonicalAdditionalAuditColumns(string $auditSchema,
-                                                         array $additionalAuditColumns): TableColumnsMetadata
+                                                         array  $additionalAuditColumns): TableColumnsMetadata
   {
     if (empty($additionalAuditColumns))
     {

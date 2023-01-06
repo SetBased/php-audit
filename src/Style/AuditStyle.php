@@ -44,7 +44,7 @@ class AuditStyle extends SymfonyStyle
    *
    * This method takes arguments like sprintf.
    */
-  public function logInfo()
+  public function logInfo(): void
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_NORMAL)
     {
@@ -61,7 +61,7 @@ class AuditStyle extends SymfonyStyle
    *
    * This method takes arguments like sprintf.
    */
-  public function logVerbose()
+  public function logVerbose(): void
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_VERBOSE)
     {
@@ -78,7 +78,7 @@ class AuditStyle extends SymfonyStyle
    *
    * This method takes arguments like sprintf.
    */
-  public function logVeryVerbose()
+  public function logVeryVerbose(): void
   {
     if ($this->getVerbosity()>=OutputInterface::VERBOSITY_VERY_VERBOSE)
     {

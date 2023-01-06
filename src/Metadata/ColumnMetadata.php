@@ -21,14 +21,13 @@ abstract class ColumnMetadata
                                     'collation_name'];
 
   /**
-   * The the properties of this table column.
+   * The properties of this table column.
    *
    * @var array
    */
   private array $properties = [];
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *

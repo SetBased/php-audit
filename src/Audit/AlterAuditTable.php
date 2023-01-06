@@ -55,7 +55,7 @@ class AlterAuditTable
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * The main method: executes the create alter table statement actions for tables.
+   * The main method: executes the creates alter table statement actions for tables.
    *
    * return string
    */

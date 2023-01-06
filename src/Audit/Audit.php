@@ -85,17 +85,14 @@ class Audit
   public function main(): void
   {
     $this->listOfTables();
-
     $this->unknownTables();
-
     $this->obsoleteTables();
-
     $this->knownTables();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Removes tables listed in the config file that are not longer in the data schema from the config file.
+   * Removes tables listed in the config file that are no longer in the data schema from the config file.
    */
   public function obsoleteTables(): void
   {

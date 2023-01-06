@@ -100,15 +100,13 @@ class Diff
     $lists = $this->getTableLists();
 
     $this->currentAuditTables($lists['current']);
-
     $this->missingAuditTables($lists['missing']);
-
     $this->obsoleteAuditTables($lists['obsolete']);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Prints the difference between a data and and its audit table.
+   * Prints the difference between a data and its related audit table.
    *
    * @param string $tableName The table name.
    */
