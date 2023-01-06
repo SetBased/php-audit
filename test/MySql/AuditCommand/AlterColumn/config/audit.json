@@ -1,0 +1,12 @@
+{
+  "database": {
+    "credentials": "credentials.ini"
+  },
+  "tables": {
+    "TABLE1": {
+      "audit": true,
+      "skip": null,
+      "alias": "t1"
+    }
+  }
+}

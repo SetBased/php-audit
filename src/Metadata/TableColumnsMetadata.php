@@ -57,27 +57,27 @@ class TableColumnsMetadata
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Compares two lists of table columns and returns a list of  table columns the are in both lists but have different
-   * metadata
+   * Compares two lists of table columns and returns a list of table columns that are in both lists but have different
+   * metadata.
    *
-   * @param TableColumnsMetadata $columns1 The first list of table columns.
-   * @param TableColumnsMetadata $columns2 The second list of table columns.
-   * @param string[]             $ignore   The properties to be ignored.
+   * @param TableColumnsMetadata $oldColumns The old metadata of the table columns.
+   * @param TableColumnsMetadata $newColumns The new metadata of the table columns.
+   * @param string[]             $ignore     The properties to be ignored.
    *
    * @return TableColumnsMetadata
    */
-  public static function differentColumnTypes(TableColumnsMetadata $columns1,
-                                              TableColumnsMetadata $columns2,
-                                              array $ignore = []): TableColumnsMetadata
+  public static function differentColumnTypes(TableColumnsMetadata $oldColumns,
+                                              TableColumnsMetadata $newColumns,
+                                              array                $ignore = []): TableColumnsMetadata
   {
     $diff = new TableColumnsMetadata();
-    foreach ($columns1->columns as $columnName => $column1)
+    foreach ($oldColumns->columns as $columnName => $oldColumn)
     {
-      if (isset($columns2->columns[$columnName]))
+      if (isset($newColumns->columns[$columnName]))
       {
-        if (!ColumnMetadata::compare($column1, $columns2->columns[$columnName], $ignore))
+        if (!ColumnMetadata::compare($oldColumn, $newColumns->columns[$columnName], $ignore))
         {
-          $diff->appendTableColumn($column1);
+          $diff->appendTableColumn($newColumns->columns[$columnName]);
         }
       }
     }

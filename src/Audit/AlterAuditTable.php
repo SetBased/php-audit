@@ -98,7 +98,7 @@ class AlterAuditTable
    */
   private function compareTableColumns(TableMetadata $dataTable, TableMetadata $auditTable): void
   {
-    $diff = TableColumnsMetadata::differentColumnTypes($dataTable->getColumns(), $auditTable->getColumns());
+    $diff = TableColumnsMetadata::differentColumnTypes($auditTable->getColumns(), $dataTable->getColumns());
 
     if (!empty($diff->getColumns()))
     {
