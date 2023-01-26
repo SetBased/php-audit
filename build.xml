@@ -55,7 +55,9 @@
     <!-- Runs all unit tests -->
     <target name="unit">
         <exec executable="bash" passthru="true" checkreturn="true">
-            <arg value=".unit-test"/>
+            <arg value="-e"/>
+            <arg value="-x"/>
+            <arg value="test/unit-test.sh"/>
         </exec>
     </target>
 </project>

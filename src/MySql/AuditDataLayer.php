@@ -248,7 +248,7 @@ class AuditDataLayer extends MySqlDataLayer
   /**
    * @inheritdoc
    */
-  public function executeSingleton0(string $query)
+  public function executeSingleton0(string $query): mixed
   {
     $this->logQuery($query);
 
@@ -259,7 +259,7 @@ class AuditDataLayer extends MySqlDataLayer
   /**
    * @inheritdoc
    */
-  public function executeSingleton1(string $query)
+  public function executeSingleton1(string $query): mixed
   {
     $this->logQuery($query);
 
