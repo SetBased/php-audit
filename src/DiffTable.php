@@ -92,7 +92,10 @@ class DiffTable
       // Add separator between columns and options.
       if ($options===false && $row['type']==='option')
       {
-        if (!empty($ret)) $ret[] = new TableSeparator();
+        if (!empty($ret))
+        {
+          $ret[] = new TableSeparator();
+        }
         $options = true;
       }
 
@@ -120,7 +123,10 @@ class DiffTable
   {
     foreach ($this->rows as $row)
     {
-      if ($row['diff']) return true;
+      if ($row['diff'])
+      {
+        return true;
+      }
     }
 
     return false;
@@ -221,8 +227,10 @@ class DiffTable
    */
   private function rowsEnhanceWithTableColumns(): void
   {
-    $auditColumns = $this->auditTable->getColumns()->getColumnNames();
-    $dataColumns  = $this->dataTable->getColumns()->getColumnNames();
+    $auditColumns = $this->auditTable->getColumns()
+                                     ->getColumnNames();
+    $dataColumns  = $this->dataTable->getColumns()
+                                    ->getColumnNames();
 
     $this->rows = [];
     foreach ($dataColumns as $column)
@@ -230,8 +238,10 @@ class DiffTable
       if (in_array($column, $auditColumns))
       {
         $this->rows[] = ['name'     => $column,
-                         'audit'    => $this->auditTable->getColumns()->getColumn($column),
-                         'data'     => $this->dataTable->getColumns()->getColumn($column),
+                         'audit'    => $this->auditTable->getColumns()
+                                                        ->getColumn($column),
+                         'data'     => $this->dataTable->getColumns()
+                                                       ->getColumn($column),
                          'type'     => 'column',
                          'new'      => false,
                          'obsolete' => false];
@@ -240,7 +250,8 @@ class DiffTable
       {
         $this->rows[] = ['name'     => $column,
                          'audit'    => null,
-                         'data'     => $this->dataTable->getColumns()->getColumn($column),
+                         'data'     => $this->dataTable->getColumns()
+                                                       ->getColumn($column),
                          'type'     => 'column',
                          'new'      => true,
                          'obsolete' => false];
@@ -252,7 +263,8 @@ class DiffTable
       if (!in_array($column, $dataColumns))
       {
         $this->rows[] = ['name'     => $column,
-                         'audit'    => $this->auditTable->getColumns()->getColumn($column),
+                         'audit'    => $this->auditTable->getColumns()
+                                                        ->getColumn($column),
                          'data'     => null,
                          'type'     => 'column',
                          'new'      => false,

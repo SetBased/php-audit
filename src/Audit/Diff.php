@@ -83,19 +83,23 @@ class Diff
   {
     // Style for column names with miss matched column types.
     $style = new OutputFormatterStyle(null, 'red');
-    $this->output->getFormatter()->setStyle('mm_column', $style);
+    $this->output->getFormatter()
+                 ->setStyle('mm_column', $style);
 
     // Style for column types of columns with miss matched column types.
     $style = new OutputFormatterStyle('yellow');
-    $this->output->getFormatter()->setStyle('mm_type', $style);
+    $this->output->getFormatter()
+                 ->setStyle('mm_type', $style);
 
     // Style for obsolete tables.
     $style = new OutputFormatterStyle('yellow');
-    $this->output->getFormatter()->setStyle('obsolete_table', $style);
+    $this->output->getFormatter()
+                 ->setStyle('obsolete_table', $style);
 
     // Style for missing tables.
     $style = new OutputFormatterStyle('red');
-    $this->output->getFormatter()->setStyle('miss_table', $style);
+    $this->output->getFormatter()
+                 ->setStyle('miss_table', $style);
 
     $lists = $this->getTableLists();
 
@@ -203,7 +207,10 @@ class Diff
    */
   private function missingAuditTables(array $tableNames): void
   {
-    if (empty($tableNames)) return;
+    if (empty($tableNames))
+    {
+      return;
+    }
 
     $this->io->title('Missing Audit Tables');
     $this->io->listing($tableNames);
@@ -217,7 +224,10 @@ class Diff
    */
   private function obsoleteAuditTables(array $tableNames): void
   {
-    if (empty($tableNames) || !$this->input->getOption('full')) return;
+    if (empty($tableNames) || !$this->input->getOption('full'))
+    {
+      return;
+    }
 
     $this->io->title('Obsolete Audit Tables');
     $this->io->listing($tableNames);

@@ -103,7 +103,7 @@ class BaseCommand extends Command
                                            $this->config->getManString('database.password'),
                                            $this->config->getManString('database.data_schema'),
                                            $this->config->getManInt('database.port', 3306));
-    $dl = new AuditDataLayer($connector, $this->io);
+    $dl        = new AuditDataLayer($connector, $this->io);
     $dl->connect();
   }
 
@@ -114,7 +114,10 @@ class BaseCommand extends Command
   protected function rewriteConfig(): void
   {
     // Return immediately when the config file must not be rewritten.
-    if (!$this->rewriteConfigFile) return;
+    if (!$this->rewriteConfigFile)
+    {
+      return;
+    }
 
     $tables = $this->config->getManArray('tables');
     ksort($tables);
@@ -154,7 +157,10 @@ class BaseCommand extends Command
     if (file_exists($filename))
     {
       $old_data = file_get_contents($filename);
-      if ($data===$old_data) $write_flag = false;
+      if ($data===$old_data)
+      {
+        $write_flag = false;
+      }
     }
 
     if ($write_flag)

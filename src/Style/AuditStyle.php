@@ -23,19 +23,23 @@ class AuditStyle extends SymfonyStyle
 
     // Create style notes.
     $style = new OutputFormatterStyle('yellow');
-    $output->getFormatter()->setStyle('note', $style);
+    $output->getFormatter()
+           ->setStyle('note', $style);
 
     // Create style for database objects.
     $style = new OutputFormatterStyle('green', null, ['bold']);
-    $output->getFormatter()->setStyle('dbo', $style);
+    $output->getFormatter()
+           ->setStyle('dbo', $style);
 
     // Create style for file and directory names.
     $style = new OutputFormatterStyle(null, null, ['bold']);
-    $output->getFormatter()->setStyle('fso', $style);
+    $output->getFormatter()
+           ->setStyle('fso', $style);
 
     // Create style for SQL statements.
     $style = new OutputFormatterStyle('magenta', null, ['bold']);
-    $output->getFormatter()->setStyle('sql', $style);
+    $output->getFormatter()
+           ->setStyle('sql', $style);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

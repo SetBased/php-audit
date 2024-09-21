@@ -131,7 +131,8 @@ class Audit
           {
             if ($this->config->getOptString('tables.'.$table['table_name'].'.alias')===null)
             {
-              $this->config->getConfig()->set('tables.'.$table['table_name'].'.alias', AuditTable::getRandomAlias());
+              $this->config->getConfig()
+                           ->set('tables.'.$table['table_name'].'.alias', AuditTable::getRandomAlias());
             }
           }
         }

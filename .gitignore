@@ -12,8 +12,6 @@
 /bin/phpunit
 /bin/yaml-lint
 /composer.lock
-/custom.task.properties
-/custom.type.properties
 /docs/_build/
 /test/MySql/AlterAuditTableCommand/config/alter.sql
 /test/MySql/AuditCommand/AddAuditColumn/config/audit.json

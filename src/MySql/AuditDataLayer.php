@@ -372,7 +372,8 @@ select TABLE_NAME as table_name
 from   information_schema.TABLES
 where  TABLE_SCHEMA = %s
 and    TABLE_TYPE   = 'BASE TABLE'
-order by TABLE_NAME", $this->quoteString($schemaName));
+order by TABLE_NAME",
+                   $this->quoteString($schemaName));
 
     return $this->executeRows($sql);
   }
@@ -473,7 +474,7 @@ order by EVENT_OBJECT_TABLE
   {
     $query = trim($query);
 
-    if (strpos($query, "\n")!==false)
+    if (str_contains($query, PHP_EOL))
     {
       // Query is a multi line query.
       $this->io->logVeryVerbose('Executing query:');

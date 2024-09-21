@@ -51,9 +51,9 @@ class CreateAuditTable
    * @param TableColumnsMetadata $columns         The metadata of the columns of the audit table (i.e. the audit
    *                                              columns and columns of the data table).
    */
-  public function __construct(string $dataSchemaName,
-                              string $auditSchemaName,
-                              string $tableName,
+  public function __construct(string               $dataSchemaName,
+                              string               $auditSchemaName,
+                              string               $tableName,
                               TableColumnsMetadata $columns)
   {
     $this->dataSchemaName  = $dataSchemaName;

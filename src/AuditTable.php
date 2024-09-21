@@ -214,7 +214,10 @@ class AuditTable
   private function addNewColumns(TableColumnsMetadata $columns): void
   {
     // Return immediately if there are no columns to add.
-    if ($columns->getNumberOfColumns()===0) return;
+    if ($columns->getNumberOfColumns()===0)
+    {
+      return;
+    }
 
     $alterColumns = $this->alterNewColumns($columns);
 

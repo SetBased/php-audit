@@ -25,7 +25,7 @@ class AlterAuditTableCommandTest extends AuditTestCase
 
     $this->dropAllTables();
 
-    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/'.$this->getName().'/setup.sql'));
+    AuditDataLayer::$dl->executeMulti(file_get_contents(__DIR__.'/'.$this->name().'/setup.sql'));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

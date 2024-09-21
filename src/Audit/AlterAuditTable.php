@@ -82,8 +82,10 @@ class AlterAuditTable
     $auditTable = $this->getTableMetadata($this->config->getManString('database.audit_schema'), $tableName);
 
     // In the audit schema columns corresponding with the columns from the data table are always nullable.
-    $dataTable->getColumns()->makeNullable();
-    $dataTable->getColumns()->prependTableColumns($this->additionalAuditColumns);
+    $dataTable->getColumns()
+              ->makeNullable();
+    $dataTable->getColumns()
+              ->prependTableColumns($this->additionalAuditColumns);
 
     $this->compareTableOptions($dataTable, $auditTable);
     $this->compareTableColumns($dataTable, $auditTable);
