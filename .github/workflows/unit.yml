@@ -39,7 +39,7 @@ jobs:
           extensions:  "xdebug"
 
       - name: "Cache dependencies installed with Composer"
-        uses: "actions/cache@v3"
+        uses: "actions/cache@v4"
         with:
           path:         "~/.composer/cache"
           key:          "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
