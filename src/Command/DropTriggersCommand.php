@@ -18,7 +18,7 @@ class DropTriggersCommand extends AuditCommand
   /**
    * @inheritdoc
    */
-  protected function configure()
+  protected function configure(): void
   {
     $this->setName('drop-triggers')
          ->setDescription('Drops all triggers')

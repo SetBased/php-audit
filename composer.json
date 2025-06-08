@@ -8,22 +8,22 @@
   ],
   "license": "MIT",
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.3",
     "ext-json": "*",
     "setbased/error-handler": "^1.3.0",
-    "setbased/exception": "^2.3.0",
-    "setbased/helper-code-store-mysql": "^2.2.0",
-    "setbased/php-stratum-middle": "^5.12.0",
-    "setbased/php-stratum-mysql": "^7.0.0",
+    "setbased/exception": "^2.5.0",
+    "setbased/helper-code-store-mysql": "^2.3.0",
+    "setbased/php-stratum-middle": "^5.13.0",
+    "setbased/php-stratum-mysql": "^7.1.0",
     "setbased/typed-config": "^2.0.0",
     "symfony/console": "^6.0|^7.0"
   },
   "require-dev": {
     "ext-pcntl": "*",
     "ext-posix": "*",
-    "phing/phing": "^3.0.0",
-    "phpunit/phpunit": "^10.5.35",
-    "setbased/phing-extensions": "^3.1.0"
+    "phing/phing": "^3.0.1",
+    "phpunit/phpunit": "^11.5.22",
+    "setbased/phing-extensions": "^3.2.0"
   },
   "autoload": {
     "psr-4": {

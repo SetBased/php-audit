@@ -18,7 +18,7 @@ class AlterAuditTableCommand extends AuditCommand
   /**
    * @inheritdoc
    */
-  protected function configure()
+  protected function configure(): void
   {
     $this->setName('alter-audit-table')
          ->setDescription('Creates alter SQL statements for audit tables')

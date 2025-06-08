@@ -176,9 +176,9 @@ where  `audit_statement` = 'INSERT'";
     $row = $rows[0];
 
     // Tests on fields.
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertGreaterThanOrEqual(date_format($time->sub(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     self::assertSame('NEW', $row['audit_type']);
     self::assertNotEmpty($row['audit_uuid']);
@@ -224,9 +224,9 @@ where  `audit_statement` = 'UPDATE'";
 
     // Tests on 'OLD' fields.
     $row  = $rows[RowSetHelper::searchInRowSet($rows, 'audit_type', 'OLD')];
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertGreaterThanOrEqual(date_format($time->sub(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     self::assertSame('OLD', $row['audit_type']);
     self::assertNotEmpty($row['audit_uuid']);
@@ -239,9 +239,9 @@ where  `audit_statement` = 'UPDATE'";
 
     // Tests on 'NEW' fields.
     $row  = $rows[RowSetHelper::searchInRowSet($rows, 'audit_type', 'NEW')];
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertGreaterThanOrEqual(date_format($time->sub(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     self::assertSame('NEW', $row['audit_type']);
     self::assertNotEmpty($row['audit_uuid']);
@@ -282,9 +282,9 @@ where  audit_statement = 'DELETE'";
     $row = $rows[0];
 
     // Tests on fields.
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertLessThanOrEqual(date_format($time->add(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
-    $time = new \DateTime();
+    $time = new \DateTime('Europe/Amsterdam');
     self::assertGreaterThanOrEqual(date_format($time->sub(new \DateInterval('PT1M')), 'Y-m-d H:i:s'), $row['audit_timestamp']);
     self::assertSame('OLD', $row['audit_type']);
     self::assertNotEmpty($row['audit_uuid']);
@@ -319,7 +319,6 @@ from   `test_audit`.`ABC_AUTH_COMPANY`";
    */
   protected function setUp(): void
   {
-    // Nothing to do.
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -19,7 +19,7 @@ class AuditCommand extends BaseCommand
   /**
    * @inheritdoc
    */
-  protected function configure()
+  protected function configure(): void
   {
     $this->setName('audit')
          ->setDescription('Maintains audit tables and audit triggers')

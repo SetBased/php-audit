@@ -116,8 +116,6 @@ class TableColumnsMetadata
    *
    * @param string $type   The type of the metadata.
    * @param array  $column The metadata of the column
-   *
-   * @return AlterColumnMetadata|AuditColumnMetadata|ColumnMetadata
    */
   private static function columnFactory(string $type, array $column): ColumnMetadata
   {

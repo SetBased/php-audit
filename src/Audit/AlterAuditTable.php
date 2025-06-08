@@ -56,8 +56,6 @@ class AlterAuditTable
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * The main method: executes the creates alter table statement actions for tables.
-   *
-   * return string
    */
   public function main(): string
   {

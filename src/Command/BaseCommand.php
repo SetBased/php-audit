@@ -84,10 +84,10 @@ class BaseCommand extends Command
   /**
    * Use for testing only.
    *
-   * @param bool $rewriteConfigFile If true the config file must be rewritten. Otherwise the config must not be
+   * @param bool $rewriteConfigFile If true, the config file must be rewritten. Otherwise, the config must not be
    *                                rewritten.
    */
-  public function setRewriteConfigFile(bool $rewriteConfigFile)
+  public function setRewriteConfigFile(bool $rewriteConfigFile): void
   {
     $this->rewriteConfigFile = $rewriteConfigFile;
   }

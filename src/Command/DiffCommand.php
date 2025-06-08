@@ -19,7 +19,7 @@ class DiffCommand extends AuditCommand
   /**
    * @inheritdoc
    */
-  protected function configure()
+  protected function configure(): void
   {
     $this->setName('diff')
          ->setDescription('Compares data tables and audit tables')
